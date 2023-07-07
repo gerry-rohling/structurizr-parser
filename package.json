@@ -1,0 +1,24 @@
+{
+  "name": "structurizr-parser",
+  "version": "1.0.0",
+  "description": "Parses Structurizr DSL files",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gerry-rohling/structurizr-parser.git"
+  },
+  "author": "Gerry Rohling",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gerry-rohling/structurizr-parser/issues"
+  },
+  "homepage": "https://github.com/gerry-rohling/structurizr-parser#readme"
+}
