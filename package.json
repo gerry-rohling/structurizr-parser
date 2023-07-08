@@ -20,5 +20,13 @@
   "bugs": {
     "url": "https://github.com/gerry-rohling/structurizr-parser/issues"
   },
-  "homepage": "https://github.com/gerry-rohling/structurizr-parser#readme"
+  "homepage": "https://github.com/gerry-rohling/structurizr-parser#readme",
+  "dependencies": {
+    "typescript": "^5.1.6"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.2",
+    "jest": "^29.6.1",
+    "ts-jest": "^29.1.1"
+  }
 }
