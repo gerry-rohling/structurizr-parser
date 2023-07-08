@@ -1,4 +1,13 @@
-import { createToken, Lexer } from "chevrotain";
+import { createToken, ITokenConfig, Lexer } from "chevrotain";
+
+/// If we want to build token list in the same order as definition you can try doing this
+/// If you rename this `createToken` you do not have to rewrite the code but you need to specify 
+/// what createToken method you are calling in here
+const addNewToken = (config: ITokenConfig) => {
+    const newToken = createToken(config);
+    allTokens.push(newToken);
+    return newToken;
+};
 
 /// Comments
 const blockComment = createToken({name: "blockComment", pattern: /\/\*[^*]*\*+([^/*][^*]*\*+)*\// });
@@ -36,17 +45,17 @@ const element = createToken({name: "element", pattern: /element/i, longer_alt: i
 const views = createToken({name: "views", pattern: /views/i, longer_alt: identifier  });
 const systemLandscape = createToken({name: "systemLandscape", pattern: /systemlandscape/i });
 const systemContext = createToken({name: "systemContext", pattern: /systemcontext/i });
-const filtered = createToken({name: "filtered", pattern: /filtered/i });
+const filtered = createToken({name: "filtered", pattern: /filtered/i, longer_alt: identifier });
 const dynamic = createToken({name: "dynamic", pattern: /dynamic/i, longer_alt: identifier  });
-const deployment = createToken({name: "deployment", pattern: /deployment/i });
+const deployment = createToken({name: "deployment", pattern: /deployment/i, longer_alt: identifier });
 const custom = createToken({name: "custom", pattern: /custom/i, longer_alt: identifier });
-const styles = createToken({name: "styles", pattern: /styles/i });
-const relationship = createToken({name: "relationship", pattern: /relationship/i });
-const themes = createToken({name: "themes", pattern: /themes/i });
+const styles = createToken({name: "styles", pattern: /styles/i, longer_alt: identifier });
+const relationship = createToken({name: "relationship", pattern: /relationship/i, longer_alt: identifier });
+const themes = createToken({name: "themes", pattern: /themes/i, longer_alt: identifier });
 const theme = createToken({name: "theme", pattern: /theme/i, longer_alt: themes });
-const branding = createToken({name: "branding", pattern: /branding/i });
-const terminology = createToken({name: "terminology", pattern: /terminology/i });
-const configuration = createToken({name: "configuration", pattern: /configuration/i });
+const branding = createToken({name: "branding", pattern: /branding/i, longer_alt: identifier });
+const terminology = createToken({name: "terminology", pattern: /terminology/i, longer_alt: identifier });
+const configuration = createToken({name: "configuration", pattern: /configuration/i, longer_alt: identifier });
 const users = createToken({name: "users", pattern: /users/i, longer_alt: identifier  });
 
 /// Relationships
