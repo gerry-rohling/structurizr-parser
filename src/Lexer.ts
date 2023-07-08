@@ -1,7 +1,6 @@
 import { createToken, Lexer } from "chevrotain";
 
 /// Comments
-// const blockComment = createToken({ name: "blockComment", pattern: /\*.*?\*/, line_breaks: true });
 const blockComment = createToken({name: "blockComment", pattern: /\/\*[^*]*\*+([^/*][^*]*\*+)*\// });
 const lineComment = createToken({name: "lineComment", pattern: /\/\/(.*?)\r?\n/ });
 const hashComment = createToken({name: "hashComment", pattern: /\#(.*?)\r?\n/ });
@@ -59,6 +58,9 @@ const value = createToken({ name: "value", pattern: Lexer.NA });
 const word = createToken({ name: "word", pattern: /[a-zA-Z][a-zA-Z0-9_]*/, categories: value });
 const float = createToken({ name: "float", pattern: /-?[0-9]+\.[0-9]+/, categories: value });
 const int = createToken({ name: "int", pattern: /-?(?:0|[1-9][0-9]*)/, categories: value });
+
+/// Wildcards
+const wildcard = createToken({name: "wildcard", pattern: /(\*)/ });
 
 /// Furniture
 const endline = createToken({ name: "endline", pattern: /\r\n|\r|\n/, line_breaks: true });
@@ -122,6 +124,8 @@ export const allTokens = [
     word,
     float,
     int,
+
+    wildcard,
 
     lBrace,
     rBrace,
