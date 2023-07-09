@@ -1,0 +1,160 @@
+
+<!-- This is a generated file -->
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+  body {
+    background-color: hsl(30, 20%, 95%)
+  }
+</style>
+
+
+<link rel='stylesheet' href='https://unpkg.com/chevrotain@10.5.0/diagrams/diagrams.css'>
+
+<script src='https://unpkg.com/chevrotain@10.5.0/diagrams/vendor/railroad-diagrams.js'></script>
+<script src='https://unpkg.com/chevrotain@10.5.0/diagrams/src/diagrams_builder.js'></script>
+<script src='https://unpkg.com/chevrotain@10.5.0/diagrams/src/diagrams_behavior.js'></script>
+<script src='https://unpkg.com/chevrotain@10.5.0/diagrams/src/main.js'></script>
+
+<div id="diagrams" align="center"></div>    
+
+<script>
+    window.serializedGrammar = [
+  {
+    "type": "Rule",
+    "name": "workspaceWrapper",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "workspace",
+        "label": "workspace",
+        "idx": 0,
+        "pattern": "workspace"
+      },
+      {
+        "type": "Option",
+        "idx": 1,
+        "definition": [
+          {
+            "type": "Terminal",
+            "name": "StringLiteral",
+            "label": "StringLiteral",
+            "idx": 1,
+            "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
+          }
+        ]
+      },
+      {
+        "type": "Option",
+        "idx": 2,
+        "definition": [
+          {
+            "type": "Terminal",
+            "name": "StringLiteral",
+            "label": "StringLiteral",
+            "idx": 2,
+            "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
+          }
+        ]
+      },
+      {
+        "type": "NonTerminal",
+        "name": "workspaceSection",
+        "idx": 0
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "workspaceSection",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "lBrace",
+        "label": "{",
+        "idx": 0,
+        "pattern": "\\{"
+      },
+      {
+        "type": "NonTerminal",
+        "name": "modelSection",
+        "idx": 0
+      },
+      {
+        "type": "Option",
+        "idx": 0,
+        "definition": [
+          {
+            "type": "NonTerminal",
+            "name": "viewsSection",
+            "idx": 0
+          }
+        ]
+      },
+      {
+        "type": "Terminal",
+        "name": "rBrace",
+        "label": "}",
+        "idx": 0,
+        "pattern": "\\}"
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "modelSection",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "model",
+        "label": "model",
+        "idx": 0,
+        "pattern": "model"
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "viewsSection",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "views",
+        "label": "views",
+        "idx": 0,
+        "pattern": "views"
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "childSection",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "lBrace",
+        "label": "{",
+        "idx": 1,
+        "pattern": "\\{"
+      },
+      {
+        "type": "Terminal",
+        "name": "rBrace",
+        "label": "}",
+        "idx": 1,
+        "pattern": "\\}"
+      }
+    ]
+  }
+];
+</script>
+
+<script>
+    var diagramsDiv = document.getElementById("diagrams");
+    main.drawDiagramsFromSerializedGrammar(serializedGrammar, diagramsDiv);
+</script>
