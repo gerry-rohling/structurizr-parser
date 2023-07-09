@@ -422,11 +422,167 @@
         "pattern": "\\{"
       },
       {
+        "type": "Repetition",
+        "idx": 0,
+        "definition": [
+          {
+            "type": "NonTerminal",
+            "name": "containerSection",
+            "idx": 0
+          }
+        ]
+      },
+      {
         "type": "Terminal",
         "name": "rBrace",
         "label": "}",
         "idx": 1,
         "pattern": "\\}"
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "containerSection",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Option",
+        "idx": 0,
+        "definition": [
+          {
+            "type": "Terminal",
+            "name": "identifier",
+            "label": "identifier",
+            "idx": 0,
+            "pattern": "[a-zA-Z0-9]\\w*"
+          },
+          {
+            "type": "Terminal",
+            "name": "equals",
+            "label": "equals",
+            "idx": 0,
+            "pattern": "="
+          }
+        ]
+      },
+      {
+        "type": "Terminal",
+        "name": "container",
+        "label": "container",
+        "idx": 0,
+        "pattern": "container"
+      },
+      {
+        "type": "Terminal",
+        "name": "StringLiteral",
+        "label": "StringLiteral",
+        "idx": 0,
+        "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
+      },
+      {
+        "type": "Repetition",
+        "idx": 0,
+        "definition": [
+          {
+            "type": "Terminal",
+            "name": "StringLiteral",
+            "label": "StringLiteral",
+            "idx": 1,
+            "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
+          }
+        ]
+      },
+      {
+        "type": "NonTerminal",
+        "name": "containerChildSection",
+        "idx": 0
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "containerChildSection",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "lBrace",
+        "label": "{",
+        "idx": 1,
+        "pattern": "\\{"
+      },
+      {
+        "type": "Repetition",
+        "idx": 0,
+        "definition": [
+          {
+            "type": "NonTerminal",
+            "name": "componentSection",
+            "idx": 0
+          }
+        ]
+      },
+      {
+        "type": "Terminal",
+        "name": "rBrace",
+        "label": "}",
+        "idx": 1,
+        "pattern": "\\}"
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "componentSection",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Option",
+        "idx": 0,
+        "definition": [
+          {
+            "type": "Terminal",
+            "name": "identifier",
+            "label": "identifier",
+            "idx": 0,
+            "pattern": "[a-zA-Z0-9]\\w*"
+          },
+          {
+            "type": "Terminal",
+            "name": "equals",
+            "label": "equals",
+            "idx": 0,
+            "pattern": "="
+          }
+        ]
+      },
+      {
+        "type": "Terminal",
+        "name": "component",
+        "label": "component",
+        "idx": 0,
+        "pattern": "component"
+      },
+      {
+        "type": "Terminal",
+        "name": "StringLiteral",
+        "label": "StringLiteral",
+        "idx": 0,
+        "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
+      },
+      {
+        "type": "Repetition",
+        "idx": 0,
+        "definition": [
+          {
+            "type": "Terminal",
+            "name": "StringLiteral",
+            "label": "StringLiteral",
+            "idx": 1,
+            "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
+          }
+        ]
       }
     ]
   },

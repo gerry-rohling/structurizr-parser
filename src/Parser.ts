@@ -1,5 +1,5 @@
 import { CstParser } from "chevrotain";
-import { Equals, Group, Identifier, LBrace, Model, Person, RBrace, SoftwareSystem, StringLiteral, Views, Workspace, allTokens } from "./Lexer";
+import { Component, Container, Equals, Group, Identifier, LBrace, Model, Person, RBrace, SoftwareSystem, StringLiteral, Views, Workspace, allTokens } from "./Lexer";
 
 class structurizrParser extends CstParser {
   constructor() {
@@ -99,7 +99,43 @@ class structurizrParser extends CstParser {
 
   private softwareSystemChildSection = this.RULE("softwareSystemChildSection", () => {
     this.CONSUME1(LBrace);
+    this.MANY(() => {
+        this.SUBRULE(this.containerSection);
+    });
     this.CONSUME1(RBrace);
+  });
+
+  private containerSection = this.RULE("containerSection", () => {
+    this.OPTION(() => {
+        this.CONSUME(Identifier);
+        this.CONSUME(Equals);
+    });
+    this.CONSUME(Container);
+    this.CONSUME(StringLiteral);
+    this.MANY(() => {
+        this.CONSUME1(StringLiteral);
+    });
+    this.SUBRULE(this.containerChildSection);    
+  });
+
+  private containerChildSection = this.RULE("containerChildSection", () => {
+    this.CONSUME1(LBrace);
+    this.MANY(() => {
+        this.SUBRULE(this.componentSection);
+    });
+    this.CONSUME1(RBrace);
+  });
+
+  private componentSection = this.RULE("componentSection", () => {
+    this.OPTION(() => {
+        this.CONSUME(Identifier);
+        this.CONSUME(Equals);
+    });
+    this.CONSUME(Component);
+    this.CONSUME(StringLiteral);
+    this.MANY(() => {
+        this.CONSUME1(StringLiteral);
+    }); 
   });
 
   private viewsSection = this.RULE("viewsSection", () => {
