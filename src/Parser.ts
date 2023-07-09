@@ -1,5 +1,5 @@
 import { CstParser } from "chevrotain";
-import { Group, LBrace, Model, RBrace, StringLiteral, Views, Workspace, allTokens } from "./Lexer";
+import { Equals, Group, Identifier, LBrace, Model, Person, RBrace, SoftwareSystem, StringLiteral, Views, Workspace, allTokens } from "./Lexer";
 
 class structurizrParser extends CstParser {
   constructor() {
@@ -33,13 +33,81 @@ class structurizrParser extends CstParser {
 
   private modelSection = this.RULE("modelSection", () => {
     this.CONSUME(Model);
+    this.SUBRULE(this.modelChildSection);
+  });
+
+  private modelChildSection = this.RULE("modelChildSection", () => {
+    this.CONSUME1(LBrace);
+    this.MANY(() => {
+        this.OR([
+            {ALT: () => {this.SUBRULE(this.groupSection)}},
+            {ALT: () => {this.SUBRULE(this.personSection)}},
+            {ALT: () => {this.SUBRULE(this.softwareSystemSection)}}
+        ]);
+    });
+    this.CONSUME1(RBrace);
+  });
+
+  private groupSection = this.RULE("groupSection", () => {
+    this.OPTION(() => {
+        this.CONSUME(Identifier);
+        this.CONSUME(Equals);
+    });
+    this.CONSUME(Group);
+    this.CONSUME(StringLiteral);
+    this.SUBRULE(this.groupChildSection);
+  });
+
+  private groupChildSection = this.RULE("groupChildSection", () => {
+    this.CONSUME(LBrace);
+    this.MANY(() => {
+        this.OR([
+            {ALT: () => {this.SUBRULE(this.personSection)}},
+            {ALT: () => {this.SUBRULE(this.softwareSystemSection)}}
+        ]);
+    });
+    this.CONSUME(RBrace);
+  });
+
+  private personSection = this.RULE("personSection", () => {
+    this.OPTION(() => {
+        this.CONSUME(Identifier);
+        this.CONSUME(Equals);
+    });
+    this.CONSUME(Person);
+    this.CONSUME(StringLiteral);
+    this.OPTION1(() => {
+        this.CONSUME1(StringLiteral);
+    });
+    this.OPTION2(() => {
+        this.CONSUME2(StringLiteral);
+    });
+  });
+
+  private softwareSystemSection = this.RULE("softwareSystemSection", () => {
+    this.OPTION(() => {
+        this.CONSUME(Identifier);
+        this.CONSUME(Equals);
+    });
+    this.CONSUME(SoftwareSystem);
+    this.CONSUME(StringLiteral);
+    this.MANY(() => {
+        this.CONSUME1(StringLiteral);
+    });
+    this.SUBRULE(this.softwareSystemChildSection);
+  });
+
+  private softwareSystemChildSection = this.RULE("softwareSystemChildSection", () => {
+    this.CONSUME1(LBrace);
+    this.CONSUME1(RBrace);
   });
 
   private viewsSection = this.RULE("viewsSection", () => {
     this.CONSUME(Views);
+    this.SUBRULE(this.viewsChildSection);
   });
 
-  private childSection = this.RULE("childSection", () => {
+  private viewsChildSection = this.RULE("viewsChildSection", () => {
     this.CONSUME1(LBrace);
     this.CONSUME1(RBrace);
   });
