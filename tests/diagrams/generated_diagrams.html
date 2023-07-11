@@ -170,6 +170,16 @@
                     "idx": 0
                   }
                 ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "explicitRelationship",
+                    "idx": 0
+                  }
+                ]
               }
             ]
           }
@@ -426,9 +436,30 @@
         "idx": 0,
         "definition": [
           {
-            "type": "NonTerminal",
-            "name": "containerSection",
-            "idx": 0
+            "type": "Alternation",
+            "idx": 0,
+            "definition": [
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "containerSection",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "implicitRelationship",
+                    "idx": 0
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
@@ -517,9 +548,30 @@
         "idx": 0,
         "definition": [
           {
-            "type": "NonTerminal",
-            "name": "componentSection",
-            "idx": 0
+            "type": "Alternation",
+            "idx": 0,
+            "definition": [
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "componentSection",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "implicitRelationship",
+                    "idx": 0
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
@@ -588,6 +640,81 @@
   },
   {
     "type": "Rule",
+    "name": "explicitRelationship",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "identifier",
+        "label": "identifier",
+        "idx": 0,
+        "pattern": "[a-zA-Z0-9]\\w*"
+      },
+      {
+        "type": "Terminal",
+        "name": "relatedTo",
+        "label": "relatedTo",
+        "idx": 0,
+        "pattern": "->"
+      },
+      {
+        "type": "Terminal",
+        "name": "identifier",
+        "label": "identifier",
+        "idx": 1,
+        "pattern": "[a-zA-Z0-9]\\w*"
+      },
+      {
+        "type": "Repetition",
+        "idx": 0,
+        "definition": [
+          {
+            "type": "Terminal",
+            "name": "StringLiteral",
+            "label": "StringLiteral",
+            "idx": 0,
+            "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "implicitRelationship",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "relatedTo",
+        "label": "relatedTo",
+        "idx": 0,
+        "pattern": "->"
+      },
+      {
+        "type": "Terminal",
+        "name": "identifier",
+        "label": "identifier",
+        "idx": 1,
+        "pattern": "[a-zA-Z0-9]\\w*"
+      },
+      {
+        "type": "Repetition",
+        "idx": 0,
+        "definition": [
+          {
+            "type": "Terminal",
+            "name": "StringLiteral",
+            "label": "StringLiteral",
+            "idx": 0,
+            "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "Rule",
     "name": "viewsSection",
     "orgText": "",
     "definition": [
@@ -618,11 +745,347 @@
         "pattern": "\\{"
       },
       {
+        "type": "Repetition",
+        "idx": 0,
+        "definition": [
+          {
+            "type": "Alternation",
+            "idx": 0,
+            "definition": [
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "systemLandscapeView",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "systemContextView",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "containerView",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "componentView",
+                    "idx": 0
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
         "type": "Terminal",
         "name": "rBrace",
         "label": "}",
         "idx": 1,
         "pattern": "\\}"
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "systemLandscapeView",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "systemLandscape",
+        "label": "systemLandscape",
+        "idx": 0,
+        "pattern": "systemlandscape"
+      },
+      {
+        "type": "Repetition",
+        "idx": 0,
+        "definition": [
+          {
+            "type": "Terminal",
+            "name": "StringLiteral",
+            "label": "StringLiteral",
+            "idx": 0,
+            "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
+          }
+        ]
+      },
+      {
+        "type": "NonTerminal",
+        "name": "systemLandscapeViewOptions",
+        "idx": 0
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "systemLandscapeViewOptions",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "lBrace",
+        "label": "{",
+        "idx": 0,
+        "pattern": "\\{"
+      },
+      {
+        "type": "Repetition",
+        "idx": 0,
+        "definition": [
+          {
+            "type": "Alternation",
+            "idx": 0,
+            "definition": [
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "includeOptions",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "autoLayoutOptions",
+                    "idx": 0
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "Terminal",
+        "name": "rBrace",
+        "label": "}",
+        "idx": 0,
+        "pattern": "\\}"
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "includeOptions",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "include",
+        "label": "include",
+        "idx": 0,
+        "pattern": "include"
+      },
+      {
+        "type": "Alternation",
+        "idx": 0,
+        "definition": [
+          {
+            "type": "Alternative",
+            "definition": [
+              {
+                "type": "Terminal",
+                "name": "wildcard",
+                "label": "wildcard",
+                "idx": 0,
+                "pattern": "(\\*)"
+              }
+            ]
+          },
+          {
+            "type": "Alternative",
+            "definition": [
+              {
+                "type": "Terminal",
+                "name": "identifier",
+                "label": "identifier",
+                "idx": 0,
+                "pattern": "[a-zA-Z0-9]\\w*"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "autoLayoutOptions",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "autoLayout",
+        "label": "autoLayout",
+        "idx": 0,
+        "pattern": "autoLayout"
+      },
+      {
+        "type": "Option",
+        "idx": 0,
+        "definition": [
+          {
+            "type": "Terminal",
+            "name": "identifier",
+            "label": "identifier",
+            "idx": 0,
+            "pattern": "[a-zA-Z0-9]\\w*"
+          }
+        ]
+      },
+      {
+        "type": "Option",
+        "idx": 1,
+        "definition": [
+          {
+            "type": "Terminal",
+            "name": "int",
+            "label": "int",
+            "idx": 0,
+            "pattern": "-?(?:0|[1-9][0-9]*)"
+          }
+        ]
+      },
+      {
+        "type": "Option",
+        "idx": 2,
+        "definition": [
+          {
+            "type": "Terminal",
+            "name": "int",
+            "label": "int",
+            "idx": 1,
+            "pattern": "-?(?:0|[1-9][0-9]*)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "systemContextView",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "systemContext",
+        "label": "systemContext",
+        "idx": 0,
+        "pattern": "systemcontext"
+      },
+      {
+        "type": "Terminal",
+        "name": "StringLiteral",
+        "label": "StringLiteral",
+        "idx": 0,
+        "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
+      },
+      {
+        "type": "Repetition",
+        "idx": 0,
+        "definition": [
+          {
+            "type": "Terminal",
+            "name": "StringLiteral",
+            "label": "StringLiteral",
+            "idx": 2,
+            "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "containerView",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "container",
+        "label": "container",
+        "idx": 0,
+        "pattern": "container"
+      },
+      {
+        "type": "Terminal",
+        "name": "StringLiteral",
+        "label": "StringLiteral",
+        "idx": 0,
+        "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
+      },
+      {
+        "type": "Repetition",
+        "idx": 0,
+        "definition": [
+          {
+            "type": "Terminal",
+            "name": "StringLiteral",
+            "label": "StringLiteral",
+            "idx": 2,
+            "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "componentView",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "component",
+        "label": "component",
+        "idx": 0,
+        "pattern": "component"
+      },
+      {
+        "type": "Terminal",
+        "name": "StringLiteral",
+        "label": "StringLiteral",
+        "idx": 0,
+        "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
+      },
+      {
+        "type": "Repetition",
+        "idx": 0,
+        "definition": [
+          {
+            "type": "Terminal",
+            "name": "StringLiteral",
+            "label": "StringLiteral",
+            "idx": 2,
+            "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
+          }
+        ]
       }
     ]
   }

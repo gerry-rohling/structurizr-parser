@@ -57,6 +57,8 @@ export const Branding = createToken({name: "branding", pattern: /branding/i, lon
 export const Terminology = createToken({name: "terminology", pattern: /terminology/i, longer_alt: Identifier });
 export const Configuration = createToken({name: "configuration", pattern: /configuration/i, longer_alt: Identifier });
 export const Users = createToken({name: "users", pattern: /users/i, longer_alt: Identifier  });
+export const Include = createToken({name: "include", pattern: /include/i, longer_alt: Identifier});
+export const AutoLayout = createToken({name: "autoLayout", pattern: /autoLayout/i, longer_alt: Identifier});
 
 /// Relationships
 export const Equals = createToken({ name: "equals", pattern: /=/ });
@@ -124,6 +126,8 @@ export const allTokens = [
     Terminology,
     Configuration,
     Users,
+    Include,
+    AutoLayout,
 
     Equals,
     RelatedTo,

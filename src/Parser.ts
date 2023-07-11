@@ -1,5 +1,5 @@
 import { CstParser } from "chevrotain";
-import { Component, Container, Equals, Group, Identifier, LBrace, Model, Person, RBrace, SoftwareSystem, StringLiteral, Views, Workspace, allTokens } from "./Lexer";
+import { AutoLayout, Component, Container, Equals, Group, Identifier, Include, Int, LBrace, Model, Person, RBrace, RelatedTo, SoftwareSystem, StringLiteral, SystemContext, SystemLandscape, Views, Wildcard, Workspace, allTokens } from "./Lexer";
 
 class structurizrParser extends CstParser {
   constructor() {
@@ -42,7 +42,8 @@ class structurizrParser extends CstParser {
         this.OR([
             {ALT: () => {this.SUBRULE(this.groupSection)}},
             {ALT: () => {this.SUBRULE(this.personSection)}},
-            {ALT: () => {this.SUBRULE(this.softwareSystemSection)}}
+            {ALT: () => {this.SUBRULE(this.softwareSystemSection)}},
+            {ALT: () => {this.SUBRULE(this.explicitRelationship)}}
         ]);
     });
     this.CONSUME1(RBrace);
@@ -100,7 +101,11 @@ class structurizrParser extends CstParser {
   private softwareSystemChildSection = this.RULE("softwareSystemChildSection", () => {
     this.CONSUME1(LBrace);
     this.MANY(() => {
-        this.SUBRULE(this.containerSection);
+      this.OR([
+        {ALT: () => {this.SUBRULE(this.containerSection)}},
+        {ALT: () => {this.SUBRULE(this.implicitRelationship)}}
+      ]);
+        ;
     });
     this.CONSUME1(RBrace);
   });
@@ -121,7 +126,10 @@ class structurizrParser extends CstParser {
   private containerChildSection = this.RULE("containerChildSection", () => {
     this.CONSUME1(LBrace);
     this.MANY(() => {
-        this.SUBRULE(this.componentSection);
+      this.OR([
+        {ALT: () => {this.SUBRULE(this.componentSection)}},
+        {ALT: () => {this.SUBRULE(this.implicitRelationship)}}
+      ]);
     });
     this.CONSUME1(RBrace);
   });
@@ -138,6 +146,23 @@ class structurizrParser extends CstParser {
     }); 
   });
 
+  private explicitRelationship = this.RULE("explicitRelationship", () => {
+    this.CONSUME(Identifier);
+    this.CONSUME(RelatedTo);
+    this.CONSUME1(Identifier);
+    this.MANY(() => {
+      this.CONSUME(StringLiteral);
+    });
+  });
+
+  private implicitRelationship = this.RULE("implicitRelationship", () => {
+    this.CONSUME(RelatedTo);
+    this.CONSUME1(Identifier);
+    this.MANY(() => {
+      this.CONSUME(StringLiteral);
+    });
+  });
+
   private viewsSection = this.RULE("viewsSection", () => {
     this.CONSUME(Views);
     this.SUBRULE(this.viewsChildSection);
@@ -145,7 +170,74 @@ class structurizrParser extends CstParser {
 
   private viewsChildSection = this.RULE("viewsChildSection", () => {
     this.CONSUME1(LBrace);
+    this.MANY(() => {
+      this.OR([
+        {ALT: () => {this.SUBRULE(this.systemLandscapeView)}},
+        {ALT: () => {this.SUBRULE(this.systemContextView)}},
+        {ALT: () => {this.SUBRULE(this.containerView)}},
+        {ALT: () => {this.SUBRULE(this.componentView)}}
+      ]);
+    });
     this.CONSUME1(RBrace);
+  });
+
+  private systemLandscapeView = this.RULE("systemLandscapeView", () => {
+    this.CONSUME(SystemLandscape);
+    this.MANY(() => {
+      this.CONSUME(StringLiteral);
+    });
+    this.SUBRULE(this.systemLandscapeViewOptions);
+  });
+
+  private systemLandscapeViewOptions = this.RULE("systemLandscapeViewOptions", () => {
+    this.CONSUME(LBrace);
+    this.MANY(() => {
+      this.OR([
+        {ALT: () => {this.SUBRULE(this.includeOptions)}},
+        {ALT: () => {this.SUBRULE(this.autoLayoutOptions)}}
+      ])
+    });
+    this.CONSUME(RBrace);
+  });
+
+  private includeOptions = this.RULE("includeOptions", () => {
+    this.CONSUME(Include);
+    this.OR([
+      {ALT: () => {this.CONSUME(Wildcard)}},
+      {ALT: () => {this.CONSUME(Identifier)}}
+    ]);
+  });
+
+  private autoLayoutOptions = this.RULE("autoLayoutOptions", () => {
+    this.CONSUME(AutoLayout);
+    this.OPTION(() => {this.CONSUME(Identifier)});
+    this.OPTION1(() => {this.CONSUME(Int)});
+    this.OPTION2(() => {this.CONSUME1(Int)});
+
+  });
+
+  private systemContextView = this.RULE("systemContextView", () => {
+    this.CONSUME(SystemContext);
+    this.CONSUME(StringLiteral);
+    this.MANY(() => {
+      this.CONSUME2(StringLiteral);
+    });
+  });
+
+  private containerView = this.RULE("containerView", () => {
+    this.CONSUME(Container);
+    this.CONSUME(StringLiteral);
+    this.MANY(() => {
+      this.CONSUME2(StringLiteral);
+    });
+  });
+
+  private componentView = this.RULE("componentView", () => {
+    this.CONSUME(Component);
+    this.CONSUME(StringLiteral);
+    this.MANY(() => {
+      this.CONSUME2(StringLiteral);
+    });
   });
 }
 
