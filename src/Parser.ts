@@ -11,7 +11,7 @@ class structurizrParser extends CstParser {
   }
 
   // Rules go here
-  private workspaceWrapper = this.RULE("workspaceWrapper", () => {
+  public workspaceWrapper = this.RULE("workspaceWrapper", () => {
     this.CONSUME(Workspace);
     this.OPTION1(() => {
       this.CONSUME1(StringLiteral);
@@ -95,7 +95,9 @@ class structurizrParser extends CstParser {
     this.MANY(() => {
         this.CONSUME1(StringLiteral);
     });
-    this.SUBRULE(this.softwareSystemChildSection);
+    this.OPTION1(() => {
+      this.SUBRULE(this.softwareSystemChildSection);
+    });
   });
 
   private softwareSystemChildSection = this.RULE("softwareSystemChildSection", () => {
@@ -218,7 +220,7 @@ class structurizrParser extends CstParser {
 
   private systemContextView = this.RULE("systemContextView", () => {
     this.CONSUME(SystemContext);
-    this.CONSUME(StringLiteral);
+    this.CONSUME(Identifier);
     this.MANY(() => {
       this.CONSUME2(StringLiteral);
     });

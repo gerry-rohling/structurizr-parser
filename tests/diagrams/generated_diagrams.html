@@ -413,9 +413,15 @@
         ]
       },
       {
-        "type": "NonTerminal",
-        "name": "softwareSystemChildSection",
-        "idx": 0
+        "type": "Option",
+        "idx": 1,
+        "definition": [
+          {
+            "type": "NonTerminal",
+            "name": "softwareSystemChildSection",
+            "idx": 0
+          }
+        ]
       }
     ]
   },
@@ -1001,10 +1007,10 @@
       },
       {
         "type": "Terminal",
-        "name": "StringLiteral",
-        "label": "StringLiteral",
+        "name": "identifier",
+        "label": "identifier",
         "idx": 0,
-        "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
+        "pattern": "[a-zA-Z0-9]\\w*"
       },
       {
         "type": "Repetition",
