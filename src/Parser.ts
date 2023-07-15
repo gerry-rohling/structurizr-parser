@@ -1,5 +1,5 @@
 import { CstParser } from "chevrotain";
-import { AutoLayout, Component, Container, Element, Equals, Group, Identifier, Include, Int, LBrace, Model, Person, RBrace, RelatedTo, Relationship, SoftwareSystem, StringLiteral, Styles, SystemContext, SystemLandscape, Value, Views, Wildcard, Workspace, allTokens } from "./Lexer";
+import { AutoLayout, Component, Container, ContainerInstance, DeploymentEnvironment, DeploymentNode, Element, Equals, Group, Identifier, Include, Int, LBrace, Model, Person, RBrace, RelatedTo, Relationship, SoftwareSystem, StringLiteral, Styles, SystemContext, SystemLandscape, Value, Views, Wildcard, Workspace, allTokens } from "./Lexer";
 
 class structurizrParser extends CstParser {
   constructor() {
@@ -43,7 +43,8 @@ class structurizrParser extends CstParser {
             {ALT: () => {this.SUBRULE(this.groupSection)}},
             {ALT: () => {this.SUBRULE(this.personSection)}},
             {ALT: () => {this.SUBRULE(this.softwareSystemSection)}},
-            {ALT: () => {this.SUBRULE(this.explicitRelationship)}}
+            {ALT: () => {this.SUBRULE(this.explicitRelationship)}},
+            {ALT: () => {this.SUBRULE(this.deploymentEnvironmentSection)}}
         ]);
     });
     this.CONSUME1(RBrace);
@@ -122,7 +123,7 @@ class structurizrParser extends CstParser {
     this.MANY(() => {
         this.CONSUME1(StringLiteral);
     });
-    this.SUBRULE(this.containerChildSection);    
+    this.OPTION1(() => this.SUBRULE(this.containerChildSection));    
   });
 
   private containerChildSection = this.RULE("containerChildSection", () => {
@@ -163,6 +164,50 @@ class structurizrParser extends CstParser {
     this.MANY(() => {
       this.CONSUME(StringLiteral);
     });
+  });
+
+  private deploymentEnvironmentSection = this.RULE("deploymentEnvironmentSection", () => {
+    this.OPTION(() => {
+      this.CONSUME(Identifier);
+      this.CONSUME(Equals);
+    });
+    this.CONSUME(DeploymentEnvironment);
+    this.CONSUME(StringLiteral);
+    this.SUBRULE(this.deploymentEnvironmentChildSection);
+  });
+
+  private deploymentEnvironmentChildSection = this.RULE("deploymentEnvironmentChildSection", () => {
+    this.CONSUME(LBrace);
+    this.MANY(() => this.OR([
+      {ALT: () => {this.SUBRULE(this.deploymentNodeSection)}},
+      {ALT: () => {this.SUBRULE(this.containerInstanceSection)}}
+    ]));
+    this.CONSUME(RBrace);
+  });
+
+  private deploymentNodeSection = this.RULE("deploymentNodeSection", () => {
+    this.CONSUME(DeploymentNode);
+    this.CONSUME(StringLiteral);
+    this.MANY(() => this.CONSUME1(StringLiteral));
+    this.OPTION(() => this.SUBRULE(this.deploymentNodeChildSection));
+  });
+
+  private deploymentNodeChildSection = this.RULE("deploymentNodeChildSection", () => {
+    this.CONSUME(LBrace);
+    this.MANY(() => this.OR([
+      {ALT: () => {this.SUBRULE(this.deploymentNodeSection)}},
+      {ALT: () => {this.SUBRULE(this.containerInstanceSection)}}
+    ]));
+    this.CONSUME(RBrace);
+  });
+
+  private containerInstanceSection = this.RULE("containerInstanceSection", () => {
+    this.OPTION(() => {
+      this.CONSUME(Identifier);
+      this.CONSUME(Equals);
+    });
+    this.CONSUME(ContainerInstance);
+    this.CONSUME1(Identifier);
   });
 
   private viewsSection = this.RULE("viewsSection", () => {
@@ -289,4 +334,4 @@ class structurizrParser extends CstParser {
 
 export const StructurizrParser = new structurizrParser();
 export const BaseStructurizrVisitor =
-  StructurizrParser.getBaseCstVisitorConstructorWithDefaults();
+  StructurizrParser.getBaseCstVisitorConstructor();

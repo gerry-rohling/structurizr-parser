@@ -180,6 +180,16 @@
                     "idx": 0
                   }
                 ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "deploymentEnvironmentSection",
+                    "idx": 0
+                  }
+                ]
               }
             ]
           }
@@ -531,9 +541,15 @@
         ]
       },
       {
-        "type": "NonTerminal",
-        "name": "containerChildSection",
-        "idx": 0
+        "type": "Option",
+        "idx": 1,
+        "definition": [
+          {
+            "type": "NonTerminal",
+            "name": "containerChildSection",
+            "idx": 0
+          }
+        ]
       }
     ]
   },
@@ -716,6 +732,244 @@
             "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
           }
         ]
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "deploymentEnvironmentSection",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Option",
+        "idx": 0,
+        "definition": [
+          {
+            "type": "Terminal",
+            "name": "identifier",
+            "label": "identifier",
+            "idx": 0,
+            "pattern": "[a-zA-Z0-9]\\w*"
+          },
+          {
+            "type": "Terminal",
+            "name": "equals",
+            "label": "equals",
+            "idx": 0,
+            "pattern": "="
+          }
+        ]
+      },
+      {
+        "type": "Terminal",
+        "name": "deploymentEnvironment",
+        "label": "deploymentEnvironment",
+        "idx": 0,
+        "pattern": "deploymentenvironment"
+      },
+      {
+        "type": "Terminal",
+        "name": "StringLiteral",
+        "label": "StringLiteral",
+        "idx": 0,
+        "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
+      },
+      {
+        "type": "NonTerminal",
+        "name": "deploymentEnvironmentChildSection",
+        "idx": 0
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "deploymentEnvironmentChildSection",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "lBrace",
+        "label": "{",
+        "idx": 0,
+        "pattern": "\\{"
+      },
+      {
+        "type": "Repetition",
+        "idx": 0,
+        "definition": [
+          {
+            "type": "Alternation",
+            "idx": 0,
+            "definition": [
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "deploymentNodeSection",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "containerInstanceSection",
+                    "idx": 0
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "Terminal",
+        "name": "rBrace",
+        "label": "}",
+        "idx": 0,
+        "pattern": "\\}"
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "deploymentNodeSection",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "deploymentNode",
+        "label": "deploymentNode",
+        "idx": 0,
+        "pattern": "deploymentnode"
+      },
+      {
+        "type": "Terminal",
+        "name": "StringLiteral",
+        "label": "StringLiteral",
+        "idx": 0,
+        "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
+      },
+      {
+        "type": "Repetition",
+        "idx": 0,
+        "definition": [
+          {
+            "type": "Terminal",
+            "name": "StringLiteral",
+            "label": "StringLiteral",
+            "idx": 1,
+            "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
+          }
+        ]
+      },
+      {
+        "type": "Option",
+        "idx": 0,
+        "definition": [
+          {
+            "type": "NonTerminal",
+            "name": "deploymentNodeChildSection",
+            "idx": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "deploymentNodeChildSection",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "lBrace",
+        "label": "{",
+        "idx": 0,
+        "pattern": "\\{"
+      },
+      {
+        "type": "Repetition",
+        "idx": 0,
+        "definition": [
+          {
+            "type": "Alternation",
+            "idx": 0,
+            "definition": [
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "deploymentNodeSection",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "containerInstanceSection",
+                    "idx": 0
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "Terminal",
+        "name": "rBrace",
+        "label": "}",
+        "idx": 0,
+        "pattern": "\\}"
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "containerInstanceSection",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Option",
+        "idx": 0,
+        "definition": [
+          {
+            "type": "Terminal",
+            "name": "identifier",
+            "label": "identifier",
+            "idx": 0,
+            "pattern": "[a-zA-Z0-9]\\w*"
+          },
+          {
+            "type": "Terminal",
+            "name": "equals",
+            "label": "equals",
+            "idx": 0,
+            "pattern": "="
+          }
+        ]
+      },
+      {
+        "type": "Terminal",
+        "name": "containerInstance",
+        "label": "containerInstance",
+        "idx": 0,
+        "pattern": "containerinstance"
+      },
+      {
+        "type": "Terminal",
+        "name": "identifier",
+        "label": "identifier",
+        "idx": 1,
+        "pattern": "[a-zA-Z0-9]\\w*"
       }
     ]
   },

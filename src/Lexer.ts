@@ -10,9 +10,9 @@ const addNewToken = (config: ITokenConfig) => {
 };
 
 /// Comments
-export const BlockComment = createToken({name: "blockComment", pattern: /\/\*[^*]*\*+([^/*][^*]*\*+)*\// });
-export const LineComment = createToken({name: "lineComment", pattern: /\/\/(.*?)\r?\n/ });
-export const HashComment = createToken({name: "hashComment", pattern: /\#(.*?)\r?\n/ });
+export const BlockComment = createToken({name: "blockComment", pattern: /\/\*[^*]*\*+([^/*][^*]*\*+)*\//, group: Lexer.SKIPPED });
+export const LineComment = createToken({name: "lineComment", pattern: /\/\/(.*?)\r?\n/, group: Lexer.SKIPPED });
+export const HashComment = createToken({name: "hashComment", pattern: /\#(.*?)\r?\n/, group: Lexer.SKIPPED });
 
 /// Literals
 export const StringLiteral = createToken({name: "StringLiteral", pattern: /"(?:[^\\"]|\\(?:[bfnrtv"\\/]|u[0-9a-fA-F]{4}))*"/ });
