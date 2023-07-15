@@ -23,6 +23,6 @@ describe('Testing StructurizrParser', () => {
             console.log(StructurizrParser.errors[0].context.ruleStack);
             console.log(StructurizrParser.errors[0].resyncedTokens);
         };
-        expect(StructurizrParser.errors).toBe(0);
+        expect(StructurizrParser.errors.length).toBe(0);
     });
 });

@@ -1,5 +1,5 @@
 import { CstParser } from "chevrotain";
-import { AutoLayout, Component, Container, Equals, Group, Identifier, Include, Int, LBrace, Model, Person, RBrace, RelatedTo, SoftwareSystem, StringLiteral, SystemContext, SystemLandscape, Views, Wildcard, Workspace, allTokens } from "./Lexer";
+import { AutoLayout, Component, Container, Element, Equals, Group, Identifier, Include, Int, LBrace, Model, Person, RBrace, RelatedTo, Relationship, SoftwareSystem, StringLiteral, Styles, SystemContext, SystemLandscape, Value, Views, Wildcard, Workspace, allTokens } from "./Lexer";
 
 class structurizrParser extends CstParser {
   constructor() {
@@ -177,7 +177,8 @@ class structurizrParser extends CstParser {
         {ALT: () => {this.SUBRULE(this.systemLandscapeView)}},
         {ALT: () => {this.SUBRULE(this.systemContextView)}},
         {ALT: () => {this.SUBRULE(this.containerView)}},
-        {ALT: () => {this.SUBRULE(this.componentView)}}
+        {ALT: () => {this.SUBRULE(this.componentView)}},
+        {ALT: () => {this.SUBRULE(this.stylesSection)}}
       ]);
     });
     this.CONSUME1(RBrace);
@@ -188,10 +189,10 @@ class structurizrParser extends CstParser {
     this.MANY(() => {
       this.CONSUME(StringLiteral);
     });
-    this.SUBRULE(this.systemLandscapeViewOptions);
+    this.SUBRULE(this.viewOptions);
   });
 
-  private systemLandscapeViewOptions = this.RULE("systemLandscapeViewOptions", () => {
+  private viewOptions = this.RULE("viewOptions", () => {
     this.CONSUME(LBrace);
     this.MANY(() => {
       this.OR([
@@ -224,6 +225,7 @@ class structurizrParser extends CstParser {
     this.MANY(() => {
       this.CONSUME2(StringLiteral);
     });
+    this.SUBRULE(this.viewOptions);
   });
 
   private containerView = this.RULE("containerView", () => {
@@ -232,6 +234,7 @@ class structurizrParser extends CstParser {
     this.MANY(() => {
       this.CONSUME2(StringLiteral);
     });
+    this.SUBRULE(this.viewOptions);
   });
 
   private componentView = this.RULE("componentView", () => {
@@ -241,6 +244,47 @@ class structurizrParser extends CstParser {
       this.CONSUME2(StringLiteral);
     });
   });
+
+  private stylesSection = this.RULE("stylesSection", () => {
+    this.CONSUME(Styles);
+    this.CONSUME(LBrace);
+    this.MANY(() => {
+      this.OR([
+        {ALT: () => {this.SUBRULE(this.elementStyleSection)}},
+        {ALT: () => {this.SUBRULE(this.relationshipStyleSection)}}
+      ]);
+    });
+    this.CONSUME(RBrace);
+  });
+
+  private elementStyleSection = this.RULE("elementStyleSection", () => {
+    this.CONSUME(Element);
+    this.CONSUME(StringLiteral);
+    this.CONSUME(LBrace);
+    this.MANY(() => {
+      this.SUBRULE(this.styleDefinition);
+    });
+    this.CONSUME(RBrace);
+  });
+
+  private relationshipStyleSection = this.RULE("relationshipStyleSection", () => {
+    this.CONSUME(Relationship);
+    this.CONSUME(Identifier);
+    this.CONSUME(LBrace);
+    this.MANY(() => {
+      this.SUBRULE(this.styleDefinition);
+    });
+    this.CONSUME(RBrace);
+  });
+
+  private styleDefinition = this.RULE("styleDefinition", () => {
+    this.CONSUME(Identifier);
+    this.OR([
+      {ALT: () => {this.CONSUME1(Value)}},
+      {ALT: () => {this.CONSUME1(Person)}},
+      {ALT: () => {this.CONSUME1(Component)}}
+    ]);
+  })
 }
 
 export const StructurizrParser = new structurizrParser();

@@ -66,6 +66,7 @@ export const RelatedTo = createToken({ name: "relatedTo", pattern: /->/ });
 
 /// Values
 export const Value = createToken({ name: "value", pattern: Lexer.NA });
+export const HexColor = createToken({ name: "hexColor", pattern: /#[0-9A-Fa-f]{6}/, categories: Value });
 export const Word = createToken({ name: "word", pattern: /[a-zA-Z][a-zA-Z0-9_]*/, categories: Value });
 export const Float = createToken({ name: "float", pattern: /-?[0-9]+\.[0-9]+/, categories: Value });
 export const Int = createToken({ name: "int", pattern: /-?(?:0|[1-9][0-9]*)/, categories: Value });
@@ -74,18 +75,19 @@ export const Int = createToken({ name: "int", pattern: /-?(?:0|[1-9][0-9]*)/, ca
 export const Wildcard = createToken({name: "wildcard", pattern: /(\*)/ });
 
 /// Furniture
-export const Endline = createToken({ name: "endline", pattern: /\r\n|\r|\n/, line_breaks: true });
+// export const Endline = createToken({ name: "endline", pattern: /\r\n|\r|\n/, line_breaks: true });
 export const LBrace = createToken({ name: "lBrace", pattern: /\{/, label: "{" });
 export const RBrace = createToken({ name: "rBrace", pattern: /\}/, label: "}" });
 
-/// Noise
-export const WhiteSpace = createToken({ name: 'whiteSpace', pattern: /\s+/, group: Lexer.SKIPPED });
+/// Noise - was /\s+/ but now also absorbing line ends
+export const WhiteSpace = createToken({ name: 'whiteSpace', pattern: /[\s\t\n\r]+/, group: Lexer.SKIPPED });
 
 // Build in order of frequency and priority. First encountered is a match. Keywords before identifiers, whitespace at beginning
 export const allTokens = [
     WhiteSpace,
     BlockComment,
     LineComment,
+    HexColor,  
     HashComment,
 
     StringLiteral,
@@ -133,7 +135,7 @@ export const allTokens = [
     RelatedTo,
 
     Identifier,
-    Value,
+    Value,  
     Word,
     Float,
     Int,
@@ -141,8 +143,7 @@ export const allTokens = [
     Wildcard,
 
     LBrace,
-    RBrace,
-    Endline
+    RBrace
 ];
 
 export const StructurizrLexer = new Lexer(allTokens);

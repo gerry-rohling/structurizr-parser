@@ -797,6 +797,16 @@
                     "idx": 0
                   }
                 ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "stylesSection",
+                    "idx": 0
+                  }
+                ]
               }
             ]
           }
@@ -838,14 +848,14 @@
       },
       {
         "type": "NonTerminal",
-        "name": "systemLandscapeViewOptions",
+        "name": "viewOptions",
         "idx": 0
       }
     ]
   },
   {
     "type": "Rule",
-    "name": "systemLandscapeViewOptions",
+    "name": "viewOptions",
     "orgText": "",
     "definition": [
       {
@@ -1024,6 +1034,11 @@
             "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
           }
         ]
+      },
+      {
+        "type": "NonTerminal",
+        "name": "viewOptions",
+        "idx": 0
       }
     ]
   },
@@ -1058,6 +1073,11 @@
             "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
           }
         ]
+      },
+      {
+        "type": "NonTerminal",
+        "name": "viewOptions",
+        "idx": 0
       }
     ]
   },
@@ -1090,6 +1110,214 @@
             "label": "StringLiteral",
             "idx": 2,
             "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "stylesSection",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "styles",
+        "label": "styles",
+        "idx": 0,
+        "pattern": "styles"
+      },
+      {
+        "type": "Terminal",
+        "name": "lBrace",
+        "label": "{",
+        "idx": 0,
+        "pattern": "\\{"
+      },
+      {
+        "type": "Repetition",
+        "idx": 0,
+        "definition": [
+          {
+            "type": "Alternation",
+            "idx": 0,
+            "definition": [
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "elementStyleSection",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "relationshipStyleSection",
+                    "idx": 0
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "Terminal",
+        "name": "rBrace",
+        "label": "}",
+        "idx": 0,
+        "pattern": "\\}"
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "elementStyleSection",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "element",
+        "label": "element",
+        "idx": 0,
+        "pattern": "element"
+      },
+      {
+        "type": "Terminal",
+        "name": "StringLiteral",
+        "label": "StringLiteral",
+        "idx": 0,
+        "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
+      },
+      {
+        "type": "Terminal",
+        "name": "lBrace",
+        "label": "{",
+        "idx": 0,
+        "pattern": "\\{"
+      },
+      {
+        "type": "Repetition",
+        "idx": 0,
+        "definition": [
+          {
+            "type": "NonTerminal",
+            "name": "styleDefinition",
+            "idx": 0
+          }
+        ]
+      },
+      {
+        "type": "Terminal",
+        "name": "rBrace",
+        "label": "}",
+        "idx": 0,
+        "pattern": "\\}"
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "relationshipStyleSection",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "relationship",
+        "label": "relationship",
+        "idx": 0,
+        "pattern": "relationship"
+      },
+      {
+        "type": "Terminal",
+        "name": "identifier",
+        "label": "identifier",
+        "idx": 0,
+        "pattern": "[a-zA-Z0-9]\\w*"
+      },
+      {
+        "type": "Terminal",
+        "name": "lBrace",
+        "label": "{",
+        "idx": 0,
+        "pattern": "\\{"
+      },
+      {
+        "type": "Repetition",
+        "idx": 0,
+        "definition": [
+          {
+            "type": "NonTerminal",
+            "name": "styleDefinition",
+            "idx": 0
+          }
+        ]
+      },
+      {
+        "type": "Terminal",
+        "name": "rBrace",
+        "label": "}",
+        "idx": 0,
+        "pattern": "\\}"
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "styleDefinition",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "identifier",
+        "label": "identifier",
+        "idx": 0,
+        "pattern": "[a-zA-Z0-9]\\w*"
+      },
+      {
+        "type": "Alternation",
+        "idx": 0,
+        "definition": [
+          {
+            "type": "Alternative",
+            "definition": [
+              {
+                "type": "Terminal",
+                "name": "value",
+                "label": "value",
+                "idx": 1,
+                "pattern": "NOT_APPLICABLE"
+              }
+            ]
+          },
+          {
+            "type": "Alternative",
+            "definition": [
+              {
+                "type": "Terminal",
+                "name": "person",
+                "label": "person",
+                "idx": 1,
+                "pattern": "person"
+              }
+            ]
+          },
+          {
+            "type": "Alternative",
+            "definition": [
+              {
+                "type": "Terminal",
+                "name": "component",
+                "label": "component",
+                "idx": 1,
+                "pattern": "component"
+              }
+            ]
           }
         ]
       }
