@@ -1,5 +1,5 @@
 import { CstParser } from "chevrotain";
-import { AutoLayout, Component, Container, ContainerInstance, DeploymentEnvironment, DeploymentNode, Element, Equals, Group, Identifier, Include, Int, LBrace, Model, Person, RBrace, RelatedTo, Relationship, SoftwareSystem, SoftwareSystemInstance, StringLiteral, Styles, SystemContext, SystemLandscape, Value, Views, Wildcard, Workspace, allTokens } from "./Lexer";
+import { Animation, AutoLayout, Component, Container, ContainerInstance, DeploymentEnvironment, DeploymentNode, Description, Element, Equals, Group, Identifier, Include, Int, LBrace, Model, Person, Properties, RBrace, RelatedTo, Relationship, SoftwareSystem, SoftwareSystemInstance, StringLiteral, Styles, SystemContext, SystemLandscape, Value, Views, Wildcard, Workspace, allTokens } from "./Lexer";
 
 class structurizrParser extends CstParser {
   constructor() {
@@ -260,7 +260,10 @@ class structurizrParser extends CstParser {
     this.MANY(() => {
       this.OR([
         {ALT: () => {this.SUBRULE(this.includeOptions)}},
-        {ALT: () => {this.SUBRULE(this.autoLayoutOptions)}}
+        {ALT: () => {this.SUBRULE(this.autoLayoutOptions)}},
+        {ALT: () => {this.SUBRULE(this.animationOptions)}},
+        {ALT: () => {this.SUBRULE(this.descriptionOptions)}},
+        {ALT: () => {this.SUBRULE(this.propertiesOptions)}}
       ])
     });
     this.CONSUME(RBrace);
@@ -282,6 +285,29 @@ class structurizrParser extends CstParser {
 
   });
 
+  private animationOptions = this.RULE("animationOptions", () => {
+    this.CONSUME(Animation);
+    this.CONSUME(LBrace);
+    this.MANY(() => {
+      this.CONSUME(Identifier);
+      this.OPTION(() => this.CONSUME(Value));
+    });
+    this.CONSUME(RBrace);
+  });
+
+  private descriptionOptions = this.RULE("descriptionOptions", () => {
+    this.CONSUME(Description);
+    this.CONSUME(StringLiteral);
+  });
+
+  private propertiesOptions = this.RULE("propertiesOptions", () => {
+    this.CONSUME(Properties);
+    this.MANY(() => {
+      this.CONSUME(Identifier);
+      this.CONSUME(Value);
+    })
+  });
+
   private systemContextView = this.RULE("systemContextView", () => {
     this.CONSUME(SystemContext);
     this.CONSUME(Identifier);
@@ -293,7 +319,7 @@ class structurizrParser extends CstParser {
 
   private containerView = this.RULE("containerView", () => {
     this.CONSUME(Container);
-    this.CONSUME(StringLiteral);
+    this.CONSUME(Identifier);
     this.MANY(() => {
       this.CONSUME2(StringLiteral);
     });
@@ -302,10 +328,11 @@ class structurizrParser extends CstParser {
 
   private componentView = this.RULE("componentView", () => {
     this.CONSUME(Component);
-    this.CONSUME(StringLiteral);
+    this.CONSUME(Identifier);
     this.MANY(() => {
       this.CONSUME2(StringLiteral);
     });
+    this.SUBRULE(this.viewOptions);
   });
 
   private stylesSection = this.RULE("stylesSection", () => {

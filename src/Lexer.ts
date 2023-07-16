@@ -49,6 +49,7 @@ export const Filtered = createToken({name: "filtered", pattern: /filtered/i, lon
 export const Dynamic = createToken({name: "dynamic", pattern: /dynamic/i, longer_alt: Identifier  });
 export const Deployment = createToken({name: "deployment", pattern: /deployment/i, longer_alt: Identifier });
 export const Custom = createToken({name: "custom", pattern: /custom/i, longer_alt: Identifier });
+export const Animation = createToken({name: "animation", pattern: /animation/i, longer_alt: Identifier});
 export const Styles = createToken({name: "styles", pattern: /styles/i, longer_alt: Identifier });
 export const Relationship = createToken({name: "relationship", pattern: /relationship/i, longer_alt: Identifier });
 export const Themes = createToken({name: "themes", pattern: /themes/i, longer_alt: Identifier });
@@ -59,6 +60,8 @@ export const Configuration = createToken({name: "configuration", pattern: /confi
 export const Users = createToken({name: "users", pattern: /users/i, longer_alt: Identifier  });
 export const Include = createToken({name: "include", pattern: /include/i, longer_alt: Identifier});
 export const AutoLayout = createToken({name: "autoLayout", pattern: /autoLayout/i, longer_alt: Identifier});
+export const Description = createToken({name: "description", pattern: /description/i, longer_alt: Identifier});
+export const Properties = createToken({name: "properties", pattern: /properties/i, longer_alt: Identifier});
 
 /// Relationships
 export const Equals = createToken({ name: "equals", pattern: /=/ });
@@ -120,6 +123,7 @@ export const allTokens = [
     Dynamic,
     Deployment,
     Custom,
+    Animation,
     Styles,
     Relationship,
     Themes,
@@ -130,6 +134,8 @@ export const allTokens = [
     Users,
     Include,
     AutoLayout,
+    Description,
+    Properties,
 
     Equals,
     RelatedTo,
