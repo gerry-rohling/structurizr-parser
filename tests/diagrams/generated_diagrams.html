@@ -218,7 +218,7 @@
             "name": "identifier",
             "label": "identifier",
             "idx": 0,
-            "pattern": "[a-zA-Z0-9]\\w*"
+            "pattern": "[a-zA-z][a-zA-z]*\\_?[0-9]*"
           },
           {
             "type": "Terminal",
@@ -317,7 +317,7 @@
             "name": "identifier",
             "label": "identifier",
             "idx": 0,
-            "pattern": "[a-zA-Z0-9]\\w*"
+            "pattern": "[a-zA-z][a-zA-z]*\\_?[0-9]*"
           },
           {
             "type": "Terminal",
@@ -384,7 +384,7 @@
             "name": "identifier",
             "label": "identifier",
             "idx": 0,
-            "pattern": "[a-zA-Z0-9]\\w*"
+            "pattern": "[a-zA-z][a-zA-z]*\\_?[0-9]*"
           },
           {
             "type": "Terminal",
@@ -502,7 +502,7 @@
             "name": "identifier",
             "label": "identifier",
             "idx": 0,
-            "pattern": "[a-zA-Z0-9]\\w*"
+            "pattern": "[a-zA-z][a-zA-z]*\\_?[0-9]*"
           },
           {
             "type": "Terminal",
@@ -620,7 +620,7 @@
             "name": "identifier",
             "label": "identifier",
             "idx": 0,
-            "pattern": "[a-zA-Z0-9]\\w*"
+            "pattern": "[a-zA-z][a-zA-z]*\\_?[0-9]*"
           },
           {
             "type": "Terminal",
@@ -670,7 +670,7 @@
         "name": "identifier",
         "label": "identifier",
         "idx": 0,
-        "pattern": "[a-zA-Z0-9]\\w*"
+        "pattern": "[a-zA-z][a-zA-z]*\\_?[0-9]*"
       },
       {
         "type": "Terminal",
@@ -684,7 +684,7 @@
         "name": "identifier",
         "label": "identifier",
         "idx": 1,
-        "pattern": "[a-zA-Z0-9]\\w*"
+        "pattern": "[a-zA-z][a-zA-z]*\\_?[0-9]*"
       },
       {
         "type": "Repetition",
@@ -718,7 +718,7 @@
         "name": "identifier",
         "label": "identifier",
         "idx": 1,
-        "pattern": "[a-zA-Z0-9]\\w*"
+        "pattern": "[a-zA-z][a-zA-z]*\\_?[0-9]*"
       },
       {
         "type": "Repetition",
@@ -749,7 +749,7 @@
             "name": "identifier",
             "label": "identifier",
             "idx": 0,
-            "pattern": "[a-zA-Z0-9]\\w*"
+            "pattern": "[a-zA-z][a-zA-z]*\\_?[0-9]*"
           },
           {
             "type": "Terminal",
@@ -820,6 +820,16 @@
                     "idx": 0
                   }
                 ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "explicitRelationship",
+                    "idx": 0
+                  }
+                ]
               }
             ]
           }
@@ -840,6 +850,26 @@
     "orgText": "",
     "definition": [
       {
+        "type": "Option",
+        "idx": 0,
+        "definition": [
+          {
+            "type": "Terminal",
+            "name": "identifier",
+            "label": "identifier",
+            "idx": 0,
+            "pattern": "[a-zA-z][a-zA-z]*\\_?[0-9]*"
+          },
+          {
+            "type": "Terminal",
+            "name": "equals",
+            "label": "equals",
+            "idx": 0,
+            "pattern": "="
+          }
+        ]
+      },
+      {
         "type": "Terminal",
         "name": "deploymentNode",
         "label": "deploymentNode",
@@ -854,8 +884,8 @@
         "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
       },
       {
-        "type": "Repetition",
-        "idx": 0,
+        "type": "Option",
+        "idx": 1,
         "definition": [
           {
             "type": "Terminal",
@@ -868,7 +898,46 @@
       },
       {
         "type": "Option",
-        "idx": 0,
+        "idx": 2,
+        "definition": [
+          {
+            "type": "Terminal",
+            "name": "StringLiteral",
+            "label": "StringLiteral",
+            "idx": 2,
+            "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
+          }
+        ]
+      },
+      {
+        "type": "Option",
+        "idx": 3,
+        "definition": [
+          {
+            "type": "Terminal",
+            "name": "StringLiteral",
+            "label": "StringLiteral",
+            "idx": 3,
+            "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
+          }
+        ]
+      },
+      {
+        "type": "Option",
+        "idx": 4,
+        "definition": [
+          {
+            "type": "Terminal",
+            "name": "int",
+            "label": "int",
+            "idx": 4,
+            "pattern": "-?(?:0|[1-9][0-9]*)"
+          }
+        ]
+      },
+      {
+        "type": "Option",
+        "idx": 5,
         "definition": [
           {
             "type": "NonTerminal",
@@ -918,6 +987,16 @@
                     "idx": 0
                   }
                 ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "softwareSystemInstanceSection",
+                    "idx": 0
+                  }
+                ]
               }
             ]
           }
@@ -946,7 +1025,7 @@
             "name": "identifier",
             "label": "identifier",
             "idx": 0,
-            "pattern": "[a-zA-Z0-9]\\w*"
+            "pattern": "[a-zA-z][a-zA-z]*\\_?[0-9]*"
           },
           {
             "type": "Terminal",
@@ -969,7 +1048,54 @@
         "name": "identifier",
         "label": "identifier",
         "idx": 1,
-        "pattern": "[a-zA-Z0-9]\\w*"
+        "pattern": "[a-zA-z][a-zA-z]*\\_?[0-9]*"
+      },
+      {
+        "type": "Repetition",
+        "idx": 0,
+        "definition": [
+          {
+            "type": "Terminal",
+            "name": "StringLiteral",
+            "label": "StringLiteral",
+            "idx": 0,
+            "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "softwareSystemInstanceSection",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "softwareSystemInstance",
+        "label": "softwareSystemInstance",
+        "idx": 0,
+        "pattern": "softwaresysteminstance"
+      },
+      {
+        "type": "Terminal",
+        "name": "identifier",
+        "label": "identifier",
+        "idx": 0,
+        "pattern": "[a-zA-z][a-zA-z]*\\_?[0-9]*"
+      },
+      {
+        "type": "Repetition",
+        "idx": 0,
+        "definition": [
+          {
+            "type": "Terminal",
+            "name": "StringLiteral",
+            "label": "StringLiteral",
+            "idx": 0,
+            "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
+          }
+        ]
       }
     ]
   },
@@ -1196,7 +1322,7 @@
                 "name": "identifier",
                 "label": "identifier",
                 "idx": 0,
-                "pattern": "[a-zA-Z0-9]\\w*"
+                "pattern": "[a-zA-z][a-zA-z]*\\_?[0-9]*"
               }
             ]
           }
@@ -1225,7 +1351,7 @@
             "name": "identifier",
             "label": "identifier",
             "idx": 0,
-            "pattern": "[a-zA-Z0-9]\\w*"
+            "pattern": "[a-zA-z][a-zA-z]*\\_?[0-9]*"
           }
         ]
       },
@@ -1274,7 +1400,7 @@
         "name": "identifier",
         "label": "identifier",
         "idx": 0,
-        "pattern": "[a-zA-Z0-9]\\w*"
+        "pattern": "[a-zA-z][a-zA-z]*\\_?[0-9]*"
       },
       {
         "type": "Repetition",
@@ -1492,7 +1618,7 @@
         "name": "identifier",
         "label": "identifier",
         "idx": 0,
-        "pattern": "[a-zA-Z0-9]\\w*"
+        "pattern": "[a-zA-z][a-zA-z]*\\_?[0-9]*"
       },
       {
         "type": "Terminal",
@@ -1531,7 +1657,7 @@
         "name": "identifier",
         "label": "identifier",
         "idx": 0,
-        "pattern": "[a-zA-Z0-9]\\w*"
+        "pattern": "[a-zA-z][a-zA-z]*\\_?[0-9]*"
       },
       {
         "type": "Alternation",

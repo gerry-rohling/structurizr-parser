@@ -1,5 +1,5 @@
 import { CstParser } from "chevrotain";
-import { AutoLayout, Component, Container, ContainerInstance, DeploymentEnvironment, DeploymentNode, Element, Equals, Group, Identifier, Include, Int, LBrace, Model, Person, RBrace, RelatedTo, Relationship, SoftwareSystem, StringLiteral, Styles, SystemContext, SystemLandscape, Value, Views, Wildcard, Workspace, allTokens } from "./Lexer";
+import { AutoLayout, Component, Container, ContainerInstance, DeploymentEnvironment, DeploymentNode, Element, Equals, Group, Identifier, Include, Int, LBrace, Model, Person, RBrace, RelatedTo, Relationship, SoftwareSystem, SoftwareSystemInstance, StringLiteral, Styles, SystemContext, SystemLandscape, Value, Views, Wildcard, Workspace, allTokens } from "./Lexer";
 
 class structurizrParser extends CstParser {
   constructor() {
@@ -180,23 +180,32 @@ class structurizrParser extends CstParser {
     this.CONSUME(LBrace);
     this.MANY(() => this.OR([
       {ALT: () => {this.SUBRULE(this.deploymentNodeSection)}},
-      {ALT: () => {this.SUBRULE(this.containerInstanceSection)}}
+      {ALT: () => {this.SUBRULE(this.containerInstanceSection)}},
+      {ALT: () => {this.SUBRULE(this.explicitRelationship)}}
     ]));
     this.CONSUME(RBrace);
   });
 
   private deploymentNodeSection = this.RULE("deploymentNodeSection", () => {
+    this.OPTION(() => {
+      this.CONSUME(Identifier);
+      this.CONSUME(Equals);
+    });
     this.CONSUME(DeploymentNode);
     this.CONSUME(StringLiteral);
-    this.MANY(() => this.CONSUME1(StringLiteral));
-    this.OPTION(() => this.SUBRULE(this.deploymentNodeChildSection));
+    this.OPTION1(() => this.CONSUME1(StringLiteral));
+    this.OPTION2(() => this.CONSUME2(StringLiteral));
+    this.OPTION3(() => this.CONSUME3(StringLiteral));
+    this.OPTION4(() => this.CONSUME4(Int));
+    this.OPTION5(() => this.SUBRULE(this.deploymentNodeChildSection));
   });
 
   private deploymentNodeChildSection = this.RULE("deploymentNodeChildSection", () => {
     this.CONSUME(LBrace);
     this.MANY(() => this.OR([
       {ALT: () => {this.SUBRULE(this.deploymentNodeSection)}},
-      {ALT: () => {this.SUBRULE(this.containerInstanceSection)}}
+      {ALT: () => {this.SUBRULE(this.containerInstanceSection)}},
+      {ALT: () => {this.SUBRULE(this.softwareSystemInstanceSection)}}
     ]));
     this.CONSUME(RBrace);
   });
@@ -208,6 +217,15 @@ class structurizrParser extends CstParser {
     });
     this.CONSUME(ContainerInstance);
     this.CONSUME1(Identifier);
+    this.MANY(() => {
+      this.CONSUME(StringLiteral);
+    });
+  });
+
+  private softwareSystemInstanceSection = this.RULE("softwareSystemInstanceSection", () => {
+    this.CONSUME(SoftwareSystemInstance);
+    this.CONSUME(Identifier);
+    this.MANY(() => {this.CONSUME(StringLiteral)});
   });
 
   private viewsSection = this.RULE("viewsSection", () => {

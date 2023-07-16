@@ -17,8 +17,8 @@ export const HashComment = createToken({name: "hashComment", pattern: /\#(.*?)\r
 /// Literals
 export const StringLiteral = createToken({name: "StringLiteral", pattern: /"(?:[^\\"]|\\(?:[bfnrtv"\\/]|u[0-9a-fA-F]{4}))*"/ });
 
-/// Identifiers
-export const Identifier = createToken({ name: 'identifier', pattern: /[a-zA-Z0-9]\w*/ });
+/// Identifiers was /[a-zA-Z_0-9]\w*/
+export const Identifier = createToken({ name: 'identifier', pattern: /[a-zA-z][a-zA-z]*\_?[0-9]*/ });
 
 /// Keywords
 export const BangInclude = createToken({name: "bangInclude", pattern: /!include/i });
