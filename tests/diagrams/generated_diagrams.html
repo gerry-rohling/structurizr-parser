@@ -218,7 +218,7 @@
             "name": "identifier",
             "label": "identifier",
             "idx": 0,
-            "pattern": "[a-zA-z][a-zA-z]*\\_?[0-9]*"
+            "pattern": "[a-zA-z][a-zA-z.]*\\_?[0-9]*"
           },
           {
             "type": "Terminal",
@@ -317,7 +317,7 @@
             "name": "identifier",
             "label": "identifier",
             "idx": 0,
-            "pattern": "[a-zA-z][a-zA-z]*\\_?[0-9]*"
+            "pattern": "[a-zA-z][a-zA-z.]*\\_?[0-9]*"
           },
           {
             "type": "Terminal",
@@ -384,7 +384,7 @@
             "name": "identifier",
             "label": "identifier",
             "idx": 0,
-            "pattern": "[a-zA-z][a-zA-z]*\\_?[0-9]*"
+            "pattern": "[a-zA-z][a-zA-z.]*\\_?[0-9]*"
           },
           {
             "type": "Terminal",
@@ -502,7 +502,7 @@
             "name": "identifier",
             "label": "identifier",
             "idx": 0,
-            "pattern": "[a-zA-z][a-zA-z]*\\_?[0-9]*"
+            "pattern": "[a-zA-z][a-zA-z.]*\\_?[0-9]*"
           },
           {
             "type": "Terminal",
@@ -620,7 +620,7 @@
             "name": "identifier",
             "label": "identifier",
             "idx": 0,
-            "pattern": "[a-zA-z][a-zA-z]*\\_?[0-9]*"
+            "pattern": "[a-zA-z][a-zA-z.]*\\_?[0-9]*"
           },
           {
             "type": "Terminal",
@@ -670,7 +670,7 @@
         "name": "identifier",
         "label": "identifier",
         "idx": 0,
-        "pattern": "[a-zA-z][a-zA-z]*\\_?[0-9]*"
+        "pattern": "[a-zA-z][a-zA-z.]*\\_?[0-9]*"
       },
       {
         "type": "Terminal",
@@ -684,7 +684,7 @@
         "name": "identifier",
         "label": "identifier",
         "idx": 1,
-        "pattern": "[a-zA-z][a-zA-z]*\\_?[0-9]*"
+        "pattern": "[a-zA-z][a-zA-z.]*\\_?[0-9]*"
       },
       {
         "type": "Repetition",
@@ -718,7 +718,7 @@
         "name": "identifier",
         "label": "identifier",
         "idx": 1,
-        "pattern": "[a-zA-z][a-zA-z]*\\_?[0-9]*"
+        "pattern": "[a-zA-z][a-zA-z.]*\\_?[0-9]*"
       },
       {
         "type": "Repetition",
@@ -749,7 +749,7 @@
             "name": "identifier",
             "label": "identifier",
             "idx": 0,
-            "pattern": "[a-zA-z][a-zA-z]*\\_?[0-9]*"
+            "pattern": "[a-zA-z][a-zA-z.]*\\_?[0-9]*"
           },
           {
             "type": "Terminal",
@@ -858,7 +858,7 @@
             "name": "identifier",
             "label": "identifier",
             "idx": 0,
-            "pattern": "[a-zA-z][a-zA-z]*\\_?[0-9]*"
+            "pattern": "[a-zA-z][a-zA-z.]*\\_?[0-9]*"
           },
           {
             "type": "Terminal",
@@ -1025,7 +1025,7 @@
             "name": "identifier",
             "label": "identifier",
             "idx": 0,
-            "pattern": "[a-zA-z][a-zA-z]*\\_?[0-9]*"
+            "pattern": "[a-zA-z][a-zA-z.]*\\_?[0-9]*"
           },
           {
             "type": "Terminal",
@@ -1048,7 +1048,7 @@
         "name": "identifier",
         "label": "identifier",
         "idx": 1,
-        "pattern": "[a-zA-z][a-zA-z]*\\_?[0-9]*"
+        "pattern": "[a-zA-z][a-zA-z.]*\\_?[0-9]*"
       },
       {
         "type": "Repetition",
@@ -1082,7 +1082,7 @@
         "name": "identifier",
         "label": "identifier",
         "idx": 0,
-        "pattern": "[a-zA-z][a-zA-z]*\\_?[0-9]*"
+        "pattern": "[a-zA-z][a-zA-z.]*\\_?[0-9]*"
       },
       {
         "type": "Repetition",
@@ -1352,7 +1352,7 @@
                 "name": "identifier",
                 "label": "identifier",
                 "idx": 0,
-                "pattern": "[a-zA-z][a-zA-z]*\\_?[0-9]*"
+                "pattern": "[a-zA-z][a-zA-z.]*\\_?[0-9]*"
               }
             ]
           }
@@ -1381,7 +1381,7 @@
             "name": "identifier",
             "label": "identifier",
             "idx": 0,
-            "pattern": "[a-zA-z][a-zA-z]*\\_?[0-9]*"
+            "pattern": "[a-zA-z][a-zA-z.]*\\_?[0-9]*"
           }
         ]
       },
@@ -1441,7 +1441,7 @@
             "name": "identifier",
             "label": "identifier",
             "idx": 0,
-            "pattern": "[a-zA-z][a-zA-z]*\\_?[0-9]*"
+            "pattern": "[a-zA-z][a-zA-z.]*\\_?[0-9]*"
           },
           {
             "type": "Option",
@@ -1501,6 +1501,13 @@
         "pattern": "properties"
       },
       {
+        "type": "Terminal",
+        "name": "lBrace",
+        "label": "{",
+        "idx": 0,
+        "pattern": "\\{"
+      },
+      {
         "type": "Repetition",
         "idx": 0,
         "definition": [
@@ -1509,7 +1516,7 @@
             "name": "identifier",
             "label": "identifier",
             "idx": 0,
-            "pattern": "[a-zA-z][a-zA-z]*\\_?[0-9]*"
+            "pattern": "[a-zA-z][a-zA-z.]*\\_?[0-9]*"
           },
           {
             "type": "Terminal",
@@ -1519,6 +1526,13 @@
             "pattern": "NOT_APPLICABLE"
           }
         ]
+      },
+      {
+        "type": "Terminal",
+        "name": "rBrace",
+        "label": "}",
+        "idx": 0,
+        "pattern": "\\}"
       }
     ]
   },
@@ -1539,7 +1553,7 @@
         "name": "identifier",
         "label": "identifier",
         "idx": 0,
-        "pattern": "[a-zA-z][a-zA-z]*\\_?[0-9]*"
+        "pattern": "[a-zA-z][a-zA-z.]*\\_?[0-9]*"
       },
       {
         "type": "Repetition",
@@ -1578,7 +1592,7 @@
         "name": "identifier",
         "label": "identifier",
         "idx": 0,
-        "pattern": "[a-zA-z][a-zA-z]*\\_?[0-9]*"
+        "pattern": "[a-zA-z][a-zA-z.]*\\_?[0-9]*"
       },
       {
         "type": "Repetition",
@@ -1617,7 +1631,7 @@
         "name": "identifier",
         "label": "identifier",
         "idx": 0,
-        "pattern": "[a-zA-z][a-zA-z]*\\_?[0-9]*"
+        "pattern": "[a-zA-z][a-zA-z.]*\\_?[0-9]*"
       },
       {
         "type": "Repetition",
@@ -1762,7 +1776,7 @@
         "name": "identifier",
         "label": "identifier",
         "idx": 0,
-        "pattern": "[a-zA-z][a-zA-z]*\\_?[0-9]*"
+        "pattern": "[a-zA-z][a-zA-z.]*\\_?[0-9]*"
       },
       {
         "type": "Terminal",
@@ -1801,7 +1815,7 @@
         "name": "identifier",
         "label": "identifier",
         "idx": 0,
-        "pattern": "[a-zA-z][a-zA-z]*\\_?[0-9]*"
+        "pattern": "[a-zA-z][a-zA-z.]*\\_?[0-9]*"
       },
       {
         "type": "Alternation",

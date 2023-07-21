@@ -14,11 +14,14 @@ export const BlockComment = createToken({name: "blockComment", pattern: /\/\*[^*
 export const LineComment = createToken({name: "lineComment", pattern: /\/\/(.*?)\r?\n/, group: Lexer.SKIPPED });
 export const HashComment = createToken({name: "hashComment", pattern: /\#(.*?)\r?\n/, group: Lexer.SKIPPED });
 
+/// URL
+export const Url = createToken({name: "url", pattern: /(https?:\/\/[^ ]*)/i});
+
 /// Literals
 export const StringLiteral = createToken({name: "StringLiteral", pattern: /"(?:[^\\"]|\\(?:[bfnrtv"\\/]|u[0-9a-fA-F]{4}))*"/ });
 
 /// Identifiers was /[a-zA-Z_0-9]\w*/
-export const Identifier = createToken({ name: 'identifier', pattern: /[a-zA-z][a-zA-z]*\_?[0-9]*/ });
+export const Identifier = createToken({ name: 'identifier', pattern: /[a-zA-z][a-zA-z.]*\_?[0-9]*/ });
 
 /// Keywords
 export const BangInclude = createToken({name: "bangInclude", pattern: /!include/i });
@@ -49,6 +52,7 @@ export const Filtered = createToken({name: "filtered", pattern: /filtered/i, lon
 export const Dynamic = createToken({name: "dynamic", pattern: /dynamic/i, longer_alt: Identifier  });
 export const Deployment = createToken({name: "deployment", pattern: /deployment/i, longer_alt: Identifier });
 export const Custom = createToken({name: "custom", pattern: /custom/i, longer_alt: Identifier });
+export const Image = createToken({name: "image", pattern: /image/i, longer_alt: Identifier});
 export const Animation = createToken({name: "animation", pattern: /animation/i, longer_alt: Identifier});
 export const Styles = createToken({name: "styles", pattern: /styles/i, longer_alt: Identifier });
 export const Relationship = createToken({name: "relationship", pattern: /relationship/i, longer_alt: Identifier });
@@ -69,10 +73,12 @@ export const RelatedTo = createToken({ name: "relatedTo", pattern: /->/ });
 
 /// Values
 export const Value = createToken({ name: "value", pattern: Lexer.NA });
+export const Bool = createToken({name: "bool", pattern: /(true|false)/i, categories: Value});
 export const HexColor = createToken({ name: "hexColor", pattern: /#[0-9A-Fa-f]{6}/, categories: Value });
-export const Word = createToken({ name: "word", pattern: /[a-zA-Z][a-zA-Z0-9_]*/, categories: Value });
+export const Word = createToken({ name: "word", pattern: /[a-zA-Z][a-zA-Z0-9_]*/, categories: Value, longer_alt: Identifier });
 export const Float = createToken({ name: "float", pattern: /-?[0-9]+\.[0-9]+/, categories: Value });
 export const Int = createToken({ name: "int", pattern: /-?(?:0|[1-9][0-9]*)/, categories: Value });
+
 
 /// Wildcards
 export const Wildcard = createToken({name: "wildcard", pattern: /(\*)/ });
@@ -90,6 +96,7 @@ export const allTokens = [
     WhiteSpace,
     BlockComment,
     LineComment,
+    Url,
     HexColor,  
     HashComment,
 
@@ -123,6 +130,7 @@ export const allTokens = [
     Dynamic,
     Deployment,
     Custom,
+    Image,
     Animation,
     Styles,
     Relationship,
@@ -140,11 +148,13 @@ export const allTokens = [
     Equals,
     RelatedTo,
 
-    Identifier,
     Value,  
+    Bool,    
     Word,
     Float,
     Int,
+
+    Identifier,
 
     Wildcard,
 

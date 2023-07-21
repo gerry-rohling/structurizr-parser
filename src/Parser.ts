@@ -302,10 +302,12 @@ class structurizrParser extends CstParser {
 
   private propertiesOptions = this.RULE("propertiesOptions", () => {
     this.CONSUME(Properties);
+    this.CONSUME(LBrace);
     this.MANY(() => {
       this.CONSUME(Identifier);
       this.CONSUME(Value);
-    })
+    });
+    this.CONSUME(RBrace);
   });
 
   private systemContextView = this.RULE("systemContextView", () => {
