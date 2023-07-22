@@ -13,13 +13,13 @@ export class LexerVisualizer {
         let currentLine = 0;
         if (lexingResult.tokens.length > 0) {
             currentLine = lexingResult.tokens[0].startLine ?? 0;
-            tokens += this.lineStart();
+            tokens += this.lineStart(currentLine);
         };
         for (let token of lexingResult.tokens) {
             if (token.startLine != currentLine) {
                 currentLine = token.startLine ?? currentLine + 1;
                 tokens += this.lineEnd();
-                tokens += this.lineStart();
+                tokens += this.lineStart(currentLine);
             }
             tokens += this.makeLozenge(token);
         };
@@ -37,8 +37,9 @@ export class LexerVisualizer {
         return `</body></html>`;
     }
 
-    lineStart() : string {
-        return `<div class="flex flex-row flex-nowrap space-x-1 mb-1">`;
+    lineStart(line: number) : string {
+        const zeroPad = (num: number, places: number) => String(num).padStart(places, '0');
+        return `<div class="flex flex-row flex-nowrap space-x-1 mb-1"><div class="border-solid border-2 border-rose-600 p-1">${zeroPad(line,5)}</div>`;
     }
 
     lineEnd() : string {
