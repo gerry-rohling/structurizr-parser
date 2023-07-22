@@ -72,6 +72,8 @@ export const Background = createToken({name: "background", pattern: /background/
 export const Color = createToken({name: "color", pattern: /color/i, longer_alt: Identifier});
 export const Colour = createToken({name: "colour", pattern: /colour/i, longer_alt: Identifier});
 export const ShapeEnum = createToken({name: "shapeEnum", pattern: /Box|RoundedBox|Circle|Ellipse|Hexagon|Cylinder|Pipe|Person|Robot|Folder|WebBrowser|MobileDevicePortrait|MobileDeviceLandscape|Component/i, longer_alt:Identifier});
+export const FontSize = createToken({name: "fontSize", pattern: /fontsize/i, longer_alt: Identifier});
+export const Opacity = createToken({name:"opacity", pattern: /opacity/i, longer_alt: Identifier});
 
 /// Relationships
 export const Equals = createToken({ name: "equals", pattern: /=/ });
@@ -156,6 +158,8 @@ export const allTokens = [
     Color,
     Colour,
     ShapeEnum,
+    FontSize,
+    Opacity,
 
     Equals,
     RelatedTo,

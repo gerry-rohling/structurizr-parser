@@ -1,5 +1,5 @@
 import { CstParser } from "chevrotain";
-import { Animation, AutoLayout, Background, Color, Colour, Component, Container, ContainerInstance, DeploymentEnvironment, DeploymentNode, Description, Element, Equals, Group, HexColor, Identifier, Image, Include, Int, LBrace, Model, Person, Properties, RBrace, RelatedTo, Relationship, Shape, ShapeEnum, SoftwareSystem, SoftwareSystemInstance, StringLiteral, Styles, SystemContext, SystemLandscape, Title, Url, Value, Views, Wildcard, Word, Workspace, allTokens } from "./Lexer";
+import { Animation, AutoLayout, Background, Color, Colour, Component, Container, ContainerInstance, Deployment, DeploymentEnvironment, DeploymentNode, Description, Dynamic, Element, Equals, FontSize, Group, HexColor, Identifier, Image, Include, Int, LBrace, Model, Opacity, Person, Properties, RBrace, RelatedTo, Relationship, Shape, ShapeEnum, SoftwareSystem, SoftwareSystemInstance, StringLiteral, Styles, SystemContext, SystemLandscape, Title, Url, Value, Views, Wildcard, Word, Workspace, allTokens } from "./Lexer";
 
 class structurizrParser extends CstParser {
   constructor() {
@@ -242,7 +242,9 @@ class structurizrParser extends CstParser {
         {ALT: () => {this.SUBRULE(this.containerView)}},
         {ALT: () => {this.SUBRULE(this.componentView)}},
         {ALT: () => {this.SUBRULE(this.imageSection)}},
-        {ALT: () => {this.SUBRULE(this.stylesSection)}}
+        {ALT: () => {this.SUBRULE(this.stylesSection)}},
+        {ALT: () => {this.SUBRULE(this.dynamicSection)}},
+        {ALT: () => {this.SUBRULE(this.deploymentSection)}}
       ]);
     });
     this.CONSUME1(RBrace);
@@ -359,6 +361,40 @@ class structurizrParser extends CstParser {
     this.CONSUME(RBrace);
   });
 
+  private dynamicSection = this.RULE("dynamicSection", () => {
+    this.CONSUME(Dynamic);
+    this.CONSUME(Identifier);
+    this.OPTION(() => this.CONSUME(StringLiteral));
+    this.OPTION1(() => this.CONSUME1(StringLiteral));
+    this.CONSUME(LBrace);
+    this.MANY(() => {
+      this.OR([
+        {ALT: () => this.SUBRULE(this.explicitRelationship)},
+        {ALT: () => this.SUBRULE(this.autoLayoutOptions)},
+        {ALT: () => {this.CONSUME(Description); this.CONSUME3(StringLiteral)}}
+      ]);
+    });
+    this.CONSUME(RBrace);
+  });
+
+  private deploymentSection = this.RULE("deploymentSection", () => {
+    this.CONSUME(Deployment);
+    this.CONSUME(Identifier);
+    this.CONSUME(StringLiteral);
+    this.OPTION(() => this.CONSUME1(StringLiteral));
+    this.OPTION1(() => this.CONSUME2(StringLiteral));
+    this.CONSUME(LBrace);
+    this.MANY(() => {
+      this.OR([
+        {ALT: () => {this.SUBRULE(this.includeOptions)}},
+        {ALT: () => {this.SUBRULE(this.animationOptions)}},
+        {ALT: () => {this.SUBRULE(this.autoLayoutOptions)}},
+        {ALT: () => {this.CONSUME(Description); this.CONSUME3(StringLiteral)}}
+      ]);
+    })
+    this.CONSUME(RBrace);
+  });
+
   private stylesSection = this.RULE("stylesSection", () => {
     this.CONSUME(Styles);
     this.CONSUME(LBrace);
@@ -380,7 +416,9 @@ class structurizrParser extends CstParser {
         {ALT: () => {this.SUBRULE(this.shapeStyle)}},
         {ALT: () => {this.SUBRULE(this.backgroundStyle)}},
         {ALT: () => {this.SUBRULE(this.colorStyle)}},
-        {ALT: () => {this.SUBRULE(this.colourStyle)}}
+        {ALT: () => {this.SUBRULE(this.colourStyle)}},
+        {ALT: () => {this.SUBRULE(this.fontStyle)}},
+        {ALT: () => {this.SUBRULE(this.opacityStyle)}}
       ]);
     });
     this.CONSUME(RBrace);
@@ -422,6 +460,16 @@ class structurizrParser extends CstParser {
   private colourStyle = this.RULE("colourStyle", () => {
     this.CONSUME(Colour);
     this.CONSUME(HexColor);
+  });
+
+  private fontStyle = this.RULE("fontStyle", () => {
+    this.CONSUME(FontSize);
+    this.CONSUME(Int);
+  });
+
+  private opacityStyle = this.RULE("opacityStyle", () => {
+    this.CONSUME(Opacity);
+    this.CONSUME(Int);
   });
 }
 

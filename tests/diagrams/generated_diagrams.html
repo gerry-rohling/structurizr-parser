@@ -1197,6 +1197,26 @@
                     "idx": 0
                   }
                 ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "dynamicSection",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "deploymentSection",
+                    "idx": 0
+                  }
+                ]
               }
             ]
           }
@@ -1781,6 +1801,247 @@
   },
   {
     "type": "Rule",
+    "name": "dynamicSection",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "dynamic",
+        "label": "dynamic",
+        "idx": 0,
+        "pattern": "dynamic"
+      },
+      {
+        "type": "Terminal",
+        "name": "identifier",
+        "label": "identifier",
+        "idx": 0,
+        "pattern": "[a-zA-z][a-zA-z.]*\\_?[0-9]*"
+      },
+      {
+        "type": "Option",
+        "idx": 0,
+        "definition": [
+          {
+            "type": "Terminal",
+            "name": "StringLiteral",
+            "label": "StringLiteral",
+            "idx": 0,
+            "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
+          }
+        ]
+      },
+      {
+        "type": "Option",
+        "idx": 1,
+        "definition": [
+          {
+            "type": "Terminal",
+            "name": "StringLiteral",
+            "label": "StringLiteral",
+            "idx": 1,
+            "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
+          }
+        ]
+      },
+      {
+        "type": "Terminal",
+        "name": "lBrace",
+        "label": "{",
+        "idx": 0,
+        "pattern": "\\{"
+      },
+      {
+        "type": "Repetition",
+        "idx": 0,
+        "definition": [
+          {
+            "type": "Alternation",
+            "idx": 0,
+            "definition": [
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "explicitRelationship",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "autoLayoutOptions",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "Terminal",
+                    "name": "description",
+                    "label": "description",
+                    "idx": 0,
+                    "pattern": "description"
+                  },
+                  {
+                    "type": "Terminal",
+                    "name": "StringLiteral",
+                    "label": "StringLiteral",
+                    "idx": 3,
+                    "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "Terminal",
+        "name": "rBrace",
+        "label": "}",
+        "idx": 0,
+        "pattern": "\\}"
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "deploymentSection",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "deployment",
+        "label": "deployment",
+        "idx": 0,
+        "pattern": "deployment"
+      },
+      {
+        "type": "Terminal",
+        "name": "identifier",
+        "label": "identifier",
+        "idx": 0,
+        "pattern": "[a-zA-z][a-zA-z.]*\\_?[0-9]*"
+      },
+      {
+        "type": "Terminal",
+        "name": "StringLiteral",
+        "label": "StringLiteral",
+        "idx": 0,
+        "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
+      },
+      {
+        "type": "Option",
+        "idx": 0,
+        "definition": [
+          {
+            "type": "Terminal",
+            "name": "StringLiteral",
+            "label": "StringLiteral",
+            "idx": 1,
+            "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
+          }
+        ]
+      },
+      {
+        "type": "Option",
+        "idx": 1,
+        "definition": [
+          {
+            "type": "Terminal",
+            "name": "StringLiteral",
+            "label": "StringLiteral",
+            "idx": 2,
+            "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
+          }
+        ]
+      },
+      {
+        "type": "Terminal",
+        "name": "lBrace",
+        "label": "{",
+        "idx": 0,
+        "pattern": "\\{"
+      },
+      {
+        "type": "Repetition",
+        "idx": 0,
+        "definition": [
+          {
+            "type": "Alternation",
+            "idx": 0,
+            "definition": [
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "includeOptions",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "animationOptions",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "autoLayoutOptions",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "Terminal",
+                    "name": "description",
+                    "label": "description",
+                    "idx": 0,
+                    "pattern": "description"
+                  },
+                  {
+                    "type": "Terminal",
+                    "name": "StringLiteral",
+                    "label": "StringLiteral",
+                    "idx": 3,
+                    "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "Terminal",
+        "name": "rBrace",
+        "label": "}",
+        "idx": 0,
+        "pattern": "\\}"
+      }
+    ]
+  },
+  {
+    "type": "Rule",
     "name": "stylesSection",
     "orgText": "",
     "definition": [
@@ -1909,6 +2170,26 @@
                   {
                     "type": "NonTerminal",
                     "name": "colourStyle",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "fontStyle",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "opacityStyle",
                     "idx": 0
                   }
                 ]
@@ -2107,6 +2388,48 @@
         "label": "hexColor",
         "idx": 0,
         "pattern": "#[0-9A-Fa-f]{6}"
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "fontStyle",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "fontSize",
+        "label": "fontSize",
+        "idx": 0,
+        "pattern": "fontsize"
+      },
+      {
+        "type": "Terminal",
+        "name": "int",
+        "label": "int",
+        "idx": 0,
+        "pattern": "-?(?:0|[1-9][0-9]*)"
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "opacityStyle",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "opacity",
+        "label": "opacity",
+        "idx": 0,
+        "pattern": "opacity"
+      },
+      {
+        "type": "Terminal",
+        "name": "int",
+        "label": "int",
+        "idx": 0,
+        "pattern": "-?(?:0|[1-9][0-9]*)"
       }
     ]
   }
