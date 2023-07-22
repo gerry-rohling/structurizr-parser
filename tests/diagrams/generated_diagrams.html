@@ -1183,6 +1183,16 @@
                 "definition": [
                   {
                     "type": "NonTerminal",
+                    "name": "imageSection",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
                     "name": "stylesSection",
                     "idx": 0
                   }
@@ -1655,6 +1665,122 @@
   },
   {
     "type": "Rule",
+    "name": "imageSection",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "image",
+        "label": "image",
+        "idx": 0,
+        "pattern": "image"
+      },
+      {
+        "type": "Alternation",
+        "idx": 0,
+        "definition": [
+          {
+            "type": "Alternative",
+            "definition": [
+              {
+                "type": "Terminal",
+                "name": "wildcard",
+                "label": "wildcard",
+                "idx": 0,
+                "pattern": "(\\*)"
+              }
+            ]
+          },
+          {
+            "type": "Alternative",
+            "definition": [
+              {
+                "type": "Terminal",
+                "name": "identifier",
+                "label": "identifier",
+                "idx": 0,
+                "pattern": "[a-zA-z][a-zA-z.]*\\_?[0-9]*"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "Option",
+        "idx": 0,
+        "definition": [
+          {
+            "type": "Terminal",
+            "name": "StringLiteral",
+            "label": "StringLiteral",
+            "idx": 0,
+            "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
+          }
+        ]
+      },
+      {
+        "type": "Terminal",
+        "name": "lBrace",
+        "label": "{",
+        "idx": 0,
+        "pattern": "\\{"
+      },
+      {
+        "type": "Alternation",
+        "idx": 2,
+        "definition": [
+          {
+            "type": "Alternative",
+            "definition": [
+              {
+                "type": "Terminal",
+                "name": "image",
+                "label": "image",
+                "idx": 2,
+                "pattern": "image"
+              },
+              {
+                "type": "Terminal",
+                "name": "url",
+                "label": "url",
+                "idx": 0,
+                "pattern": "(https?:\\/\\/[^ ]*)"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "Option",
+        "idx": 2,
+        "definition": [
+          {
+            "type": "Terminal",
+            "name": "title",
+            "label": "title",
+            "idx": 0,
+            "pattern": "title"
+          },
+          {
+            "type": "Terminal",
+            "name": "StringLiteral",
+            "label": "StringLiteral",
+            "idx": 2,
+            "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
+          }
+        ]
+      },
+      {
+        "type": "Terminal",
+        "name": "rBrace",
+        "label": "}",
+        "idx": 0,
+        "pattern": "\\}"
+      }
+    ]
+  },
+  {
+    "type": "Rule",
     "name": "stylesSection",
     "orgText": "",
     "definition": [
@@ -1744,9 +1870,50 @@
         "idx": 0,
         "definition": [
           {
-            "type": "NonTerminal",
-            "name": "styleDefinition",
-            "idx": 0
+            "type": "Alternation",
+            "idx": 0,
+            "definition": [
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "shapeStyle",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "backgroundStyle",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "colorStyle",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "colourStyle",
+                    "idx": 0
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
@@ -1790,9 +1957,40 @@
         "idx": 0,
         "definition": [
           {
-            "type": "NonTerminal",
-            "name": "styleDefinition",
-            "idx": 0
+            "type": "Alternation",
+            "idx": 0,
+            "definition": [
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "backgroundStyle",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "colorStyle",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "colourStyle",
+                    "idx": 0
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
@@ -1807,15 +2005,15 @@
   },
   {
     "type": "Rule",
-    "name": "styleDefinition",
+    "name": "shapeStyle",
     "orgText": "",
     "definition": [
       {
         "type": "Terminal",
-        "name": "identifier",
-        "label": "identifier",
+        "name": "shape",
+        "label": "shape",
         "idx": 0,
-        "pattern": "[a-zA-z][a-zA-z.]*\\_?[0-9]*"
+        "pattern": "shape"
       },
       {
         "type": "Alternation",
@@ -1826,10 +2024,10 @@
             "definition": [
               {
                 "type": "Terminal",
-                "name": "value",
-                "label": "value",
-                "idx": 1,
-                "pattern": "NOT_APPLICABLE"
+                "name": "shapeEnum",
+                "label": "shapeEnum",
+                "idx": 0,
+                "pattern": "Box|RoundedBox|Circle|Ellipse|Hexagon|Cylinder|Pipe|Person|Robot|Folder|WebBrowser|MobileDevicePortrait|MobileDeviceLandscape|Component"
               }
             ]
           },
@@ -1840,24 +2038,75 @@
                 "type": "Terminal",
                 "name": "person",
                 "label": "person",
-                "idx": 1,
+                "idx": 0,
                 "pattern": "person"
-              }
-            ]
-          },
-          {
-            "type": "Alternative",
-            "definition": [
-              {
-                "type": "Terminal",
-                "name": "component",
-                "label": "component",
-                "idx": 1,
-                "pattern": "component"
               }
             ]
           }
         ]
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "backgroundStyle",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "background",
+        "label": "background",
+        "idx": 0,
+        "pattern": "background"
+      },
+      {
+        "type": "Terminal",
+        "name": "hexColor",
+        "label": "hexColor",
+        "idx": 0,
+        "pattern": "#[0-9A-Fa-f]{6}"
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "colorStyle",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "color",
+        "label": "color",
+        "idx": 0,
+        "pattern": "color"
+      },
+      {
+        "type": "Terminal",
+        "name": "hexColor",
+        "label": "hexColor",
+        "idx": 0,
+        "pattern": "#[0-9A-Fa-f]{6}"
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "colourStyle",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "colour",
+        "label": "colour",
+        "idx": 0,
+        "pattern": "colour"
+      },
+      {
+        "type": "Terminal",
+        "name": "hexColor",
+        "label": "hexColor",
+        "idx": 0,
+        "pattern": "#[0-9A-Fa-f]{6}"
       }
     ]
   }

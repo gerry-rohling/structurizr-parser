@@ -1,5 +1,5 @@
 import { CstParser } from "chevrotain";
-import { Animation, AutoLayout, Component, Container, ContainerInstance, DeploymentEnvironment, DeploymentNode, Description, Element, Equals, Group, Identifier, Include, Int, LBrace, Model, Person, Properties, RBrace, RelatedTo, Relationship, SoftwareSystem, SoftwareSystemInstance, StringLiteral, Styles, SystemContext, SystemLandscape, Value, Views, Wildcard, Workspace, allTokens } from "./Lexer";
+import { Animation, AutoLayout, Background, Color, Colour, Component, Container, ContainerInstance, DeploymentEnvironment, DeploymentNode, Description, Element, Equals, Group, HexColor, Identifier, Image, Include, Int, LBrace, Model, Person, Properties, RBrace, RelatedTo, Relationship, Shape, ShapeEnum, SoftwareSystem, SoftwareSystemInstance, StringLiteral, Styles, SystemContext, SystemLandscape, Title, Url, Value, Views, Wildcard, Word, Workspace, allTokens } from "./Lexer";
 
 class structurizrParser extends CstParser {
   constructor() {
@@ -241,6 +241,7 @@ class structurizrParser extends CstParser {
         {ALT: () => {this.SUBRULE(this.systemContextView)}},
         {ALT: () => {this.SUBRULE(this.containerView)}},
         {ALT: () => {this.SUBRULE(this.componentView)}},
+        {ALT: () => {this.SUBRULE(this.imageSection)}},
         {ALT: () => {this.SUBRULE(this.stylesSection)}}
       ]);
     });
@@ -337,6 +338,27 @@ class structurizrParser extends CstParser {
     this.SUBRULE(this.viewOptions);
   });
 
+  private imageSection = this.RULE("imageSection", () => {
+    this.CONSUME(Image);
+    this.OR([
+      {ALT: () => {this.CONSUME(Wildcard)}},
+      {ALT: () => {this.CONSUME(Identifier)}}
+    ]);
+    this.OPTION(() => this.CONSUME(StringLiteral));
+    this.CONSUME(LBrace);
+    this.OR2([
+      {ALT: () => {
+        this.CONSUME2(Image);
+        this.CONSUME(Url);
+      }}
+    ]);
+    this.OPTION2(() => {
+      this.CONSUME(Title);
+      this.CONSUME2(StringLiteral);
+    })
+    this.CONSUME(RBrace);
+  });
+
   private stylesSection = this.RULE("stylesSection", () => {
     this.CONSUME(Styles);
     this.CONSUME(LBrace);
@@ -354,7 +376,12 @@ class structurizrParser extends CstParser {
     this.CONSUME(StringLiteral);
     this.CONSUME(LBrace);
     this.MANY(() => {
-      this.SUBRULE(this.styleDefinition);
+      this.OR([
+        {ALT: () => {this.SUBRULE(this.shapeStyle)}},
+        {ALT: () => {this.SUBRULE(this.backgroundStyle)}},
+        {ALT: () => {this.SUBRULE(this.colorStyle)}},
+        {ALT: () => {this.SUBRULE(this.colourStyle)}}
+      ]);
     });
     this.CONSUME(RBrace);
   });
@@ -364,19 +391,38 @@ class structurizrParser extends CstParser {
     this.CONSUME(Identifier);
     this.CONSUME(LBrace);
     this.MANY(() => {
-      this.SUBRULE(this.styleDefinition);
+      this.OR([
+        {ALT: () => {this.SUBRULE(this.backgroundStyle)}},
+        {ALT: () => {this.SUBRULE(this.colorStyle)}},
+        {ALT: () => {this.SUBRULE(this.colourStyle)}}
+      ]);
     });
     this.CONSUME(RBrace);
   });
 
-  private styleDefinition = this.RULE("styleDefinition", () => {
-    this.CONSUME(Identifier);
+  private shapeStyle = this.RULE("shapeStyle", () => {
+    this.CONSUME(Shape);
     this.OR([
-      {ALT: () => {this.CONSUME1(Value)}},
-      {ALT: () => {this.CONSUME1(Person)}},
-      {ALT: () => {this.CONSUME1(Component)}}
+      {ALT: () => {this.CONSUME(ShapeEnum)}},
+      {ALT: () => {this.CONSUME(Person)}}
     ]);
-  })
+    ;
+  });
+
+  private backgroundStyle = this.RULE("backgroundStyle", () => {
+    this.CONSUME(Background);
+    this.CONSUME(HexColor);
+  });
+
+  private colorStyle = this.RULE("colorStyle", () => {
+    this.CONSUME(Color);
+    this.CONSUME(HexColor);
+  });
+
+  private colourStyle = this.RULE("colourStyle", () => {
+    this.CONSUME(Colour);
+    this.CONSUME(HexColor);
+  });
 }
 
 export const StructurizrParser = new structurizrParser();
