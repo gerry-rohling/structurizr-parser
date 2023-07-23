@@ -1,8 +1,11 @@
 import { CstNode } from "chevrotain";
 import { BaseStructurizrVisitor, StructurizrParser } from "./Parser";
+import { Workspace } from "structurizr-typescript";
 
 class structurizrInterpreter extends BaseStructurizrVisitor {
 
+    private workspace: Workspace = new Workspace("",""); // Dummy object, should be overwritten when new Cst provided
+    
     constructor() {
         super();
 
@@ -11,6 +14,7 @@ class structurizrInterpreter extends BaseStructurizrVisitor {
 
     workspaceWrapper(node: CstNode) {
         console.log(`Here we are at workspaceWrapper with node: ${node.name}`);
+        this.workspace = new Workspace("Name", "Description"); // Two options string literals after workspace keyword
     }
 
     workspaceSection(node: CstNode) {
