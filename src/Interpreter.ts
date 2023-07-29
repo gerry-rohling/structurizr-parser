@@ -12,180 +12,184 @@ class structurizrInterpreter extends BaseStructurizrVisitor {
         this.validateVisitor();
     }
 
-    workspaceWrapper(node: CstNode) {
+    workspaceWrapper(node: any) {
         console.log(`Here we are at workspaceWrapper with node: ${node.name}`);
         this.workspace = new Workspace("Name", "Description"); // Two options string literals after workspace keyword
+        if (node.workspaceSection) {
+            this.visit(node.workspaceSection);
+        }
+        return this.workspace;
     }
 
-    workspaceSection(node: CstNode) {
+    workspaceSection(node: any) {
         console.log(`Here we are at workspaceSection with node: ${node.name}`);
     }
 
-    modelSection(node: CstNode) {
+    modelSection(node: any) {
         console.log(`Here we are at modelSection with node: ${node.name}`);
     }
 
-    modelChildSection(node: CstNode) {
+    modelChildSection(node: any) {
         console.log(`Here we are at modelChildSection with node: ${node.name}`);
     }
 
-    groupSection(node: CstNode) {
+    groupSection(node: any) {
         console.log(`Here we are at groupSection with node: ${node.name}`);
     }
 
-    groupChildSection(node: CstNode) {
+    groupChildSection(node: any) {
         console.log(`Here we are at groupChildSection with node: ${node.name}`);
     }
 
-    personSection(node: CstNode) {
+    personSection(node: any) {
         console.log(`Here we are at personSection with node: ${node.name}`);
     }
 
-    softwareSystemSection(node: CstNode) {
+    softwareSystemSection(node: any) {
         console.log(`Here we are at softwareSystemSection with node: ${node.name}`);
     }
 
-    softwareSystemChildSection(node: CstNode) {
+    softwareSystemChildSection(node: any) {
         console.log(`Here we are at softwareSystemChildSection with node: ${node.name}`);
     }
 
-    containerSection(node: CstNode) {
+    containerSection(node: any) {
         console.log(`Here we are at ContainerSection with node: ${node.name}`);
     }
 
-    containerChildSection(node: CstNode) {
+    containerChildSection(node: any) {
         console.log(`Here we are at ContainerChildSection with node: ${node.name}`);
     }
 
-    componentSection(node: CstNode) {
+    componentSection(node: any) {
         console.log(`Here we are at ComponentSection with node: ${node.name}`);
     }
 
-    explicitRelationship(node: CstNode) {
+    explicitRelationship(node: any) {
         console.log(`Here we are at explicitRelationship with node: ${node.name}`);
     }
 
-    implicitRelationship(node: CstNode) {
+    implicitRelationship(node: any) {
         console.log(`Here we are at implicitRelationship with node: ${node.name}`);
     }
 
-    deploymentEnvironmentSection(node: CstNode) {
+    deploymentEnvironmentSection(node: any) {
         console.log(`Here we are at deploymentEnvironmentSection with node: ${node.name}`);
     }
 
-    deploymentEnvironmentChildSection(node: CstNode) {
+    deploymentEnvironmentChildSection(node: any) {
         console.log(`Here we are at deploymentEnvironmentChildSection with node: ${node.name}`);
     }
 
-    deploymentNodeSection(node: CstNode) {
+    deploymentNodeSection(node: any) {
         console.log(`Here we are at deploymentNodeSection with node: ${node.name}`);
     }
 
-    deploymentNodeChildSection(node: CstNode) {
+    deploymentNodeChildSection(node: any) {
         console.log(`Here we are at deploymentNodeChildSection with node: ${node.name}`);
     }
 
-    containerInstanceSection(node: CstNode) {
+    containerInstanceSection(node: any) {
         console.log(`Here we are at containerInstanceSection with node: ${node.name}`);
     }
 
-    softwareSystemInstanceSection(node: CstNode) {
+    softwareSystemInstanceSection(node: any) {
         console.log(`Here we are at softwareSystemInstanceSection with node: ${node.name}`);
     }
 
-    viewsSection(node: CstNode) {
+    viewsSection(node: any) {
         console.log(`Here we are at viewsSection with node: ${node.name}`);
     }
 
-    viewsChildSection(node: CstNode) {
+    viewsChildSection(node: any) {
         console.log(`Here we are at viewsChildSection with node: ${node.name}`);
     }
 
-    systemLandscapeView(node: CstNode) {
+    systemLandscapeView(node: any) {
         console.log(`Here we are at systemLandscapeView with node: ${node.name}`);
     }
 
-    viewOptions(node: CstNode) {
+    viewOptions(node: any) {
         console.log(`Here we are at viewOptions with node: ${node.name}`);
     }
 
-    includeOptions(node: CstNode) {
+    includeOptions(node: any) {
         console.log(`Here we are at includeOptions with node: ${node.name}`);
     }
 
-    autoLayoutOptions(node: CstNode) {
+    autoLayoutOptions(node: any) {
         console.log(`Here we are at autoLayoutOptions with node: ${node.name}`);
     }
 
-    animationOptions(node: CstNode) {
+    animationOptions(node: any) {
         console.log(`Here we are at animationOptions with node: ${node.name}`);
     }
 
-    descriptionOptions(node: CstNode) {
+    descriptionOptions(node: any) {
         console.log(`Here we are at descriptionOptions with node: ${node.name}`);
     }
 
-    propertiesOptions(node: CstNode) {
+    propertiesOptions(node: any) {
         console.log(`Here we are at propertiesOptions with node: ${node.name}`);
     }
 
-    systemContextView(node: CstNode) {
+    systemContextView(node: any) {
         console.log(`Here we are at systemContextView with node: ${node.name}`);
     }
 
-    containerView(node: CstNode) {
+    containerView(node: any) {
         console.log(`Here we are at containerView with node: ${node.name}`);
     }
 
-    componentView(node: CstNode) {
+    componentView(node: any) {
         console.log(`Here we are at componentView with node: ${node.name}`);
     }
 
-    imageSection(node: CstNode) {
+    imageSection(node: any) {
         console.log(`Here we are at imageSection with node: ${node.name}`);
     }
 
-    dynamicSection(node: CstNode) {
+    dynamicSection(node: any) {
         console.log(`Here we are at dynamicSection with node: ${node.name}`);
     }
 
-    deploymentSection(node: CstNode) {
+    deploymentSection(node: any) {
         console.log(`Here we are at deploymentSection with node: ${node.name}`);
     }
 
-    stylesSection(node: CstNode) {
+    stylesSection(node: any) {
         console.log(`Here we are at stylesSection with node: ${node.name}`);
     }
 
-    elementStyleSection(node: CstNode) {
+    elementStyleSection(node: any) {
         console.log(`Here we are at elementStyleSection with node: ${node.name}`);
     }
 
-    relationshipStyleSection(node: CstNode) {
+    relationshipStyleSection(node: any) {
         console.log(`Here we are at relationshipStyleSection with node: ${node.name}`);
     }
 
-    shapeStyle(node: CstNode) {
+    shapeStyle(node: any) {
         console.log(`Here we are at shapeStyle with node: ${node.name}`);
     }
 
-    backgroundStyle(node: CstNode) {
+    backgroundStyle(node: any) {
         console.log(`Here we are at backgroundStyle with node: ${node.name}`);
     }
 
-    colorStyle(node: CstNode) {
+    colorStyle(node: any) {
         console.log(`Here we are at colorStyle with node: ${node.name}`);
     }
 
-    colourStyle(node: CstNode) {
+    colourStyle(node: any) {
         console.log(`Here we are at colourStyle with node: ${node.name}`);
     }
 
-    fontStyle(node: CstNode) {
+    fontStyle(node: any) {
         console.log(`Here we are at fontStyle with node: ${node.name}`);
     }
 
-    opacityStyle(node: CstNode) {
+    opacityStyle(node: any) {
         console.log(`Here we are at opacityStyle with node: ${node.name}`);
     }
 }

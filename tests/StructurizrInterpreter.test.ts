@@ -14,6 +14,7 @@ describe('Testing StructurizrParser', () => {
         expect(StructurizrParser.errors.length).toBe(0);
         expect(cst.name).toBe("workspaceWrapper");
         const wspace = StructurizrInterpreter.visit(cst);
+        expect(wspace).toBeDefined();
     });
 
 });
