@@ -23,14 +23,28 @@ class structurizrInterpreter extends BaseStructurizrVisitor {
 
     workspaceSection(node: any) {
         console.log(`Here we are at workspaceSection with node: ${node.name}`);
+        if (node.modelSection) {
+            this.visit(node.modelSection);
+        }
+        if (node.viewsSection) {
+            this.visit(node.viewsSection);
+        }
     }
 
     modelSection(node: any) {
         console.log(`Here we are at modelSection with node: ${node.name}`);
+        if (node.modelChildSection) {
+            this.visit(node.modelChildSection);
+        }
     }
 
     modelChildSection(node: any) {
         console.log(`Here we are at modelChildSection with node: ${node.name}`);
+        if (node.groupSection) { for (const group of node.groupSection) { this.visit(group); }}
+        if (node.personSection) { for (const person of node.personSection) { this.visit(person); }}
+        if (node.softwareSystemChildSection) { for (const sSystem of node.softwareSystemSection) { this.visit(sSystem); }}
+        if (node.explicitRelationship) { for (const relationship of node. explicitRelationship) { this.visit(relationship); }}
+        if (node.deploymentEnvironmentSection) { for (const depEnv of node.deploymentEnvironmentSection) { this.visit(depEnv); }}
     }
 
     groupSection(node: any) {
@@ -43,6 +57,12 @@ class structurizrInterpreter extends BaseStructurizrVisitor {
 
     personSection(node: any) {
         console.log(`Here we are at personSection with node: ${node.name}`);
+        const name = node.StringLiteral[0].image ?? "";
+        const desc = node.StringLiteral[1].image ?? "";
+        const p = this.workspace.model.addPerson(stripQuotes(name), stripQuotes(desc));
+        if (node.identifier && p) {
+            p.id = stripQuotes(node.identifier[0].image);
+        }
     }
 
     softwareSystemSection(node: any) {
@@ -193,5 +213,13 @@ class structurizrInterpreter extends BaseStructurizrVisitor {
         console.log(`Here we are at opacityStyle with node: ${node.name}`);
     }
 }
+
+function stripQuotes(str: string) : string {
+    // Fail if an invalid argument is provided
+    if (typeof str !== 'string') {
+      throw new TypeError('Expected a string');
+    }
+    return str.replace(/^"(.+)"$/, '$1');
+  }
 
 export const StructurizrInterpreter = new structurizrInterpreter();
