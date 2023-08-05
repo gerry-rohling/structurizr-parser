@@ -4,6 +4,7 @@ import { Workspace } from "structurizr-typescript";
 
 class structurizrInterpreter extends BaseStructurizrVisitor {
 
+    private elementsByIdentifier = new Map<string, string>(); // identifier, id
     private workspace: Workspace = new Workspace("",""); // Dummy object, should be overwritten when new Cst provided
     
     constructor() {
@@ -42,13 +43,16 @@ class structurizrInterpreter extends BaseStructurizrVisitor {
         console.log(`Here we are at modelChildSection with node: ${node.name}`);
         if (node.groupSection) { for (const group of node.groupSection) { this.visit(group); }}
         if (node.personSection) { for (const person of node.personSection) { this.visit(person); }}
-        if (node.softwareSystemChildSection) { for (const sSystem of node.softwareSystemSection) { this.visit(sSystem); }}
+        if (node.softwareSystemSection) { for (const sSystem of node.softwareSystemSection) { this.visit(sSystem); }}
         if (node.explicitRelationship) { for (const relationship of node. explicitRelationship) { this.visit(relationship); }}
         if (node.deploymentEnvironmentSection) { for (const depEnv of node.deploymentEnvironmentSection) { this.visit(depEnv); }}
     }
 
     groupSection(node: any) {
         console.log(`Here we are at groupSection with node: ${node.name}`);
+        // We do not seem to have group elements supported?!
+        // const g = this.workspace.model.
+        // Just iterate over child elements for now
     }
 
     groupChildSection(node: any) {
@@ -61,12 +65,18 @@ class structurizrInterpreter extends BaseStructurizrVisitor {
         const desc = node.StringLiteral[1].image ?? "";
         const p = this.workspace.model.addPerson(stripQuotes(name), stripQuotes(desc));
         if (node.identifier && p) {
-            p.id = stripQuotes(node.identifier[0].image);
+            this.elementsByIdentifier.set(stripQuotes(node.identifier[0].image), p.id);
         }
     }
 
     softwareSystemSection(node: any) {
         console.log(`Here we are at softwareSystemSection with node: ${node.name}`);
+        const name = node.StringLiteral[0].image ?? "";
+        const desc = node.StringLiteral[1].image ?? "";
+        const s = this.workspace.model.addSoftwareSystem(stripQuotes(name), stripQuotes(desc));
+        if (node.identifier && s) {
+            this.elementsByIdentifier.set(stripQuotes(node.identifier[0].image), s.id);
+        }
     }
 
     softwareSystemChildSection(node: any) {
@@ -87,6 +97,16 @@ class structurizrInterpreter extends BaseStructurizrVisitor {
 
     explicitRelationship(node: any) {
         console.log(`Here we are at explicitRelationship with node: ${node.name}`);
+        const s_id = this.elementsByIdentifier.get(node.identifier[0].image);
+        const t_id = this.elementsByIdentifier.get(node.identifier[1].image);
+        if (s_id && t_id) {
+            const source = this.workspace.model.getElement(s_id);
+            const target = this.workspace.model.getElement(t_id);
+            const desc = node.StringLiteral[0].image ?? "";
+            const r = this.workspace.model.addRelationship(source, target, desc);
+        } else {
+            throw new Error("Unknown identifiers used in relationship definition");
+        }
     }
 
     implicitRelationship(node: any) {
