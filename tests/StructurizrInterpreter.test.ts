@@ -16,6 +16,9 @@ describe('Testing StructurizrParser', () => {
         expect(cst.name).toBe("workspaceWrapper");
         const wspace = StructurizrInterpreter.visit(cst) as Workspace;
         expect(wspace).toBeDefined();
+        expect(wspace.model.people.length).toBe(1);
+        expect(wspace.model.softwareSystems.length).toBe(1);
+        expect(wspace.model.relationships.length).toBe(1);
     });
 
 });

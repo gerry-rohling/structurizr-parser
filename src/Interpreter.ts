@@ -14,7 +14,7 @@ class structurizrInterpreter extends BaseStructurizrVisitor {
     }
 
     workspaceWrapper(node: any) {
-        console.log(`Here we are at workspaceWrapper with node: ${node.name}`);
+        console.log(`Here we are at workspaceWrapper node:`);
         this.workspace = new Workspace("Name", "Description"); // Two options string literals after workspace keyword
         if (node.workspaceSection) {
             this.visit(node.workspaceSection);
@@ -23,7 +23,7 @@ class structurizrInterpreter extends BaseStructurizrVisitor {
     }
 
     workspaceSection(node: any) {
-        console.log(`Here we are at workspaceSection with node: ${node.name}`);
+        console.log(`Here we are at workspaceSection node:`);
         if (node.modelSection) {
             this.visit(node.modelSection);
         }
@@ -33,14 +33,14 @@ class structurizrInterpreter extends BaseStructurizrVisitor {
     }
 
     modelSection(node: any) {
-        console.log(`Here we are at modelSection with node: ${node.name}`);
+        console.log(`Here we are at modelSection node:`);
         if (node.modelChildSection) {
             this.visit(node.modelChildSection);
         }
     }
 
     modelChildSection(node: any) {
-        console.log(`Here we are at modelChildSection with node: ${node.name}`);
+        console.log(`Here we are at modelChildSection node:`);
         if (node.groupSection) { for (const group of node.groupSection) { this.visit(group); }}
         if (node.personSection) { for (const person of node.personSection) { this.visit(person); }}
         if (node.softwareSystemSection) { for (const sSystem of node.softwareSystemSection) { this.visit(sSystem); }}
@@ -60,7 +60,7 @@ class structurizrInterpreter extends BaseStructurizrVisitor {
     }
 
     personSection(node: any) {
-        console.log(`Here we are at personSection with node: ${node.name}`);
+        console.log(`Here we are at personSection node:`);
         const name = node.StringLiteral[0].image ?? "";
         const desc = node.StringLiteral[1].image ?? "";
         const p = this.workspace.model.addPerson(stripQuotes(name), stripQuotes(desc));
@@ -70,7 +70,7 @@ class structurizrInterpreter extends BaseStructurizrVisitor {
     }
 
     softwareSystemSection(node: any) {
-        console.log(`Here we are at softwareSystemSection with node: ${node.name}`);
+        console.log(`Here we are at softwareSystemSection node:`);
         const name = node.StringLiteral[0].image ?? "";
         const desc = node.StringLiteral[1].image ?? "";
         const s = this.workspace.model.addSoftwareSystem(stripQuotes(name), stripQuotes(desc));
@@ -96,7 +96,7 @@ class structurizrInterpreter extends BaseStructurizrVisitor {
     }
 
     explicitRelationship(node: any) {
-        console.log(`Here we are at explicitRelationship with node: ${node.name}`);
+        console.log(`Here we are at explicitRelationship node:`);
         const s_id = this.elementsByIdentifier.get(node.identifier[0].image);
         const t_id = this.elementsByIdentifier.get(node.identifier[1].image);
         if (s_id && t_id) {
@@ -138,11 +138,22 @@ class structurizrInterpreter extends BaseStructurizrVisitor {
     }
 
     viewsSection(node: any) {
-        console.log(`Here we are at viewsSection with node: ${node.name}`);
+        console.log(`Here we are at viewsSection node:`);
+        if (node.viewsChildSection) {
+            this.visit(node.viewsChildSection);
+        }
     }
 
     viewsChildSection(node: any) {
-        console.log(`Here we are at viewsChildSection with node: ${node.name}`);
+        console.log(`Here we are at viewsChildSection node:`);
+        if (node.systemLandscapeView) { for (const view of node.systemLandscapeView) { this.visit(view);} }
+        if (node.systemContextView) { for (const view of node.systemContextView) { this.visit(view);} }
+        if (node.containerView) { for (const view of node.containerView) { this.visit(view);} }
+        if (node.componentView) { for (const view of node.componentView) { this.visit(view);} }
+        if (node.imageSection) { for (const image of node.imageSection) { this.visit(image);} }
+        if (node.stylesSection) { for (const style of node.stylesSection) { this.visit(style);} }
+        if (node.dynamicSection) { for (const dyn of node.dynamicSection) { this.visit(dyn);} }
+        if (node.deploymentSection) { for (const deployment of node.deploymentSection) { this.visit(deployment);} }
     }
 
     systemLandscapeView(node: any) {
@@ -181,7 +192,7 @@ class structurizrInterpreter extends BaseStructurizrVisitor {
         console.log(`Here we are at containerView with node: ${node.name}`);
     }
 
-    componentView(node: any) {
+    componentView(node: any) { 
         console.log(`Here we are at componentView with node: ${node.name}`);
     }
 
