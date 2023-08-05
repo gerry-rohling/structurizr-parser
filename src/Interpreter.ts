@@ -1,6 +1,6 @@
 import { CstNode } from "chevrotain";
 import { BaseStructurizrVisitor, StructurizrParser } from "./Parser";
-import { Workspace } from "structurizr-typescript";
+import { SoftwareSystem, Workspace } from "structurizr-typescript";
 
 class structurizrInterpreter extends BaseStructurizrVisitor {
 
@@ -186,6 +186,11 @@ class structurizrInterpreter extends BaseStructurizrVisitor {
 
     systemContextView(node: any) {
         console.log(`Here we are at systemContextView with node: ${node.name}`);
+        const sws_id = this.elementsByIdentifier.get(node.identifier[0].image) ?? "";
+        const sws = this.workspace.model.getElement(sws_id);
+        const key = node.StringLiteral[0].image ?? "";
+        const desc = node.StringLiteral[1].image ?? "";
+        const v = this.workspace.views.createSystemContextView(sws as SoftwareSystem, stripQuotes(key), stripQuotes(desc));
     }
 
     containerView(node: any) {
