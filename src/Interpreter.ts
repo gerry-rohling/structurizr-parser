@@ -162,11 +162,23 @@ class structurizrInterpreter extends BaseStructurizrVisitor {
 
     viewOptions(node: any, view: any) {
         console.log('Here we are at viewOptions node:');
-
+        if (node.includeOptions) { for (const inc of node.includeOptions) { this.visit(inc, view); } }
+        if (node.autoLayoutOptions) {}
+        if (node.animationOptions) {}
+        if (node.descriptionOptions) {}
+        if (node.propertiesOptions) {}
     }
 
-    includeOptions(node: any) {
-        console.log(`Here we are at includeOptions with node: ${node.name}`);
+    includeOptions(node: any, view: any) {
+        console.log('Here we are at includeOptions node:');
+        if (node.wildcard) { view.addAllElements(); }
+        if (node.identifier) {
+            const e_id = this.elementsByIdentifier.get(node.identifier[0].image) ?? "";
+            const ele = this.workspace.model.getElement(e_id);
+            if (ele) {
+                view.addElement(ele, true);
+            }
+        }
     }
 
     autoLayoutOptions(node: any) {
