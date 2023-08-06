@@ -1,6 +1,6 @@
 import { CstNode } from "chevrotain";
 import { BaseStructurizrVisitor, StructurizrParser } from "./Parser";
-import { SoftwareSystem, Workspace } from "structurizr-typescript";
+import { RankDirection, SoftwareSystem, Workspace } from "structurizr-typescript";
 
 class structurizrInterpreter extends BaseStructurizrVisitor {
 
@@ -163,7 +163,7 @@ class structurizrInterpreter extends BaseStructurizrVisitor {
     viewOptions(node: any, view: any) {
         console.log('Here we are at viewOptions node:');
         if (node.includeOptions) { for (const inc of node.includeOptions) { this.visit(inc, view); } }
-        if (node.autoLayoutOptions) {}
+        if (node.autoLayoutOptions) { this.visit(node.autoLayoutOptions, view); }
         if (node.animationOptions) {}
         if (node.descriptionOptions) {}
         if (node.propertiesOptions) {}
@@ -181,8 +181,23 @@ class structurizrInterpreter extends BaseStructurizrVisitor {
         }
     }
 
-    autoLayoutOptions(node: any) {
-        console.log(`Here we are at autoLayoutOptions with node: ${node.name}`);
+    autoLayoutOptions(node: any, view: any) {
+        console.log('Here we are at autoLayoutOptions node:');
+        const rankDir = node.identifier?.[0].image;
+        const rankSep = node.int?.[0].image;
+        const nodeSep = node.int?.[1].image;
+        let rankDirEnum: RankDirection = RankDirection.TopBottom;
+        if (rankDir) {
+            switch (rankDir) {
+                case 'tb': rankDirEnum = RankDirection.TopBottom; break;
+                case 'bt': rankDirEnum = RankDirection.BottomTop; break;
+                case 'lr': rankDirEnum = RankDirection.LeftRight; break;
+                case 'rl': rankDirEnum = RankDirection.RightLeft; break;
+            }
+            view.setAutomaticLayout(rankDirEnum, rankSep, nodeSep);
+        } else {
+            view.setAutomaticLayout(true);
+        }
     }
 
     animationOptions(node: any) {
