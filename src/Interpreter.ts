@@ -14,7 +14,7 @@ class structurizrInterpreter extends BaseStructurizrVisitor {
     }
 
     workspaceWrapper(node: any) {
-        console.log(`Here we are at workspaceWrapper node:`);
+        console.log('Here we are at workspaceWrapper node:');
         this.workspace = new Workspace("Name", "Description"); // Two options string literals after workspace keyword
         if (node.workspaceSection) {
             this.visit(node.workspaceSection);
@@ -23,7 +23,7 @@ class structurizrInterpreter extends BaseStructurizrVisitor {
     }
 
     workspaceSection(node: any) {
-        console.log(`Here we are at workspaceSection node:`);
+        console.log('`Here we are at workspaceSection node:');
         if (node.modelSection) {
             this.visit(node.modelSection);
         }
@@ -33,14 +33,14 @@ class structurizrInterpreter extends BaseStructurizrVisitor {
     }
 
     modelSection(node: any) {
-        console.log(`Here we are at modelSection node:`);
+        console.log('Here we are at modelSection node:');
         if (node.modelChildSection) {
             this.visit(node.modelChildSection);
         }
     }
 
     modelChildSection(node: any) {
-        console.log(`Here we are at modelChildSection node:`);
+        console.log('Here we are at modelChildSection node:');
         if (node.groupSection) { for (const group of node.groupSection) { this.visit(group); }}
         if (node.personSection) { for (const person of node.personSection) { this.visit(person); }}
         if (node.softwareSystemSection) { for (const sSystem of node.softwareSystemSection) { this.visit(sSystem); }}
@@ -60,9 +60,9 @@ class structurizrInterpreter extends BaseStructurizrVisitor {
     }
 
     personSection(node: any) {
-        console.log(`Here we are at personSection node:`);
-        const name = node.StringLiteral[0].image ?? "";
-        const desc = node.StringLiteral[1].image ?? "";
+        console.log('Here we are at personSection node:');
+        const name = node.StringLiteral[0]?.image ?? "";
+        const desc = node.StringLiteral[1]?.image ?? "";
         const p = this.workspace.model.addPerson(stripQuotes(name), stripQuotes(desc));
         if (node.identifier && p) {
             this.elementsByIdentifier.set(stripQuotes(node.identifier[0].image), p.id);
@@ -70,9 +70,9 @@ class structurizrInterpreter extends BaseStructurizrVisitor {
     }
 
     softwareSystemSection(node: any) {
-        console.log(`Here we are at softwareSystemSection node:`);
-        const name = node.StringLiteral[0].image ?? "";
-        const desc = node.StringLiteral[1].image ?? "";
+        console.log('Here we are at softwareSystemSection node:');
+        const name = node.StringLiteral[0]?.image ?? "";
+        const desc = node.StringLiteral[1]?.image ?? "";
         const s = this.workspace.model.addSoftwareSystem(stripQuotes(name), stripQuotes(desc));
         if (node.identifier && s) {
             this.elementsByIdentifier.set(stripQuotes(node.identifier[0].image), s.id);
@@ -96,13 +96,13 @@ class structurizrInterpreter extends BaseStructurizrVisitor {
     }
 
     explicitRelationship(node: any) {
-        console.log(`Here we are at explicitRelationship node:`);
+        console.log('Here we are at explicitRelationship node:');
         const s_id = this.elementsByIdentifier.get(node.identifier[0].image);
         const t_id = this.elementsByIdentifier.get(node.identifier[1].image);
         if (s_id && t_id) {
             const source = this.workspace.model.getElement(s_id);
             const target = this.workspace.model.getElement(t_id);
-            const desc = node.StringLiteral[0].image ?? "";
+            const desc = node.StringLiteral[0]?.image ?? "";
             const r = this.workspace.model.addRelationship(source, target, desc);
         } else {
             throw new Error("Unknown identifiers used in relationship definition");
@@ -138,14 +138,14 @@ class structurizrInterpreter extends BaseStructurizrVisitor {
     }
 
     viewsSection(node: any) {
-        console.log(`Here we are at viewsSection node:`);
+        console.log('Here we are at viewsSection node:');
         if (node.viewsChildSection) {
             this.visit(node.viewsChildSection);
         }
     }
 
     viewsChildSection(node: any) {
-        console.log(`Here we are at viewsChildSection node:`);
+        console.log('Here we are at viewsChildSection node:');
         if (node.systemLandscapeView) { for (const view of node.systemLandscapeView) { this.visit(view);} }
         if (node.systemContextView) { for (const view of node.systemContextView) { this.visit(view);} }
         if (node.containerView) { for (const view of node.containerView) { this.visit(view);} }
@@ -160,8 +160,9 @@ class structurizrInterpreter extends BaseStructurizrVisitor {
         console.log(`Here we are at systemLandscapeView with node: ${node.name}`);
     }
 
-    viewOptions(node: any) {
-        console.log(`Here we are at viewOptions with node: ${node.name}`);
+    viewOptions(node: any, view: any) {
+        console.log('Here we are at viewOptions node:');
+
     }
 
     includeOptions(node: any) {
@@ -185,12 +186,13 @@ class structurizrInterpreter extends BaseStructurizrVisitor {
     }
 
     systemContextView(node: any) {
-        console.log(`Here we are at systemContextView with node: ${node.name}`);
+        console.log('Here we are at systemContextView node:');
         const sws_id = this.elementsByIdentifier.get(node.identifier[0].image) ?? "";
         const sws = this.workspace.model.getElement(sws_id);
-        const key = node.StringLiteral[0].image ?? "";
-        const desc = node.StringLiteral[1].image ?? "";
-        const v = this.workspace.views.createSystemContextView(sws as SoftwareSystem, stripQuotes(key), stripQuotes(desc));
+        const key = node.StringLiteral[0]?.image ?? "";
+        const desc = node.StringLiteral[1]?.image ?? "";
+        const view = this.workspace.views.createSystemContextView(sws as SoftwareSystem, stripQuotes(key), stripQuotes(desc));
+        if (node.viewOptions) { this.visit(node.viewOptions, view); }
     }
 
     containerView(node: any) {

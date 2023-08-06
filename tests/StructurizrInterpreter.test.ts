@@ -19,6 +19,7 @@ describe('Testing StructurizrParser', () => {
         expect(wspace.model.people.length).toBe(1);
         expect(wspace.model.softwareSystems.length).toBe(1);
         expect(wspace.model.relationships.length).toBe(1);
+        expect(wspace.views.systemContextViews.length).toBe(1);
     });
 
 });
