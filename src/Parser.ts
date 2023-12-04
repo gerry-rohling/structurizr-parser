@@ -1,6 +1,8 @@
 import { CstParser } from "chevrotain";
 import { Animation, AutoLayout, Background, Color, Colour, Component, Container, ContainerInstance, Deployment, DeploymentEnvironment, DeploymentNode, Description, Dynamic, Element, Equals, FontSize, Group, HexColor, Identifier, Image, Include, Int, LBrace, Model, Opacity, Person, Properties, RBrace, RelatedTo, Relationship, Shape, ShapeEnum, SoftwareSystem, SoftwareSystemInstance, StringLiteral, Styles, SystemContext, SystemLandscape, Title, Url, Value, Views, Wildcard, Word, Workspace, allTokens } from "./Lexer";
 
+// This class takes all the tokens identified and parses the DSL according to the rulesets defined by the Structurizr schema
+
 class structurizrParser extends CstParser {
   constructor() {
     super(allTokens);

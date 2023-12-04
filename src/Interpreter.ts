@@ -2,6 +2,8 @@ import { CstNode } from "chevrotain";
 import { BaseStructurizrVisitor, StructurizrParser } from "./Parser";
 import { RankDirection, SoftwareSystem, Workspace } from "structurizr-typescript";
 
+// This class creates a structurizr workspace object from the parsed DSL
+
 class structurizrInterpreter extends BaseStructurizrVisitor {
 
     private elementsByIdentifier = new Map<string, string>(); // identifier, id
