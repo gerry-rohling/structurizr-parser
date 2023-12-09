@@ -1,6 +1,6 @@
 {
   "name": "structurizr-parser",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Parses Structurizr DSL files",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
