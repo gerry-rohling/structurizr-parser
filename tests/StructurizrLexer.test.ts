@@ -25,4 +25,16 @@ describe('Testing StructurizrLexer', () => {
         expect(lexingResult).toBeDefined();
         expect(lexingResult.errors.length).toBe(0);
     });
+    test('Can identify bad tokens', async() => {
+        var dsl = await fsPromise.readFile('./tests/data/bad-getting-started.dsl', 'utf-8');
+        let lexingResult = StructurizrLexer.tokenize(dsl);
+        if (lexingResult){
+            let viz = new LexerVisualizer("getting-started.dsl");
+            let htmlText = viz.createVisual(lexingResult);
+            await fsPromise.writeFile("./tests/diagrams/bad-getting-started.html", htmlText);
+        }
+        expect(lexingResult).toBeDefined();
+        expect(lexingResult.errors.length).toBe(1);
+        expect(lexingResult.errors[0].offset).toBe(215);
+    });
 });
