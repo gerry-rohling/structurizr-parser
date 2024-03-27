@@ -36,6 +36,7 @@
   ],
   "dependencies": {
     "chevrotain": "^10.5.0",
+    "mxbuilder": "^0.1.5",
     "structurizr-typescript": "^1.0.11"
   }
 }
