@@ -2,7 +2,8 @@ import * as fsPromise from 'fs/promises';
 import { StructurizrLexer } from '../src/Lexer';
 import { StructurizrParser } from '../src/Parser';
 import { DrawioInterpreter } from '../src/DrawioInterpreter'
-import { MxBuilder } from 'mxbuilder';
+// import { MxBuilder } from 'mxbuilder';
+import { paths, components } from "../src/structurizr.schema";
 
 describe('Testing DrawioInterpreter', () => {
 
@@ -14,10 +15,11 @@ describe('Testing DrawioInterpreter', () => {
         const cst = StructurizrParser.workspaceWrapper();
         expect(StructurizrParser.errors.length).toBe(0);
         expect(cst.name).toBe("workspaceWrapper");
-        const c4Diagram = DrawioInterpreter.visit(cst) as MxBuilder;
-        expect(c4Diagram).toBeDefined();
-        const d = await c4Diagram.toDiagram();
-        await fsPromise.writeFile("./tests/c4/getting-started.drawio", d);
+        const c4Workspace = DrawioInterpreter.visit(cst) as components["schemas"]["Workspace"];
+        expect(c4Workspace).toBeDefined();
+        // const dw = c4Diagrams[0] as MxBuilder;
+        // const d = await dw.toDiagram();
+        await fsPromise.writeFile("./tests/c4/getting-started.json", JSON.stringify(c4Workspace));
     });
 
 });

@@ -1,16 +1,19 @@
 import { CstNode } from "chevrotain";
 import { BaseStructurizrVisitor, StructurizrParser } from "./Parser";
-import { MxBuilder } from "mxbuilder";
-// import { paths, components } from "./structurizr.schema";
+// import { MxBuilder } from "mxbuilder";
+import { paths, components } from "./structurizr.schema";
 
-// This class creates a Draw.io XML object from the parsed DSL
+// This class a set of Draw.io XML images from the parsed content
 
-//  type WorkSpace = components["schemas"]["Workspace"];
+type WorkSpace = components["schemas"]["Workspace"];
 
 class drawioInterpreter extends BaseStructurizrVisitor {
 
     private elementsByIdentifier = new Map<string, string>(); // identifier, id
-    private mxWorkspace = new MxBuilder(); // Where we send instructions to build the C4 diagrams
+    // Likely we need an array of strings to return, one element for each view XML requested
+    // private mxDrawings:MxBuilder[] = [];
+    // private mxWorkspace = new MxBuilder(); // Where we send instructions to build the C4 diagrams
+    private sxWorkspace: WorkSpace = {};
 
     constructor() {
         super();
@@ -24,10 +27,14 @@ class drawioInterpreter extends BaseStructurizrVisitor {
         console.log('Here we are at workspaceWrapper node:');
         // this.theWorkspace.name = node.name;
         // this.theWorkspace.description = node.description;
+        this.sxWorkspace.name = node.name;
+        this.sxWorkspace.description = node.description;
         if (node.workspaceSection) {
             this.visit(node.workspaceSection);
         }
-        return this.mxWorkspace;
+        // this.mxDrawings.push(this.mxWorkspace);
+        // return this.mxDrawings;
+        return this.sxWorkspace;
     }
 
     workspaceSection(node: any) {
@@ -42,6 +49,8 @@ class drawioInterpreter extends BaseStructurizrVisitor {
 
     modelSection(node: any) {
         console.log('Here we are at modelSection node:');
+        const model: components["schemas"]["Model"] = {};
+        this.sxWorkspace.model = model;
         if (node.modelChildSection) {
             this.visit(node.modelChildSection);
         }
@@ -69,22 +78,28 @@ class drawioInterpreter extends BaseStructurizrVisitor {
 
     personSection(node: any) {
         console.log('Here we are at personSection node:');
-        const name = node.StringLiteral[0]?.image ?? "";
-        const desc = node.StringLiteral[1]?.image ?? "";
-        const p = this.mxWorkspace.placePerson(stripQuotes(name), stripQuotes(desc));
-        if (node.identifier && p) {
-            this.elementsByIdentifier.set(stripQuotes(node.identifier[0].image), p);
+        let person: components["schemas"]["Person"] = {};
+        person.id = getID(22);
+        person.name = node.StringLiteral[0]?.image ?? "";
+        person.description = node.StringLiteral[1]?.image ?? "";      
+        // const p = this.mxWorkspace.placePerson(stripQuotes(name), stripQuotes(desc));
+        if (node.identifier && person.id) {
+            this.elementsByIdentifier.set(stripQuotes(node.identifier[0].image), person.id);
         }
+        this.sxWorkspace.model?.people?.push(person);
     }
 
     softwareSystemSection(node: any) {
         console.log('Here we are at softwareSystemSection node:');
-        const name = node.StringLiteral[0]?.image ?? "";
-        const desc = node.StringLiteral[1]?.image ?? "";
-        const s = this.mxWorkspace.placeSoftwareSystem(stripQuotes(name), stripQuotes(desc));
-        if (node.identifier && s) {
-            this.elementsByIdentifier.set(stripQuotes(node.identifier[0].image), s);
+        let ssys: components["schemas"]["SoftwareSystem"] = {};
+        ssys.id = getID(22);
+        ssys.name = node.StringLiteral[0]?.image ?? "";
+        ssys.description = node.StringLiteral[1]?.image ?? "";
+        // const s = this.mxWorkspace.placeSoftwareSystem(stripQuotes(name), stripQuotes(desc));
+        if (node.identifier && ssys.id) {
+            this.elementsByIdentifier.set(stripQuotes(node.identifier[0].image), ssys.id);
         }
+        this.sxWorkspace.model?.softwareSystems?.push(ssys);
     }
 
     softwareSystemChildSection(node: any) {
@@ -108,11 +123,8 @@ class drawioInterpreter extends BaseStructurizrVisitor {
         const s_id = this.elementsByIdentifier.get(node.identifier[0].image);
         const t_id = this.elementsByIdentifier.get(node.identifier[1].image);
         if (s_id && t_id) {
-            // const source = this.workspace.model.getElement(s_id);
-            // const target = this.workspace.model.getElement(t_id);
             const desc = node.StringLiteral[0]?.image ?? "";
             const r = this.mxWorkspace.placeRelationship(desc, "", s_id, t_id);
-            // const r = this.workspace.model.addRelationship(source, target, desc);
         } else {
             throw new Error("Unknown identifiers used in relationship definition");
         }
@@ -148,6 +160,8 @@ class drawioInterpreter extends BaseStructurizrVisitor {
 
     viewsSection(node: any) {
         console.log('Here we are at viewsSection node:');
+        let views: components["schemas"]["Views"] = {};
+        this.sxWorkspace.views = views;
         if (node.viewsChildSection) {
             this.visit(node.viewsChildSection);
         }
@@ -289,6 +303,12 @@ function stripQuotes(str: string) : string {
       throw new TypeError('Expected a string');
     }
     return str.replace(/^"(.+)"$/, '$1');
+}
+
+// Generates a random string, likely I can do better, first thing I found on Google!
+function getID(idLength: number) {
+    var id = [...Array(idLength).keys()].map((elem)=>Math.random().toString(36).substr(2, 1)).join("");
+    return id;
 }
 
 export const DrawioInterpreter = new drawioInterpreter();
