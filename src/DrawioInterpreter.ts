@@ -1,4 +1,5 @@
 import { CstNode } from "chevrotain";
+import * as _ from "lodash";
 import { BaseStructurizrVisitor, StructurizrParser } from "./Parser";
 // import { MxBuilder } from "mxbuilder";
 import { paths, components } from "./structurizr.schema";
@@ -51,6 +52,10 @@ class drawioInterpreter extends BaseStructurizrVisitor {
         console.log('Here we are at modelSection node:');
         const model: components["schemas"]["Model"] = {};
         this.sxWorkspace.model = model;
+        const people:components["schemas"]["Person"][] = [];
+        this.sxWorkspace.model.people = people;
+        const ss:components["schemas"]["SoftwareSystem"][] = [];
+        this.sxWorkspace.model.softwareSystems = ss;
         if (node.modelChildSection) {
             this.visit(node.modelChildSection);
         }
@@ -79,9 +84,11 @@ class drawioInterpreter extends BaseStructurizrVisitor {
     personSection(node: any) {
         console.log('Here we are at personSection node:');
         let person: components["schemas"]["Person"] = {};
+        let relations:components["schemas"]["Relationship"][] = [];
         person.id = getID(22);
-        person.name = node.StringLiteral[0]?.image ?? "";
-        person.description = node.StringLiteral[1]?.image ?? "";      
+        person.name = stripQuotes(node.StringLiteral[0]?.image ?? "");
+        person.description = stripQuotes(node.StringLiteral[1]?.image ?? "");
+        person.relationships = relations;
         // const p = this.mxWorkspace.placePerson(stripQuotes(name), stripQuotes(desc));
         if (node.identifier && person.id) {
             this.elementsByIdentifier.set(stripQuotes(node.identifier[0].image), person.id);
@@ -92,9 +99,11 @@ class drawioInterpreter extends BaseStructurizrVisitor {
     softwareSystemSection(node: any) {
         console.log('Here we are at softwareSystemSection node:');
         let ssys: components["schemas"]["SoftwareSystem"] = {};
+        let relations:components["schemas"]["Relationship"][] = [];
         ssys.id = getID(22);
-        ssys.name = node.StringLiteral[0]?.image ?? "";
-        ssys.description = node.StringLiteral[1]?.image ?? "";
+        ssys.name = stripQuotes(node.StringLiteral[0]?.image ?? "");
+        ssys.description = stripQuotes(node.StringLiteral[1]?.image ?? "");
+        ssys.relationships = relations;
         // const s = this.mxWorkspace.placeSoftwareSystem(stripQuotes(name), stripQuotes(desc));
         if (node.identifier && ssys.id) {
             this.elementsByIdentifier.set(stripQuotes(node.identifier[0].image), ssys.id);
@@ -123,8 +132,14 @@ class drawioInterpreter extends BaseStructurizrVisitor {
         const s_id = this.elementsByIdentifier.get(node.identifier[0].image);
         const t_id = this.elementsByIdentifier.get(node.identifier[1].image);
         if (s_id && t_id) {
-            const desc = node.StringLiteral[0]?.image ?? "";
-            const r = this.mxWorkspace.placeRelationship(desc, "", s_id, t_id);
+            const desc = stripQuotes(node.StringLiteral[0]?.image ?? "");
+            const rel:components["schemas"]["Relationship"] = {};
+            rel.id = getID(22);
+            rel.sourceId = s_id;
+            rel.destinationId = t_id;
+            rel.description = desc;
+            insertRelationship(this.sxWorkspace, s_id, rel);
+            // const r = this.mxWorkspace.placeRelationship(desc, "", s_id, t_id);
         } else {
             throw new Error("Unknown identifiers used in relationship definition");
         }
@@ -312,3 +327,17 @@ function getID(idLength: number) {
 }
 
 export const DrawioInterpreter = new drawioInterpreter();
+
+function insertRelationship(w:WorkSpace, s_id: string, rel:components["schemas"]["Relationship"]) {
+    let item = _.find(w.model?.people, {'id': s_id});
+    if (item != null) {item.relationships?.push(rel); return;}
+    item = _.find(w.model?.softwareSystems, {'id': s_id});
+    if (item != null) {item.relationships?.push(rel); return;}
+    if (w.model?.softwareSystems != null) {
+        for (let ss of w.model?.softwareSystems){
+            item = _.find(ss.containers, {'id': s_id});
+            if (item != null) {item.relationships?.push(rel); return;}
+        }
+    }
+    
+}
