@@ -139,7 +139,6 @@ class drawioInterpreter extends BaseStructurizrVisitor {
             rel.destinationId = t_id;
             rel.description = desc;
             insertRelationship(this.sxWorkspace, s_id, rel);
-            // const r = this.mxWorkspace.placeRelationship(desc, "", s_id, t_id);
         } else {
             throw new Error("Unknown identifiers used in relationship definition");
         }
@@ -184,6 +183,18 @@ class drawioInterpreter extends BaseStructurizrVisitor {
 
     viewsChildSection(node: any) {
         console.log('Here we are at viewsChildSection node:');
+        let slv:components["schemas"]["SystemLandscapeView"][] = [];
+        let scv:components["schemas"]["SystemContextView"][] = [];
+        let ctv:components["schemas"]["ContainerView"][] = [];
+        let cov:components["schemas"]["ComponentView"][] = [];
+        let iv:components["schemas"]["ImageView"][] = [];
+        if (this.sxWorkspace.views != null) {
+            this.sxWorkspace.views.systemLandscapeViews = slv;
+            this.sxWorkspace.views.systemContextViews = scv;
+            this.sxWorkspace.views.containerViews = ctv;
+            this.sxWorkspace.views.componentViews = cov;
+            this.sxWorkspace.views.imageViews = iv;
+        }
         if (node.systemLandscapeView) { for (const view of node.systemLandscapeView) { this.visit(view);} }
         if (node.systemContextView) { for (const view of node.systemContextView) { this.visit(view);} }
         if (node.containerView) { for (const view of node.containerView) { this.visit(view);} }
@@ -246,10 +257,14 @@ class drawioInterpreter extends BaseStructurizrVisitor {
     systemContextView(node: any) {
         console.log('Here we are at systemContextView node:');
         const sws_id = this.elementsByIdentifier.get(node.identifier[0].image) ?? "";
-        // const sws = this.workspace.model.getElement(sws_id);
         const key = node.StringLiteral[0]?.image ?? "";
         const desc = node.StringLiteral[1]?.image ?? "";
         // const view = this.workspace.views.createSystemContextView(sws as SoftwareSystem, stripQuotes(key), stripQuotes(desc));
+        const scv:components["schemas"]["SystemContextView"] = {};
+        scv.key = stripQuotes(key);
+        scv.softwareSystemId = sws_id;
+        scv.description = stripQuotes(desc);
+        this.sxWorkspace.views?.systemContextViews?.push(scv);
         // if (node.viewOptions) { this.visit(node.viewOptions, view); }
     }
 
