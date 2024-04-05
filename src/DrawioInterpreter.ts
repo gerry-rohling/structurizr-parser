@@ -220,26 +220,28 @@ class drawioInterpreter extends BaseStructurizrVisitor {
 
     includeOptions(node: any, view: any) {
         console.log('Here we are at includeOptions node:');
-        if (node.wildcard) { view.addAllElements(); }
+        const elements:components["schemas"]["ElementView"][] = [];
+        let element:components["schemas"]["ElementView"] = {};
+        if (node.wildcard) { element.id = '*'; elements.push(element);  }
         if (node.identifier) {
             const e_id = this.elementsByIdentifier.get(node.identifier[0].image) ?? "";
-            // const ele = this.workspace.model.getElement(e_id);
-            // if (ele) {
-                // view.addElement(ele, true);
-            // }
+            let element:components["schemas"]["ElementView"] = {};
+            element.id = e_id;
+            elements.push(element);
         }
+        view.elements = elements;
     }
 
     autoLayoutOptions(node: any, view: any) {
         console.log('Here we are at autoLayoutOptions node:');
-        const rankDir = node.identifier?.[0].image ?? "tb";
+        const rankDir = node.identifier?.[0].image ?? "TopBottom";
         const rankSep = node.int?.[0].image;
         const nodeSep = node.int?.[1].image;
-        if (rankDir) {
-            view.setAutomaticLayout(rankDir, rankSep, nodeSep);
-        } else {
-            view.setAutomaticLayout(true);
-        }
+        const autoLayout:components["schemas"]["AutomaticLayout"] = {};
+        autoLayout.rankDirection = rankDir;
+        autoLayout.rankSeparation = rankSep;
+        autoLayout.nodeSeparation = nodeSep;
+        view.automaticLayout = autoLayout;
     }
 
     animationOptions(node: any) {
@@ -265,7 +267,7 @@ class drawioInterpreter extends BaseStructurizrVisitor {
         scv.softwareSystemId = sws_id;
         scv.description = stripQuotes(desc);
         this.sxWorkspace.views?.systemContextViews?.push(scv);
-        // if (node.viewOptions) { this.visit(node.viewOptions, view); }
+        if (node.viewOptions) { this.visit(node.viewOptions, scv); }
     }
 
     containerView(node: any) {

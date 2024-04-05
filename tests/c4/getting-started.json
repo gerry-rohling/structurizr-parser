@@ -2,14 +2,14 @@
     "model": {
         "people": [
             {
-                "id": "ejmovowqdvhz595sr80a71",
+                "id": "zsvcxgmswsc8f81blidj9i",
                 "name": "User",
                 "description": "A user of my software system.",
                 "relationships": [
                     {
-                        "id": "mm6x07c5bydc8nmuwywtgy",
-                        "sourceId": "ejmovowqdvhz595sr80a71",
-                        "destinationId": "gy9ki5vfearz2gcmlcdf3q",
+                        "id": "257fy7jlptkm7t6wbm0x3a",
+                        "sourceId": "zsvcxgmswsc8f81blidj9i",
+                        "destinationId": "h1ix85c75483hlqbaleif9",
                         "description": "Uses"
                     }
                 ]
@@ -17,7 +17,7 @@
         ],
         "softwareSystems": [
             {
-                "id": "gy9ki5vfearz2gcmlcdf3q",
+                "id": "h1ix85c75483hlqbaleif9",
                 "name": "Software System",
                 "description": "My software system.",
                 "relationships": []
@@ -29,8 +29,16 @@
         "systemContextViews": [
             {
                 "key": "SystemContext",
-                "softwareSystemId": "gy9ki5vfearz2gcmlcdf3q",
-                "description": ""
+                "softwareSystemId": "h1ix85c75483hlqbaleif9",
+                "description": "",
+                "elements": [
+                    {
+                        "id": "*"
+                    }
+                ],
+                "automaticLayout": {
+                    "rankDirection": "TopBottom"
+                }
             }
         ],
         "containerViews": [],
