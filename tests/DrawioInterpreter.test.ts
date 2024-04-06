@@ -17,8 +17,6 @@ describe('Testing DrawioInterpreter', () => {
         expect(cst.name).toBe("workspaceWrapper");
         const c4Workspace = DrawioInterpreter.visit(cst) as components["schemas"]["Workspace"];
         expect(c4Workspace).toBeDefined();
-        // const dw = c4Diagrams[0] as MxBuilder;
-        // const d = await dw.toDiagram();
         await fsPromise.writeFile("./tests/c4/getting-started.json", JSON.stringify(c4Workspace));
     });
 

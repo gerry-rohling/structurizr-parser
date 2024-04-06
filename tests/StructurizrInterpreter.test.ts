@@ -1,7 +1,7 @@
 import * as fsPromise from 'fs/promises';
 import { StructurizrLexer } from '../src/Lexer';
 import { StructurizrParser } from '../src/Parser';
-import { StructurizrInterpreter } from '../src/Interpreter'
+import { StructurizrInterpreter } from '../src/StructurizrInterpreter'
 import { Workspace } from 'structurizr-typescript';
 
 describe('Testing StructurizrInterpreter', () => {

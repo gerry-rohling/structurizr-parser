@@ -188,12 +188,14 @@ class drawioInterpreter extends BaseStructurizrVisitor {
         let ctv:components["schemas"]["ContainerView"][] = [];
         let cov:components["schemas"]["ComponentView"][] = [];
         let iv:components["schemas"]["ImageView"][] = [];
+        let cfg:components["schemas"]["Configuration"] = {};
         if (this.sxWorkspace.views != null) {
             this.sxWorkspace.views.systemLandscapeViews = slv;
             this.sxWorkspace.views.systemContextViews = scv;
             this.sxWorkspace.views.containerViews = ctv;
             this.sxWorkspace.views.componentViews = cov;
             this.sxWorkspace.views.imageViews = iv;
+            this.sxWorkspace.views.configuration = cfg;
         }
         if (node.systemLandscapeView) { for (const view of node.systemLandscapeView) { this.visit(view);} }
         if (node.systemContextView) { for (const view of node.systemContextView) { this.visit(view);} }
@@ -292,6 +294,9 @@ class drawioInterpreter extends BaseStructurizrVisitor {
 
     stylesSection(node: any) {
         console.log(`Here we are at stylesSection with node: ${node.name}`);
+        if (this.sxWorkspace.views != null && this.sxWorkspace.views.configuration != null){
+            this.sxWorkspace.views.configuration.styles = {};
+        }
     }
 
     elementStyleSection(node: any) {
