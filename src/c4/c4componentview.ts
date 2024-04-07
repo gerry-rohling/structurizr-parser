@@ -1,10 +1,14 @@
 import { C4View } from "./c4view";
 
 export class C4ComponentView extends C4View {
+
+    private componentID: string;
+
     /**
      *
      */
-    constructor(title?: string, description?: string) {
-        super("Component", title, description);
+    constructor(componentId:string, key?: string, description?: string) {
+        super("Component", key, description);
+        this.componentID = componentId;
     }
 }

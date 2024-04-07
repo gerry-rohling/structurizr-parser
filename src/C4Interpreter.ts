@@ -205,7 +205,7 @@ class c4Interpreter extends BaseStructurizrVisitor {
         const sws_id = node.identifier[0].image ?? "";
         const key = stripQuotes(node.StringLiteral[0]?.image ?? "");
         const desc = stripQuotes(node.StringLiteral[1]?.image ?? "");
-        const view = new C4SystemContextView(sws_id, desc);
+        const view = new C4SystemContextView(sws_id, key, desc);
         this.workspace.addView(view);
         if (node.viewOptions) { this.visit(node.viewOptions, sws_id); }
     }

@@ -26,8 +26,9 @@
     "views": [
         {
             "type": "SystemContext",
-            "title": "swSystem",
-            "description": ""
+            "key": "SystemContext",
+            "description": "",
+            "systemID": "swSystem"
         }
     ],
     "id": "main"

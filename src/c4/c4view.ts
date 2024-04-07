@@ -1,12 +1,12 @@
 export class C4View {
     
     private type: "SystemLandscape" | "SystemContext" | "Container" | "Component";
-    private title?: string;
+    private key?: string;
     private description?: string;
 
-    constructor(type: "SystemLandscape" | "SystemContext" | "Container" | "Component", title?: string, description?: string) {
+    constructor(type: "SystemLandscape" | "SystemContext" | "Container" | "Component", key?: string, description?: string) {
         this.type = type;
-        this.title = title;
+        this.key = key;
         this.description = description;
     }
 }

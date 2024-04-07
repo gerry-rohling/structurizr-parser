@@ -1,10 +1,13 @@
 import { C4View } from "./c4view";
 
 export class C4ContainerView extends C4View {
+
+    private containerID: string;
     /**
      *
      */
-    constructor(title?: string, description?: string) {
-        super("Container", title, description);
+    constructor(containerId:string, key?: string, description?: string) {
+        super("Container", key, description);
+        this.containerID = containerId;
     }
 }
