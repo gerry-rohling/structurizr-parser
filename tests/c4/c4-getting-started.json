@@ -25,6 +25,7 @@
     },
     "views": [
         {
+            "include": [],
             "type": "SystemContext",
             "key": "SystemContext",
             "description": "",

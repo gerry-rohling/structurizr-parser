@@ -175,10 +175,10 @@ class c4Interpreter extends BaseStructurizrVisitor {
 
     includeOptions(node: any, view: any) {
         console.log('Here we are at includeOptions node:');
-        // if (node.wildcard) { element.id = '*'; }
-        // if (node.identifier) {
-        //     element.id = e_id;
-        // }
+        if (node.wildcard) {  } // Default is include everything
+        if (node.identifier) {
+             view.includeEntity(node.indentifer[0].image);
+        }
     }
 
     autoLayoutOptions(node: any, view: any) {
@@ -207,7 +207,7 @@ class c4Interpreter extends BaseStructurizrVisitor {
         const desc = stripQuotes(node.StringLiteral[1]?.image ?? "");
         const view = new C4SystemContextView(sws_id, key, desc);
         this.workspace.addView(view);
-        if (node.viewOptions) { this.visit(node.viewOptions, sws_id); }
+        if (node.viewOptions) { this.visit(node.viewOptions, view); }
     }
 
     containerView(node: any) {
