@@ -4,7 +4,7 @@ export class C4ContainerView extends C4View {
     /**
      *
      */
-    constructor() {
-        super();
+    constructor(title?: string, description?: string) {
+        super("Container", title, description);
     }
 }

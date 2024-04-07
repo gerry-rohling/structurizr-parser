@@ -1,1 +1,34 @@
-{"model":{"people":[{"relationships":[{"targetId":"swSystem","description":"Uses"}],"id":"user","name":"User","description":"A user of my software system."}],"softwaresystems":[{"relationships":[],"id":"swSystem","name":"Software System","description":"My software system.","containers":[]}]},"views":[],"id":"main"}
+{
+    "model": {
+        "people": [
+            {
+                "relationships": [
+                    {
+                        "targetId": "swSystem",
+                        "description": "Uses"
+                    }
+                ],
+                "id": "user",
+                "name": "User",
+                "description": "A user of my software system."
+            }
+        ],
+        "softwaresystems": [
+            {
+                "relationships": [],
+                "id": "swSystem",
+                "name": "Software System",
+                "description": "My software system.",
+                "containers": []
+            }
+        ]
+    },
+    "views": [
+        {
+            "type": "SystemContext",
+            "title": "swSystem",
+            "description": ""
+        }
+    ],
+    "id": "main"
+}

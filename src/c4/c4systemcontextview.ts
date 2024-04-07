@@ -4,7 +4,7 @@ export class C4SystemContextView extends C4View {
     /**
      *
      */
-    constructor() {
-        super();
+    constructor(title?: string, description?: string) {
+        super("SystemContext", title, description);
     }
 }

@@ -4,7 +4,7 @@ export class C4ComponentView extends C4View {
     /**
      *
      */
-    constructor() {
-        super();
+    constructor(title?: string, description?: string) {
+        super("Component", title, description);
     }
 }

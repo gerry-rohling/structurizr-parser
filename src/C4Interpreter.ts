@@ -2,6 +2,8 @@ import { BaseStructurizrVisitor, StructurizrParser } from "./Parser";
 import { C4Person } from "./c4/c4person";
 import { C4Relationship } from "./c4/c4relationship";
 import { C4SoftwareSystem } from "./c4/c4softwaresystem";
+import { C4SystemContextView } from "./c4/c4systemcontextview";
+import { C4SystemLandscapeView } from "./c4/c4systemlandscapeview";
 import { C4Workspace } from "./c4/c4workspace";
 
 class c4Interpreter extends BaseStructurizrVisitor {
@@ -158,6 +160,8 @@ class c4Interpreter extends BaseStructurizrVisitor {
 
     systemLandscapeView(node: any) {
         console.log(`Here we are at systemLandscapeView with node: ${node.name}`);
+        const view = new C4SystemLandscapeView();
+        this.workspace.addView(view);
     }
 
     viewOptions(node: any, view: any) {
@@ -201,6 +205,8 @@ class c4Interpreter extends BaseStructurizrVisitor {
         const sws_id = node.identifier[0].image ?? "";
         const key = stripQuotes(node.StringLiteral[0]?.image ?? "");
         const desc = stripQuotes(node.StringLiteral[1]?.image ?? "");
+        const view = new C4SystemContextView(sws_id, desc);
+        this.workspace.addView(view);
         if (node.viewOptions) { this.visit(node.viewOptions, sws_id); }
     }
 
