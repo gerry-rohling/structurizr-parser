@@ -32,5 +32,21 @@
             "systemID": "swSystem"
         }
     ],
+    "styles": {
+        "elementStyles": [
+            {
+                "tag": "Software System",
+                "background": "#1168bd",
+                "color": "#ffffff"
+            },
+            {
+                "tag": "Person",
+                "shape": "Person",
+                "background": "#08427b",
+                "color": "#ffffff"
+            }
+        ],
+        "relationshipStyles": []
+    },
     "id": "main"
 }

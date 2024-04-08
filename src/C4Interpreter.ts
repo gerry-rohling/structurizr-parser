@@ -1,6 +1,8 @@
 import { BaseStructurizrVisitor, StructurizrParser } from "./Parser";
+import { C4ElementStyle } from "./c4/c4elementstyle";
 import { C4Person } from "./c4/c4person";
 import { C4Relationship } from "./c4/c4relationship";
+import { C4RelationshipStyle } from "./c4/c4relationshipstyle";
 import { C4SoftwareSystem } from "./c4/c4softwaresystem";
 import { C4SystemContextView } from "./c4/c4systemcontextview";
 import { C4SystemLandscapeView } from "./c4/c4systemlandscapeview";
@@ -232,30 +234,49 @@ class c4Interpreter extends BaseStructurizrVisitor {
 
     stylesSection(node: any) {
         console.log(`Here we are at stylesSection with node: ${node.name}`);
+        if (node.elementStyleSection) { for (const style of node.elementStyleSection) { this.visit(style);} }
+        if (node.relationshipStyleSection) { for (const rel of node.relationshipStyleSection) { this.visit(rel);} }
     }
 
     elementStyleSection(node: any) {
         console.log(`Here we are at elementStyleSection with node: ${node.name}`);
+        const style = new C4ElementStyle();
+        style.tag = stripQuotes(node.StringLiteral[0]?.image ?? "");
+        if (node.shapeStyle) { this.visit(node.shapeStyle, style); }
+        if (node.backgroundStyle) { this.visit(node.backgroundStyle, style); }
+        if (node.colorStyle) { this.visit(node.colorStyle, style); }
+        if (node.colourStyle) { this.visit(node.colourStyle, style); }
+        this.workspace.addElementStyle(style);
     }
 
     relationshipStyleSection(node: any) {
         console.log(`Here we are at relationshipStyleSection with node: ${node.name}`);
+        const style = new C4RelationshipStyle();
+        this.workspace.addRelationshipStyle(style);
     }
 
-    shapeStyle(node: any) {
+    shapeStyle(node: any, style: any) {
         console.log(`Here we are at shapeStyle with node: ${node.name}`);
+        if (node.person[0] != null) {
+            style.shape = "Person";
+        } else {
+            style.shape = node.shapeEnum[0].image;
+        }
     }
 
-    backgroundStyle(node: any) {
+    backgroundStyle(node: any, style: any) {
         console.log(`Here we are at backgroundStyle with node: ${node.name}`);
+        style.background = node.hexColor[0].image;
     }
 
-    colorStyle(node: any) {
+    colorStyle(node: any, style: any) {
         console.log(`Here we are at colorStyle with node: ${node.name}`);
+        style.color = node.hexColor[0].image;
     }
 
-    colourStyle(node: any) {
+    colourStyle(node: any, style: any) {
         console.log(`Here we are at colourStyle with node: ${node.name}`);
+        style.color = node.hexColor[0].image;
     }
 
     fontStyle(node: any) {

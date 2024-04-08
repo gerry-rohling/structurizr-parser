@@ -1,7 +1,10 @@
+import { C4ElementStyle } from "./c4elementstyle";
 import { C4Model } from "./c4model";
 import { C4Person } from "./c4person";
 import { C4Relationship } from "./c4relationship";
+import { C4RelationshipStyle } from "./c4relationshipstyle";
 import { C4SoftwareSystem } from "./c4softwaresystem";
+import { C4Styles } from "./c4styles";
 import { C4SystemLandscapeView } from "./c4systemlandscapeview";
 import { C4View } from "./c4view";
 
@@ -13,6 +16,7 @@ export class C4Workspace {
 
     private model: C4Model = new C4Model();
     private views: C4View[] = [];
+    private styles: C4Styles = new C4Styles();
 
     constructor(id:string, name:string, description?:string) {
         this.id = id;
@@ -34,5 +38,13 @@ export class C4Workspace {
 
     addView(view: C4SystemLandscapeView) {
         this.views.push(view);
+    }
+
+    addRelationshipStyle(style: C4RelationshipStyle) {
+        this.styles.addRelationshipStyle(style);
+    }
+
+    addElementStyle(style: C4ElementStyle) {
+        this.styles.addElementStyle(style);
     }
 }
