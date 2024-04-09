@@ -6,7 +6,7 @@ export class C4Component extends C4Element {
         super(id, name, description);
     }
     
-    findSourceElement(s_id: string) {
+    findSourceElement(s_id: string) : C4Element | undefined {
         if (this.Id === s_id) {
             return this;
         } 

@@ -1,13 +1,18 @@
+import { C4Group } from "./c4group";
 import { C4Person } from "./c4person";
-import { C4Relationship } from "./c4relationship";
 import { C4SoftwareSystem } from "./c4softwaresystem";
 
 export class C4Model {
 
     private people:C4Person[] = [];
     private softwaresystems:C4SoftwareSystem[] = [];
+    private groups:C4Group[] = [];
 
     constructor() {} 
+
+    addGroup(group: C4Group) {
+        this.groups.push(group);
+    }
 
     addPerson(person: C4Person) {
         this.people.push(person);

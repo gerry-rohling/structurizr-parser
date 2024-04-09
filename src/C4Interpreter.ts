@@ -1,5 +1,7 @@
 import { BaseStructurizrVisitor, StructurizrParser } from "./Parser";
+import { C4Container } from "./c4/c4container";
 import { C4ElementStyle } from "./c4/c4elementstyle";
+import { C4Group } from "./c4/c4group";
 import { C4Person } from "./c4/c4person";
 import { C4Relationship } from "./c4/c4relationship";
 import { C4RelationshipStyle } from "./c4/c4relationshipstyle";
@@ -62,39 +64,61 @@ class c4Interpreter extends BaseStructurizrVisitor {
 
     groupSection(node: any) {
         console.log(`Here we are at groupSection with node: ${node.name}`);
+        let id = "";
+        if (node.identifier) { id = node.identifier[0].image; }
+        const name = stripQuotes(node.StringLiteral[0]?.image ?? "");
+        const group = new C4Group(id, name);
         if (node.groupChildSection) {
-            this.visit(node.groupChildSection);
+            this.visit(node.groupChildSection, group);
         }
+        this.workspace.addGroup(group);
     }
 
-    groupChildSection(node: any) {
+    groupChildSection(node: any, group: C4Group) {
         console.log(`Here we are at groupChildSection with node: ${node.name}`);
+        if (node.personSection) { for (const person of node.personSection) { this.visit(person, group); }}
+        if (node.softwareSystemSection) { for (const sSystem of node.softwareSystemSection) { this.visit(sSystem, group); }}
     }
 
-    personSection(node: any) {
+    personSection(node: any, group?: C4Group) {
         console.log('Here we are at personSection node:');
         const id = node.identifier[0].image;
         const name = stripQuotes(node.StringLiteral[0]?.image ?? "");
         const description = stripQuotes(node.StringLiteral[1]?.image ?? "");
         const person = new C4Person(id, name, description);
-        this.workspace.addPerson(person);
+        if (group){
+            group.addPerson(person);
+        } else {
+            this.workspace.addPerson(person);
+        }
     }
 
-    softwareSystemSection(node: any) {
+    softwareSystemSection(node: any, group?: C4Group) {
         console.log('Here we are at softwareSystemSection node:');
         const id = node.identifier[0].image;
         const name = stripQuotes(node.StringLiteral[0]?.image ?? "");
         const description = stripQuotes(node.StringLiteral[1]?.image ?? "");
         const ssys = new C4SoftwareSystem(id, name, description);
-        this.workspace.addSoftwareSystem(ssys);
+        if (node.softwareSystemChildSection){ this.visit(node.softwareSystemChildSection, ssys); }
+        if (group){
+            group.addSoftwareSystem(ssys);
+        } else {
+            this.workspace.addSoftwareSystem(ssys);
+        }
     }
 
-    softwareSystemChildSection(node: any) {
+    softwareSystemChildSection(node: any, ssys: C4SoftwareSystem) {
         console.log(`Here we are at softwareSystemChildSection with node: ${node.name}`);
+        if (node.containerSection) { for (const ctr of node.containerSection) { this.visit(ctr, ssys); }}
     }
 
-    containerSection(node: any) {
+    containerSection(node: any, ssys:C4SoftwareSystem) {
         console.log(`Here we are at ContainerSection with node: ${node.name}`);
+        const id = node.identifier[0].image;
+        const name = stripQuotes(node.StringLiteral[0]?.image ?? "");
+        const description = stripQuotes(node.StringLiteral[1]?.image ?? "");
+        const container = new C4Container(id, name, description);
+        ssys.addContainer(container);
     }
 
     containerChildSection(node: any) {
@@ -257,7 +281,7 @@ class c4Interpreter extends BaseStructurizrVisitor {
 
     shapeStyle(node: any, style: any) {
         console.log(`Here we are at shapeStyle with node: ${node.name}`);
-        if (node.person[0] != null) {
+        if (node.person) {
             style.shape = "Person";
         } else {
             style.shape = node.shapeEnum[0].image;

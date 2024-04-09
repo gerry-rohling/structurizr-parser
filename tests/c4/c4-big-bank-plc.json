@@ -1,0 +1,191 @@
+{
+    "model": {
+        "people": [
+            {
+                "relationships": [
+                    {
+                        "targetId": "internetBankingSystem",
+                        "description": "Views account balances, and makes payments using"
+                    },
+                    {
+                        "targetId": "supportStaff",
+                        "description": "Asks questions to"
+                    },
+                    {
+                        "targetId": "atm",
+                        "description": "Withdraws cash using"
+                    },
+                    {
+                        "targetId": "webApplication",
+                        "description": "Visits bigbank.com/ib using"
+                    },
+                    {
+                        "targetId": "singlePageApplication",
+                        "description": "Views account balances, and makes payments using"
+                    },
+                    {
+                        "targetId": "mobileApp",
+                        "description": "Views account balances, and makes payments using"
+                    }
+                ],
+                "id": "customer",
+                "name": "Personal Banking Customer",
+                "description": "A customer of the bank, with personal bank accounts."
+            }
+        ],
+        "softwaresystems": [],
+        "groups": [
+            {
+                "people": [
+                    {
+                        "relationships": [],
+                        "id": "supportStaff",
+                        "name": "Customer Service Staff",
+                        "description": "Customer service staff within the bank."
+                    },
+                    {
+                        "relationships": [],
+                        "id": "backoffice",
+                        "name": "Back Office Staff",
+                        "description": "Administration and support staff within the bank."
+                    }
+                ],
+                "softwaresystems": [
+                    {
+                        "relationships": [],
+                        "id": "mainframe",
+                        "name": "Mainframe Banking System",
+                        "description": "Stores all of the core banking information about customers, accounts, transactions, etc.",
+                        "containers": []
+                    },
+                    {
+                        "relationships": [],
+                        "id": "email",
+                        "name": "E-mail System",
+                        "description": "The internal Microsoft Exchange e-mail system.",
+                        "containers": []
+                    },
+                    {
+                        "relationships": [],
+                        "id": "atm",
+                        "name": "ATM",
+                        "description": "Allows customers to withdraw cash.",
+                        "containers": []
+                    },
+                    {
+                        "relationships": [],
+                        "id": "internetBankingSystem",
+                        "name": "Internet Banking System",
+                        "description": "Allows customers to view information about their bank accounts, and make payments.",
+                        "containers": [
+                            {
+                                "relationships": [],
+                                "id": "singlePageApplication",
+                                "name": "Single-Page Application",
+                                "description": "Provides all of the Internet banking functionality to customers via their web browser.",
+                                "components": []
+                            },
+                            {
+                                "relationships": [],
+                                "id": "mobileApp",
+                                "name": "Mobile App",
+                                "description": "Provides a limited subset of the Internet banking functionality to customers via their mobile device.",
+                                "components": []
+                            },
+                            {
+                                "relationships": [],
+                                "id": "webApplication",
+                                "name": "Web Application",
+                                "description": "Delivers the static content and the Internet banking single page application.",
+                                "components": []
+                            },
+                            {
+                                "relationships": [],
+                                "id": "apiApplication",
+                                "name": "API Application",
+                                "description": "Provides Internet banking functionality via a JSON/HTTPS API.",
+                                "components": []
+                            },
+                            {
+                                "relationships": [],
+                                "id": "database",
+                                "name": "Database",
+                                "description": "Stores user registration information, hashed authentication credentials, access logs, etc.",
+                                "components": []
+                            }
+                        ]
+                    }
+                ],
+                "id": "",
+                "name": "Big Bank plc"
+            }
+        ]
+    },
+    "views": [
+        {
+            "include": [],
+            "type": "SystemLandscape"
+        },
+        {
+            "include": [],
+            "type": "SystemContext",
+            "key": "SystemContext",
+            "description": "",
+            "systemID": "internetBankingSystem"
+        }
+    ],
+    "styles": {
+        "elementStyles": [
+            {
+                "tag": "Person",
+                "shape": "Person",
+                "color": "#ffffff"
+            },
+            {
+                "tag": "Customer",
+                "background": "#08427b"
+            },
+            {
+                "tag": "Bank Staff",
+                "background": "#999999"
+            },
+            {
+                "tag": "Software System",
+                "background": "#1168bd",
+                "color": "#ffffff"
+            },
+            {
+                "tag": "Existing System",
+                "background": "#999999",
+                "color": "#ffffff"
+            },
+            {
+                "tag": "Container",
+                "background": "#438dd5",
+                "color": "#ffffff"
+            },
+            {
+                "tag": "Web Browser",
+                "shape": "WebBrowser"
+            },
+            {
+                "tag": "Mobile App",
+                "shape": "MobileDeviceLandscape"
+            },
+            {
+                "tag": "Database",
+                "shape": "Cylinder"
+            },
+            {
+                "tag": "Component",
+                "background": "#85bbf0",
+                "color": "#000000"
+            },
+            {
+                "tag": "Failover"
+            }
+        ],
+        "relationshipStyles": []
+    },
+    "id": "main"
+}

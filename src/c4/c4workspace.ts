@@ -1,4 +1,5 @@
 import { C4ElementStyle } from "./c4elementstyle";
+import { C4Group } from "./c4group";
 import { C4Model } from "./c4model";
 import { C4Person } from "./c4person";
 import { C4Relationship } from "./c4relationship";
@@ -22,6 +23,10 @@ export class C4Workspace {
         this.id = id;
         this.name = name;
         this.description = description;
+    }
+
+    addGroup(group: C4Group) {
+        this.model.addGroup(group);
     }
 
     addPerson(person: C4Person) {
