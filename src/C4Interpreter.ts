@@ -1,4 +1,5 @@
 import { BaseStructurizrVisitor, StructurizrParser } from "./Parser";
+import { C4Component } from "./c4/c4component";
 import { C4Container } from "./c4/c4container";
 import { C4ElementStyle } from "./c4/c4elementstyle";
 import { C4Group } from "./c4/c4group";
@@ -118,15 +119,22 @@ class c4Interpreter extends BaseStructurizrVisitor {
         const name = stripQuotes(node.StringLiteral[0]?.image ?? "");
         const description = stripQuotes(node.StringLiteral[1]?.image ?? "");
         const container = new C4Container(id, name, description);
+        if (node.containerChildSection) { this.visit(node.containerChildSection, container)}
         ssys.addContainer(container);
     }
 
-    containerChildSection(node: any) {
+    containerChildSection(node: any, ctr: C4Container) {
         console.log(`Here we are at ContainerChildSection with node: ${node.name}`);
+        if (node.componentSection) { for (const comp of node.componentSection) { this.visit(comp, ctr); }}
     }
 
-    componentSection(node: any) {
+    componentSection(node: any, ctr: C4Container) {
         console.log(`Here we are at ComponentSection with node: ${node.name}`);
+        const id = node.identifier[0].image;
+        const name = stripQuotes(node.StringLiteral[0]?.image ?? "");
+        const description = stripQuotes(node.StringLiteral[1]?.image ?? "");
+        const component = new C4Component(id, name, description);
+        ctr.addComponent(component);
     }
 
     explicitRelationship(node: any) {

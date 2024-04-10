@@ -9,6 +9,10 @@ export class C4Container extends C4Element {
         super(id, name, description);
     }
 
+    addComponent(component: C4Component) {
+        this.components.push(component);
+    }
+
     findSourceElement(s_id: string) : C4Element | undefined {
         if (this.Id === s_id) {
             return this;

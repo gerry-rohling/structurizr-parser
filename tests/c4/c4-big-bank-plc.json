@@ -104,7 +104,44 @@
                                 "id": "apiApplication",
                                 "name": "API Application",
                                 "description": "Provides Internet banking functionality via a JSON/HTTPS API.",
-                                "components": []
+                                "components": [
+                                    {
+                                        "relationships": [],
+                                        "id": "signinController",
+                                        "name": "Sign In Controller",
+                                        "description": "Allows users to sign in to the Internet Banking System."
+                                    },
+                                    {
+                                        "relationships": [],
+                                        "id": "accountsSummaryController",
+                                        "name": "Accounts Summary Controller",
+                                        "description": "Provides customers with a summary of their bank accounts."
+                                    },
+                                    {
+                                        "relationships": [],
+                                        "id": "resetPasswordController",
+                                        "name": "Reset Password Controller",
+                                        "description": "Allows users to reset their passwords with a single use URL."
+                                    },
+                                    {
+                                        "relationships": [],
+                                        "id": "securityComponent",
+                                        "name": "Security Component",
+                                        "description": "Provides functionality related to signing in, changing passwords, etc."
+                                    },
+                                    {
+                                        "relationships": [],
+                                        "id": "mainframeBankingSystemFacade",
+                                        "name": "Mainframe Banking System Facade",
+                                        "description": "A facade onto the mainframe banking system."
+                                    },
+                                    {
+                                        "relationships": [],
+                                        "id": "emailComponent",
+                                        "name": "E-mail Component",
+                                        "description": "Sends e-mails to users."
+                                    }
+                                ]
                             },
                             {
                                 "relationships": [],
