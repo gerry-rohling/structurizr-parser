@@ -1,6 +1,8 @@
 import { BaseStructurizrVisitor, StructurizrParser } from "./Parser";
 import { C4Component } from "./c4/c4component";
+import { C4ComponentView } from "./c4/c4componentview";
 import { C4Container } from "./c4/c4container";
+import { C4ContainerView } from "./c4/c4containerview";
 import { C4ElementStyle } from "./c4/c4elementstyle";
 import { C4Group } from "./c4/c4group";
 import { C4Person } from "./c4/c4person";
@@ -246,10 +248,22 @@ class c4Interpreter extends BaseStructurizrVisitor {
 
     containerView(node: any) {
         console.log(`Here we are at containerView with node: ${node.name}`);
+        const ctr_id = node.identifier[0].image ?? "";
+        const key = stripQuotes(node.StringLiteral[0]?.image ?? "");
+        const desc = stripQuotes(node.StringLiteral[1]?.image ?? "");
+        const view = new C4ContainerView(ctr_id, key, desc);
+        this.workspace.addView(view);
+        if (node.viewOptions) { this.visit(node.viewOptions, view); }
     }
 
     componentView(node: any) { 
         console.log(`Here we are at componentView with node: ${node.name}`);
+        const com_id = node.identifier[0].image ?? "";
+        const key = stripQuotes(node.StringLiteral[0]?.image ?? "");
+        const desc = stripQuotes(node.StringLiteral[1]?.image ?? "");
+        const view = new C4ComponentView(com_id, key, desc);
+        this.workspace.addView(view);
+        if (node.viewOptions) { this.visit(node.viewOptions, view); }
     }
 
     imageSection(node: any) {

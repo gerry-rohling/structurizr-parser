@@ -23,16 +23,16 @@ export class C4Model {
     }
 
     addRelationship(s_id: string, t_id: string, desc: string) {
-        // Find person
+        // Find person in root Software Systems
         for (const per of this.people){
             const ele = per.findSourceElement(s_id);
-                        // If found, add relationship
-                        if (ele != undefined) {
-                            ele.addRelationship(t_id, desc);
-                            return;
-                        }
+            // If found, add relationship
+            if (ele != undefined) {
+                ele.addRelationship(t_id, desc);
+                return;
+            }
         }
-        // Find entity
+        // Find entity in root Software Systems
         for (const element of this.softwaresystems){
             const ele = element.findSourceElement(s_id);
             // If found, add relationship
@@ -40,6 +40,10 @@ export class C4Model {
                 ele.addRelationship(t_id, desc);
                 return;
             }
+        }
+        // Find person or element in a group
+        for (const grp of this.groups){
+            if (grp.addRelationship(s_id, t_id, desc) === true){ return; };
         }
     }
 }

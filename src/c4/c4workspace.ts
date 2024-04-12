@@ -38,6 +38,7 @@ export class C4Workspace {
     }
 
     addRelationship(s_id: string, t_id: string, desc: string) {
+        console.log('Workspace asked to create a relationship between %s and %s', s_id, t_id);
         this.model.addRelationship(s_id, t_id, desc);
     }
 

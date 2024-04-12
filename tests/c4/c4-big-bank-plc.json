@@ -38,13 +38,23 @@
             {
                 "people": [
                     {
-                        "relationships": [],
+                        "relationships": [
+                            {
+                                "targetId": "mainframe",
+                                "description": "Uses"
+                            }
+                        ],
                         "id": "supportStaff",
                         "name": "Customer Service Staff",
                         "description": "Customer service staff within the bank."
                     },
                     {
-                        "relationships": [],
+                        "relationships": [
+                            {
+                                "targetId": "mainframe",
+                                "description": "Uses"
+                            }
+                        ],
                         "id": "backoffice",
                         "name": "Back Office Staff",
                         "description": "Administration and support staff within the bank."
@@ -59,41 +69,91 @@
                         "containers": []
                     },
                     {
-                        "relationships": [],
+                        "relationships": [
+                            {
+                                "targetId": "customer",
+                                "description": "Sends e-mails to"
+                            }
+                        ],
                         "id": "email",
                         "name": "E-mail System",
                         "description": "The internal Microsoft Exchange e-mail system.",
                         "containers": []
                     },
                     {
-                        "relationships": [],
+                        "relationships": [
+                            {
+                                "targetId": "mainframe",
+                                "description": "Uses"
+                            }
+                        ],
                         "id": "atm",
                         "name": "ATM",
                         "description": "Allows customers to withdraw cash.",
                         "containers": []
                     },
                     {
-                        "relationships": [],
+                        "relationships": [
+                            {
+                                "targetId": "mainframe",
+                                "description": "Gets account information from, and makes payments using"
+                            },
+                            {
+                                "targetId": "email",
+                                "description": "Sends e-mail using"
+                            }
+                        ],
                         "id": "internetBankingSystem",
                         "name": "Internet Banking System",
                         "description": "Allows customers to view information about their bank accounts, and make payments.",
                         "containers": [
                             {
-                                "relationships": [],
+                                "relationships": [
+                                    {
+                                        "targetId": "signinController",
+                                        "description": "Makes API calls to"
+                                    },
+                                    {
+                                        "targetId": "accountsSummaryController",
+                                        "description": "Makes API calls to"
+                                    },
+                                    {
+                                        "targetId": "resetPasswordController",
+                                        "description": "Makes API calls to"
+                                    }
+                                ],
                                 "id": "singlePageApplication",
                                 "name": "Single-Page Application",
                                 "description": "Provides all of the Internet banking functionality to customers via their web browser.",
                                 "components": []
                             },
                             {
-                                "relationships": [],
+                                "relationships": [
+                                    {
+                                        "targetId": "signinController",
+                                        "description": "Makes API calls to"
+                                    },
+                                    {
+                                        "targetId": "accountsSummaryController",
+                                        "description": "Makes API calls to"
+                                    },
+                                    {
+                                        "targetId": "resetPasswordController",
+                                        "description": "Makes API calls to"
+                                    }
+                                ],
                                 "id": "mobileApp",
                                 "name": "Mobile App",
                                 "description": "Provides a limited subset of the Internet banking functionality to customers via their mobile device.",
                                 "components": []
                             },
                             {
-                                "relationships": [],
+                                "relationships": [
+                                    {
+                                        "targetId": "singlePageApplication",
+                                        "description": "Delivers to the customer's web browser"
+                                    }
+                                ],
                                 "id": "webApplication",
                                 "name": "Web Application",
                                 "description": "Delivers the static content and the Internet banking single page application.",
@@ -106,37 +166,71 @@
                                 "description": "Provides Internet banking functionality via a JSON/HTTPS API.",
                                 "components": [
                                     {
-                                        "relationships": [],
+                                        "relationships": [
+                                            {
+                                                "targetId": "securityComponent",
+                                                "description": "Uses"
+                                            }
+                                        ],
                                         "id": "signinController",
                                         "name": "Sign In Controller",
                                         "description": "Allows users to sign in to the Internet Banking System."
                                     },
                                     {
-                                        "relationships": [],
+                                        "relationships": [
+                                            {
+                                                "targetId": "mainframeBankingSystemFacade",
+                                                "description": "Uses"
+                                            }
+                                        ],
                                         "id": "accountsSummaryController",
                                         "name": "Accounts Summary Controller",
                                         "description": "Provides customers with a summary of their bank accounts."
                                     },
                                     {
-                                        "relationships": [],
+                                        "relationships": [
+                                            {
+                                                "targetId": "securityComponent",
+                                                "description": "Uses"
+                                            },
+                                            {
+                                                "targetId": "emailComponent",
+                                                "description": "Uses"
+                                            }
+                                        ],
                                         "id": "resetPasswordController",
                                         "name": "Reset Password Controller",
                                         "description": "Allows users to reset their passwords with a single use URL."
                                     },
                                     {
-                                        "relationships": [],
+                                        "relationships": [
+                                            {
+                                                "targetId": "database",
+                                                "description": "Reads from and writes to"
+                                            }
+                                        ],
                                         "id": "securityComponent",
                                         "name": "Security Component",
                                         "description": "Provides functionality related to signing in, changing passwords, etc."
                                     },
                                     {
-                                        "relationships": [],
+                                        "relationships": [
+                                            {
+                                                "targetId": "mainframe",
+                                                "description": "Makes API calls to"
+                                            }
+                                        ],
                                         "id": "mainframeBankingSystemFacade",
                                         "name": "Mainframe Banking System Facade",
                                         "description": "A facade onto the mainframe banking system."
                                     },
                                     {
-                                        "relationships": [],
+                                        "relationships": [
+                                            {
+                                                "targetId": "email",
+                                                "description": "Sends e-mail using"
+                                            }
+                                        ],
                                         "id": "emailComponent",
                                         "name": "E-mail Component",
                                         "description": "Sends e-mails to users."
@@ -169,6 +263,20 @@
             "key": "SystemContext",
             "description": "",
             "systemID": "internetBankingSystem"
+        },
+        {
+            "include": [],
+            "type": "Container",
+            "key": "Containers",
+            "description": "",
+            "containerID": "internetBankingSystem"
+        },
+        {
+            "include": [],
+            "type": "Component",
+            "key": "Components",
+            "description": "",
+            "componentID": "apiApplication"
         }
     ],
     "styles": {
