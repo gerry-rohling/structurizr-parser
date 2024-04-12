@@ -30,13 +30,18 @@ const cst = StructurizrParser.workspaceWrapper();
 
 ## Interpreter
 
-This last step will take the syntax tree produced by the Parser and execute some operations to produce a given desired outcome. At present the interpreter tries to convert the syntax tree in structurzr class. It is possible that the better approach would be for the interpreter to directly generate on output like a draw.io (MX) file for graphical rendering.
+This last step will take the syntax tree produced by the Parser and execute some operations to produce a given desired outcome. At present the Structurizr Interpreter tries to convert the syntax tree in structurzr class. The new C4 Interpreter produces at the moment a light weight C4 class. It is possible that the better approach would be for the interpreter to directly generate on output like a draw.io (MX) file for graphical rendering.
 
 ### Produce a structurizr class
 
 ```typescript
 const wspace = StructurizrInterpreter.visit(cst) as Workspace;
 ```
+### Produce a light weight C4 Class
+
+```typescript
+const c4wspace = C4Interpreter.visit(cst) as C4Workspace;
+```
 
 ### Future Work
-It is for future work to see if we have a flag set (or multiple interpreters) designed to produce final outputs like the structurizr class or an MX file or a PlantUML file or whatever.
+It is for future work to see if we will continue to support multiple interpreters designed to produce final outputs like the Structurizr class, the new C4 class, or an MX file or a PlantUML file or whatever.
