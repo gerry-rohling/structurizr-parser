@@ -249,8 +249,8 @@ class c4Interpreter extends BaseStructurizrVisitor {
     containerView(node: any) {
         console.log('Here we are at containerView node:');
         const ctr_id = node.identifier[0].image ?? "";
-        const key = stripQuotes(node.StringLiteral[0]?.image ?? "");
-        const desc = stripQuotes(node.StringLiteral[1]?.image ?? "");
+        const key = stripQuotes(node.StringLiteral?.[0]?.image ?? "");
+        const desc = stripQuotes(node.StringLiteral?.[1]?.image ?? "");
         const view = new C4ContainerView(ctr_id, key, desc);
         this.workspace.addView(view);
         if (node.viewOptions) { this.visit(node.viewOptions, view); }
@@ -259,8 +259,8 @@ class c4Interpreter extends BaseStructurizrVisitor {
     componentView(node: any) { 
         console.log('Here we are at componentView node:');
         const com_id = node.identifier[0].image ?? "";
-        const key = stripQuotes(node.StringLiteral[0]?.image ?? "");
-        const desc = stripQuotes(node.StringLiteral[1]?.image ?? "");
+        const key = stripQuotes(node.StringLiteral?.[0]?.image ?? "");
+        const desc = stripQuotes(node.StringLiteral?.[1]?.image ?? "");
         const view = new C4ComponentView(com_id, key, desc);
         this.workspace.addView(view);
         if (node.viewOptions) { this.visit(node.viewOptions, view); }
