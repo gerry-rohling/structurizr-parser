@@ -40,7 +40,7 @@ class c4Interpreter extends BaseStructurizrVisitor {
     }
 
     workspaceSection(node: any) {
-        console.log('`Here we are at workspaceSection node:');
+        console.log('Here we are at workspaceSection node:');
         if (node.modelSection) {
             this.visit(node.modelSection);
         }
@@ -66,7 +66,7 @@ class c4Interpreter extends BaseStructurizrVisitor {
     }
 
     groupSection(node: any) {
-        console.log(`Here we are at groupSection with node: ${node.name}`);
+        console.log('Here we are at groupSection node:');
         let id = "";
         if (node.identifier) { id = node.identifier[0].image; }
         const name = stripQuotes(node.StringLiteral[0]?.image ?? "");
@@ -78,7 +78,7 @@ class c4Interpreter extends BaseStructurizrVisitor {
     }
 
     groupChildSection(node: any, group: C4Group) {
-        console.log(`Here we are at groupChildSection with node: ${node.name}`);
+        console.log('Here we are at groupChildSection with node:');
         if (node.personSection) { for (const person of node.personSection) { this.visit(person, group); }}
         if (node.softwareSystemSection) { for (const sSystem of node.softwareSystemSection) { this.visit(sSystem, group); }}
     }
@@ -111,12 +111,12 @@ class c4Interpreter extends BaseStructurizrVisitor {
     }
 
     softwareSystemChildSection(node: any, ssys: C4SoftwareSystem) {
-        console.log(`Here we are at softwareSystemChildSection with node: ${node.name}`);
+        console.log('Here we are at softwareSystemChildSection node:');
         if (node.containerSection) { for (const ctr of node.containerSection) { this.visit(ctr, ssys); }}
     }
 
     containerSection(node: any, ssys:C4SoftwareSystem) {
-        console.log(`Here we are at ContainerSection with node: ${node.name}`);
+        console.log('Here we are at ContainerSection node:');
         const id = node.identifier[0].image;
         const name = stripQuotes(node.StringLiteral[0]?.image ?? "");
         const description = stripQuotes(node.StringLiteral[1]?.image ?? "");
@@ -126,12 +126,12 @@ class c4Interpreter extends BaseStructurizrVisitor {
     }
 
     containerChildSection(node: any, ctr: C4Container) {
-        console.log(`Here we are at ContainerChildSection with node: ${node.name}`);
+        console.log('Here we are at ContainerChildSection node:');
         if (node.componentSection) { for (const comp of node.componentSection) { this.visit(comp, ctr); }}
     }
 
     componentSection(node: any, ctr: C4Container) {
-        console.log(`Here we are at ComponentSection with node: ${node.name}`);
+        console.log('Here we are at ComponentSection node:');
         const id = node.identifier[0].image;
         const name = stripQuotes(node.StringLiteral[0]?.image ?? "");
         const description = stripQuotes(node.StringLiteral[1]?.image ?? "");
@@ -195,7 +195,7 @@ class c4Interpreter extends BaseStructurizrVisitor {
     }
 
     systemLandscapeView(node: any) {
-        console.log(`Here we are at systemLandscapeView with node: ${node.name}`);
+        console.log('Here we are at systemLandscapeView node:');
         const view = new C4SystemLandscapeView();
         this.workspace.addView(view);
     }
@@ -239,15 +239,15 @@ class c4Interpreter extends BaseStructurizrVisitor {
     systemContextView(node: any) {
         console.log('Here we are at systemContextView node:');
         const sws_id = node.identifier[0].image ?? "";
-        const key = stripQuotes(node.StringLiteral[0]?.image ?? "");
-        const desc = stripQuotes(node.StringLiteral[1]?.image ?? "");
+        const key = stripQuotes(node.StringLiteral?.[0]?.image ?? "");
+        const desc = stripQuotes(node.StringLiteral?.[1]?.image ?? "");
         const view = new C4SystemContextView(sws_id, key, desc);
         this.workspace.addView(view);
         if (node.viewOptions) { this.visit(node.viewOptions, view); }
     }
 
     containerView(node: any) {
-        console.log(`Here we are at containerView with node: ${node.name}`);
+        console.log('Here we are at containerView node:');
         const ctr_id = node.identifier[0].image ?? "";
         const key = stripQuotes(node.StringLiteral[0]?.image ?? "");
         const desc = stripQuotes(node.StringLiteral[1]?.image ?? "");
@@ -257,7 +257,7 @@ class c4Interpreter extends BaseStructurizrVisitor {
     }
 
     componentView(node: any) { 
-        console.log(`Here we are at componentView with node: ${node.name}`);
+        console.log('Here we are at componentView node:');
         const com_id = node.identifier[0].image ?? "";
         const key = stripQuotes(node.StringLiteral[0]?.image ?? "");
         const desc = stripQuotes(node.StringLiteral[1]?.image ?? "");
@@ -279,13 +279,13 @@ class c4Interpreter extends BaseStructurizrVisitor {
     }
 
     stylesSection(node: any) {
-        console.log(`Here we are at stylesSection with node: ${node.name}`);
+        console.log('Here we are at stylesSection node:');
         if (node.elementStyleSection) { for (const style of node.elementStyleSection) { this.visit(style);} }
         if (node.relationshipStyleSection) { for (const rel of node.relationshipStyleSection) { this.visit(rel);} }
     }
 
     elementStyleSection(node: any) {
-        console.log(`Here we are at elementStyleSection with node: ${node.name}`);
+        console.log('Here we are at elementStyleSection node:');
         const style = new C4ElementStyle();
         style.tag = stripQuotes(node.StringLiteral[0]?.image ?? "");
         if (node.shapeStyle) { this.visit(node.shapeStyle, style); }
