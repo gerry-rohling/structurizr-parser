@@ -46,4 +46,16 @@ export class C4Model {
             if (grp.addRelationship(s_id, t_id, desc) === true){ return; };
         }
     }
+
+    get People() {
+        return this.people;
+    }
+
+    get SoftwareSystems() {
+        return this.softwaresystems;
+    }
+
+    get Groups() {
+        return this.groups;
+    }
 }

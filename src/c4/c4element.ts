@@ -17,6 +17,18 @@ export class C4Element {
         return this.id;
     }
 
+    get Name() {
+        return this.name;
+    }
+
+    get Description() {
+        return this.description;
+    }
+
+    get Relationships() {
+        return this.relationships;
+    }
+
     addRelationship(targetId: string, description?: string, technology?: string) {
         const rel = new C4Relationship(targetId, description, technology);
         this.relationships.push(rel);

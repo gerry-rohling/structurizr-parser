@@ -15,4 +15,8 @@ export class C4Person extends C4Element {
         } 
         return undefined;
     }
+
+    get Location() {
+        return this.location;
+    }
 }

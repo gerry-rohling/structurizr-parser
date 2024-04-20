@@ -17,4 +17,12 @@ export class C4Styles {
     addRelationshipStyle(style: C4RelationshipStyle) {
         this.relationshipStyles.push(style);
     }
+
+    get ElementStyles() {
+        return this.elementStyles;
+    }
+
+    get RelationshipStyles() {
+        return this.relationshipStyles;
+    }
 }

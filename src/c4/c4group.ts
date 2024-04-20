@@ -43,4 +43,12 @@ export class C4Group {
         }
         return false;
     }
+
+    get People() {
+        return this.people;
+    }
+
+    get SoftwareSystems() {
+        return this.softwaresystems;
+    }
 }

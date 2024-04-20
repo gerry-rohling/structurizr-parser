@@ -27,4 +27,8 @@ export class C4SoftwareSystem extends C4Element {
         }
         return undefined;
     }
+
+    get Containers() {
+        return this.containers;
+    }
 }

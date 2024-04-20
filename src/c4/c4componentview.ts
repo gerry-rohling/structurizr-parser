@@ -11,4 +11,8 @@ export class C4ComponentView extends C4View {
         super("Component", key, description);
         this.componentID = componentId;
     }
+
+    get ComponentId() {
+        return this.componentID;
+    }
 }

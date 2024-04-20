@@ -10,4 +10,8 @@ export class C4ContainerView extends C4View {
         super("Container", key, description);
         this.containerID = containerId;
     }
+
+    get ContainerId() {
+        return this.containerID;
+    }
 }

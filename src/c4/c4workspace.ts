@@ -53,4 +53,16 @@ export class C4Workspace {
     addElementStyle(style: C4ElementStyle) {
         this.styles.addElementStyle(style);
     }
+
+    get Model() {
+        return this.model;
+    }
+
+    get Views() {
+        return this.views;
+    }
+
+    get Styles() {
+        return this.styles;
+    }
 }

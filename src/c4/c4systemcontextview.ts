@@ -10,4 +10,8 @@ export class C4SystemContextView extends C4View {
         super("SystemContext", key, description);
         this.systemID = systemId;
     }
+
+    get SystemId() {
+        return this.systemID;
+    }
 }

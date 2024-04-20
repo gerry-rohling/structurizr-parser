@@ -8,4 +8,16 @@ export class C4Relationship {
         this.description = description;
         this.technology = technology;
     }
+
+    get TargetId() {
+        return this.targetId;
+    }
+
+    get Description() {
+        return this.description;
+    }
+
+    get Technology() {
+        return this.technology;
+    }
 }

@@ -26,4 +26,8 @@ export class C4Container extends C4Element {
         }
         return undefined;
     }
+
+    get Components() {
+        return this.components;
+    }
 }
