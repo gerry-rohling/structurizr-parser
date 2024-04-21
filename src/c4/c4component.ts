@@ -1,3 +1,4 @@
+import { C4Container } from "./c4container";
 import { C4Element } from "./c4element";
 
 export class C4Component extends C4Element {

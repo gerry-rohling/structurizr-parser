@@ -22,6 +22,8 @@ export class C4Model {
         this.softwaresystems.push(ssys);
     }
 
+    // TODO: This should be a recursive call combining "findSourceElement" and when it returns true you quit, setting proxy
+    //       on the way back up
     addRelationship(s_id: string, t_id: string, desc: string) {
         // Find person in root Software Systems
         for (const per of this.people){

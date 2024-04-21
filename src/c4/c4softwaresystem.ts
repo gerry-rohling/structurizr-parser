@@ -10,6 +10,7 @@ export class C4SoftwareSystem extends C4Element {
     }
 
     addContainer(container: C4Container) {
+        container.setParentId(this.Id);
         this.containers.push(container);
     }
 

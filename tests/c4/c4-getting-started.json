@@ -1,1 +1,55 @@
-{"model":{"people":[{"relationships":[{"targetId":"swSystem","description":"Uses"}],"id":"user","name":"User","description":"A user of my software system."}],"softwaresystems":[{"relationships":[],"id":"swSystem","name":"Software System","description":"My software system.","containers":[]}],"groups":[]},"views":[{"include":[],"type":"SystemContext","key":"SystemContext","description":"","systemID":"swSystem"}],"styles":{"elementStyles":[{"tag":"Software System","background":"#1168bd","color":"#ffffff"},{"tag":"Person","shape":"Person","background":"#08427b","color":"#ffffff"}],"relationshipStyles":[]},"id":"main"}
+{
+    "model": {
+        "people": [
+            {
+                "relationships": [
+                    {
+                        "targetId": "swSystem",
+                        "description": "Uses"
+                    }
+                ],
+                "proxyRelationships": [],
+                "id": "user",
+                "name": "User",
+                "description": "A user of my software system."
+            }
+        ],
+        "softwaresystems": [
+            {
+                "relationships": [],
+                "proxyRelationships": [],
+                "id": "swSystem",
+                "name": "Software System",
+                "description": "My software system.",
+                "containers": []
+            }
+        ],
+        "groups": []
+    },
+    "views": [
+        {
+            "include": [],
+            "type": "SystemContext",
+            "key": "SystemContext",
+            "description": "",
+            "systemID": "swSystem"
+        }
+    ],
+    "styles": {
+        "elementStyles": [
+            {
+                "tag": "Software System",
+                "background": "#1168bd",
+                "color": "#ffffff"
+            },
+            {
+                "tag": "Person",
+                "shape": "Person",
+                "background": "#08427b",
+                "color": "#ffffff"
+            }
+        ],
+        "relationshipStyles": []
+    },
+    "id": "main"
+}
