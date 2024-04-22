@@ -5,7 +5,6 @@ export class C4Element {
     private id: string;
     private name: string;
     private description?: string;
-    private parentId?: string;
     private relationships: C4Relationship[] = [];
     private proxyRelationships: C4Relationship[] = [];
 
@@ -27,20 +26,12 @@ export class C4Element {
         return this.description;
     }
 
-    get ParentId() {
-        return this.parentId;
-    }
-
     get Relationships() {
         return this.relationships;
     }
 
     get ProxyRelationships() {
         return this.proxyRelationships;
-    }
-
-    setParentId(parentId: string) {
-        this.parentId = parentId;
     }
 
     addRelationship(targetId: string, description?: string, technology?: string) {

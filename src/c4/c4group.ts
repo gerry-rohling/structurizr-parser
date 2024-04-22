@@ -1,3 +1,4 @@
+import { C4Element } from "./c4element";
 import { C4Person } from "./c4person";
 import { C4SoftwareSystem } from "./c4softwaresystem";
 
@@ -22,33 +23,35 @@ export class C4Group {
         this.softwaresystems.push(ssys);
     }
 
-    addRelationship(s_id: string, t_id: string, desc: string) {
-        // Find person 
-        for (const per of this.people){
-            const ele = per.findSourceElement(s_id);
-            // If found, add relationship
-            if (ele != undefined) {
-                ele.addRelationship(t_id, desc);
-                return true;
-            }
-        }
-        // Find entity
-        for (const element of this.softwaresystems){
-            const ele = element.findSourceElement(s_id);
-            // If found, add relationship
-            if (ele != undefined) {
-                ele.addRelationship(t_id, desc);
-                return true;
-            }
-        }
-        return false;
-    }
-
     get People() {
         return this.people;
     }
 
     get SoftwareSystems() {
         return this.softwaresystems;
+    }
+
+    findElement(e_id: string) : C4Element[] {
+        let tree: C4Element[] = [];
+
+        // Find Person 
+        for (const per of this.people){
+            let tree = per.findElement(e_id);
+            // If found, return tree
+            if (tree.length > 0) {
+                return tree;
+            }
+        }
+
+        // If not, find element in Software Systems
+        for (const element of this.softwaresystems){
+            let tree = element.findElement(e_id);
+            // If found, return tree
+            if (tree.length > 0) {
+                return tree;
+            }
+        }
+
+        return tree;
     }
 }

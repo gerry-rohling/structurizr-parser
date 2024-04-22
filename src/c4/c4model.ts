@@ -1,3 +1,4 @@
+import { C4Element } from "./c4element";
 import { C4Group } from "./c4group";
 import { C4Person } from "./c4person";
 import { C4SoftwareSystem } from "./c4softwaresystem";
@@ -22,9 +23,7 @@ export class C4Model {
         this.softwaresystems.push(ssys);
     }
 
-    // TODO: This should be a recursive call combining "findSourceElement" and when it returns true you quit, setting proxy
-    //       on the way back up
-    addRelationship(s_id: string, t_id: string, desc: string) {
+/*     addRelationship(s_id: string, t_id: string, desc: string) {
         // Find person in root Software Systems
         for (const per of this.people){
             const ele = per.findSourceElement(s_id);
@@ -47,6 +46,47 @@ export class C4Model {
         for (const grp of this.groups){
             if (grp.addRelationship(s_id, t_id, desc) === true){ return; };
         }
+    } */
+
+    addRelationship(s_id: string, t_id: string, desc: string){
+        let source_tree = this.findElement(s_id);
+        let target_tree = this.findElement(t_id);
+        if (source_tree.length > 0 && target_tree.length > 0){
+
+        }
+    }
+
+    findElement(e_id: string) : C4Element[] {
+        let tree: C4Element[] = [];
+
+        // Find person in root Model
+        for (const per of this.people){
+            let tree = per.findElement(e_id);
+            // If found, return tree
+            if (tree.length > 0) {
+                return tree;
+            }
+        }
+
+        // If not, find element in root Software Systems
+        for (const element of this.softwaresystems){
+            let tree = element.findElement(e_id);
+            // If found, return tree
+            if (tree.length > 0) {
+                return tree;
+            }
+        }
+
+        // If not, find element in any groups
+        for (const grp of this.groups){
+            let tree = grp.findElement(e_id);
+            // If found, return tree
+            if (tree.length > 0) {
+                return tree;
+            }
+        }
+
+        return tree;
     }
 
     get People() {

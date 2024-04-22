@@ -10,23 +10,26 @@ export class C4SoftwareSystem extends C4Element {
     }
 
     addContainer(container: C4Container) {
-        container.setParentId(this.Id);
         this.containers.push(container);
     }
 
     // This method recursively checks for an element with the ID matching the provided value
-    findSourceElement(s_id: string) : C4Element | undefined {
-        if (this.Id === s_id) {
-            return this;
+    findElement(e_id: string) : C4Element[] {
+        let reply:C4Element[] = [];
+        if (this.Id === e_id) {
+            reply.push(this);
+            return reply;
         } else {
             for (const con of this.containers)  {
-                const ele = con.findSourceElement(s_id);
-                if (ele != undefined) {
-                    return ele;
+                const ele = con.findElement(e_id);
+                if (ele.length > 0) {
+                    reply.push(this);
+                    reply.push(...ele);
+                    return reply;
                 } 
             }
         }
-        return undefined;
+        return reply;
     }
 
     get Containers() {

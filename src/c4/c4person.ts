@@ -9,11 +9,13 @@ export class C4Person extends C4Element {
         this.location = location;
     }
 
-    findSourceElement(s_id: string) {
-        if (this.Id === s_id) {
-            return this;
+    findElement(e_id: string) : C4Element[] { 
+        let reply:C4Element[] = [];
+        if (this.Id === e_id) {
+            reply.push(this);
+            return reply;
         } 
-        return undefined;
+        return reply;
     }
 
     get Location() {

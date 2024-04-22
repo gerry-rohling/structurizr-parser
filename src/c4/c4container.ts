@@ -13,18 +13,22 @@ export class C4Container extends C4Element {
         this.components.push(component);
     }
 
-    findSourceElement(s_id: string) : C4Element | undefined {
-        if (this.Id === s_id) {
-            return this;
+    findElement(e_id: string) : C4Element[] {
+        let reply:C4Element[] = [];
+        if (this.Id === e_id) {
+            reply.push(this);
+            return reply;
         } else {
-            for (const com of this.components)  {
-                const ele = com.findSourceElement(s_id);
-                if (ele != undefined) {
-                    return ele;
+            for (const con of this.components)  {
+                const ele = con.findElement(e_id);
+                if (ele.length > 0) {
+                    reply.push(this);
+                    reply.push(...ele);
+                    return reply;
                 } 
             }
         }
-        return undefined;
+        return reply;
     }
 
     get Components() {

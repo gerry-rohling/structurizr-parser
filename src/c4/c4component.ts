@@ -7,10 +7,12 @@ export class C4Component extends C4Element {
         super(id, name, description);
     }
     
-    findSourceElement(s_id: string) : C4Element | undefined {
-        if (this.Id === s_id) {
-            return this;
+    findElement(e_id: string) : C4Element[] {
+        let reply:C4Element[] = [];
+        if (this.Id === e_id) {
+            reply.push(this);
+            return reply;
         } 
-        return undefined;
+        return reply;
     }
 }
