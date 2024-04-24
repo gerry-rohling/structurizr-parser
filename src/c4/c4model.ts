@@ -23,36 +23,15 @@ export class C4Model {
         this.softwaresystems.push(ssys);
     }
 
-/*     addRelationship(s_id: string, t_id: string, desc: string) {
-        // Find person in root Software Systems
-        for (const per of this.people){
-            const ele = per.findSourceElement(s_id);
-            // If found, add relationship
-            if (ele != undefined) {
-                ele.addRelationship(t_id, desc);
-                return;
-            }
-        }
-        // Find entity in root Software Systems
-        for (const element of this.softwaresystems){
-            const ele = element.findSourceElement(s_id);
-            // If found, add relationship
-            if (ele != undefined) {
-                ele.addRelationship(t_id, desc);
-                return;
-            }
-        }
-        // Find person or element in a group
-        for (const grp of this.groups){
-            if (grp.addRelationship(s_id, t_id, desc) === true){ return; };
-        }
-    } */
-
     addRelationship(s_id: string, t_id: string, desc: string){
         let source_tree = this.findElement(s_id);
         let target_tree = this.findElement(t_id);
         if (source_tree.length > 0 && target_tree.length > 0){
-
+            // Source and target found
+            // Add documented relationship
+            let src_ele = source_tree.pop();
+            let tgt_ele = target_tree.pop();
+            src_ele?.addRelationship(t_id, desc);
         }
     }
 
