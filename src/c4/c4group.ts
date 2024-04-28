@@ -23,6 +23,14 @@ export class C4Group {
         this.softwaresystems.push(ssys);
     }
 
+    get Id(){
+        return this.id;
+    }
+
+    get Name() {
+        return this.name;
+    }
+
     get People() {
         return this.people;
     }
