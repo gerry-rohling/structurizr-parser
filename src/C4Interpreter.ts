@@ -1,3 +1,4 @@
+import { nanoid } from "nanoid";
 import { BaseStructurizrVisitor, StructurizrParser } from "./Parser";
 import { C4Component } from "./c4/c4component";
 import { C4ComponentView } from "./c4/c4componentview";
@@ -67,7 +68,7 @@ class c4Interpreter extends BaseStructurizrVisitor {
 
     groupSection(node: any) {
         console.log('Here we are at groupSection node:');
-        let id = "";
+        let id = nanoid();
         if (node.identifier) { id = node.identifier[0].image; }
         const name = stripQuotes(node.StringLiteral[0]?.image ?? "");
         const group = new C4Group(id, name);
