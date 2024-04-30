@@ -5,8 +5,8 @@ export class C4Relationship {
 
     constructor(targetId: string, description?: string, technology?: string) {
         this.targetId = targetId;
-        this.description = description;
-        this.technology = technology;
+        this.description = description ?? '';
+        this.technology = technology ?? '';
     }
 
     get TargetId() {

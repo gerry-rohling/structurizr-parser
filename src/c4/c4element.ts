@@ -4,13 +4,13 @@ export class C4Element {
 
     private id: string;
     private name: string;
-    private description?: string;
+    private description: string;
     private relationships: C4Relationship[] = [];
 
     constructor(id: string, name: string, description?: string) {
         this.id = id;
         this.name = name;
-        this.description = description;
+        this.description = description ?? '';
     }
 
     get Id() {
