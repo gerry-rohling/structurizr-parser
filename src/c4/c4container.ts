@@ -34,4 +34,10 @@ export class C4Container extends C4Element {
     get Components() {
         return this.components;
     }
+
+    get NestedRelationships() {
+        let rels = this.Relationships;
+        this.components.forEach(c => { rels.push(...c.Relationships) });
+        return rels;
+    }
 }

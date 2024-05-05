@@ -46,4 +46,19 @@ describe('Testing C4Interpreter', () => {
         await fsPromise.writeFile("./tests/c4/c4-big-bank-plc.json", JSON.stringify(c4wspace));
     });
 
+    test('Can c4 interpret NESTED relationships', async () => {
+        var dsl = await fsPromise.readFile('./tests/data/nested.dsl', 'utf-8');
+        const lexingResult = StructurizrLexer.tokenize(dsl);
+        expect(lexingResult.errors.length).toBe(0);
+        StructurizrParser.input = lexingResult.tokens;
+        const cst = StructurizrParser.workspaceWrapper();
+        expect(StructurizrParser.errors.length).toBe(0);
+        expect(cst.name).toBe("workspaceWrapper");
+        const c4wspace = C4Interpreter.visit(cst) as C4Workspace;
+        expect(c4wspace).toBeDefined();
+        const allRel = c4wspace.Model.SoftwareSystems[0].NestedRelationships;
+        await fsPromise.writeFile("./tests/c4/c4-nested-rolled-up.json", JSON.stringify(allRel));
+        await fsPromise.writeFile("./tests/c4/c4-nested.json", JSON.stringify(c4wspace));
+    });
+
 });

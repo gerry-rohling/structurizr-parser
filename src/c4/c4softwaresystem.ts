@@ -35,4 +35,10 @@ export class C4SoftwareSystem extends C4Element {
     get Containers() {
         return this.containers;
     }
+
+    get NestedRelationships() {
+        let rels = this.Relationships;
+        this.containers.forEach(c => { rels.push(...c.NestedRelationships) });
+        return rels;
+    }
 }
