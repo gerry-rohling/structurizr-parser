@@ -56,8 +56,8 @@ describe('Testing C4Interpreter', () => {
         expect(cst.name).toBe("workspaceWrapper");
         const c4wspace = C4Interpreter.visit(cst) as C4Workspace;
         expect(c4wspace).toBeDefined();
-        const allRel = c4wspace.Model.SoftwareSystems[0].NestedRelationships;
-        await fsPromise.writeFile("./tests/c4/c4-nested-rolled-up.json", JSON.stringify(allRel));
+        //const allRel = c4wspace.Model.SoftwareSystems[0].NestedRelationships;
+        //await fsPromise.writeFile("./tests/c4/c4-nested-rolled-up-software.json", JSON.stringify(allRel));
         await fsPromise.writeFile("./tests/c4/c4-nested.json", JSON.stringify(c4wspace));
     });
 

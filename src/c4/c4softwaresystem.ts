@@ -1,5 +1,6 @@
 import { C4Container } from "./c4container";
 import { C4Element } from "./c4element";
+import { C4Relationship } from "./c4relationship";
 
 export class C4SoftwareSystem extends C4Element {
     
@@ -37,8 +38,9 @@ export class C4SoftwareSystem extends C4Element {
     }
 
     get NestedRelationships() {
-        let rels = this.Relationships;
-        this.containers.forEach(c => { rels.push(...c.NestedRelationships) });
+        let rels: C4Relationship[] = [];
+        rels = rels.concat(this.Relationships);
+        this.containers.forEach(c => { rels = rels.concat(c.NestedRelationships) });
         return rels;
     }
 }
