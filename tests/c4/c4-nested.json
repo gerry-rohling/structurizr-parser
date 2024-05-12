@@ -1,1 +1,101 @@
-{"debug":false,"model":{"people":[{"relationships":[{"sourceId":"user","destinationId":"component1","description":"Uses c1","technology":"","tags":""},{"sourceId":"user","destinationId":"component2","description":"Uses c2","technology":"","tags":""}],"id":"user","name":"User","description":"","tags":"","location":"Unspecified"}],"softwaresystems":[{"relationships":[],"id":"system1","name":"Software System 1","description":"","tags":"","containers":[{"relationships":[],"id":"container1","name":"Container 1","description":"","tags":"","components":[{"relationships":[{"sourceId":"component1","destinationId":"component2","description":"Back Channel","technology":"","tags":""}],"id":"component1","name":"Component 1","description":"","tags":""}]}]},{"relationships":[],"id":"system2","name":"Software System 2","description":"","tags":"","containers":[{"relationships":[],"id":"container2","name":"Container 2","description":"","tags":"","components":[{"relationships":[],"id":"component2","name":"Component 2","description":"","tags":""}]}]}],"groups":[]},"views":[{"include":[],"type":"SystemLandscape"}],"styles":{"elementStyles":[],"relationshipStyles":[]},"id":"main"}
+{
+    "model": {
+        "people": [
+            {
+                "relationships": [
+                    {
+                        "sourceId": "user",
+                        "destinationId": "component1",
+                        "description": "Uses c1",
+                        "technology": "",
+                        "tags": ""
+                    },
+                    {
+                        "sourceId": "user",
+                        "destinationId": "component2",
+                        "description": "Uses c2",
+                        "technology": "",
+                        "tags": ""
+                    }
+                ],
+                "id": "user",
+                "name": "User",
+                "description": "",
+                "tags": "",
+                "location": "Unspecified"
+            }
+        ],
+        "softwaresystems": [
+            {
+                "relationships": [],
+                "id": "system1",
+                "name": "Software System 1",
+                "description": "",
+                "tags": "",
+                "containers": [
+                    {
+                        "relationships": [],
+                        "id": "container1",
+                        "name": "Container 1",
+                        "description": "",
+                        "tags": "",
+                        "components": [
+                            {
+                                "relationships": [
+                                    {
+                                        "sourceId": "component1",
+                                        "destinationId": "component2",
+                                        "description": "Back Channel",
+                                        "technology": "",
+                                        "tags": ""
+                                    }
+                                ],
+                                "id": "component1",
+                                "name": "Component 1",
+                                "description": "",
+                                "tags": ""
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "relationships": [],
+                "id": "system2",
+                "name": "Software System 2",
+                "description": "",
+                "tags": "",
+                "containers": [
+                    {
+                        "relationships": [],
+                        "id": "container2",
+                        "name": "Container 2",
+                        "description": "",
+                        "tags": "",
+                        "components": [
+                            {
+                                "relationships": [],
+                                "id": "component2",
+                                "name": "Component 2",
+                                "description": "",
+                                "tags": ""
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "groups": []
+    },
+    "views": [
+        {
+            "include": [],
+            "type": "SystemLandscape"
+        }
+    ],
+    "styles": {
+        "elementStyles": [],
+        "relationshipStyles": []
+    },
+    "id": "main"
+}

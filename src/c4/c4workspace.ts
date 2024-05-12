@@ -11,7 +11,7 @@ import { C4View } from "./c4view";
 
 export class C4Workspace {
 
-    debug: boolean = false;
+    #debug: boolean = false;
 
     private id: string;
     private name: string;
@@ -29,6 +29,10 @@ export class C4Workspace {
         this.tags = tags;
     }
 
+    setDebug(debug: boolean) {
+        this.#debug = debug;
+    }
+
     addGroup(group: C4Group) {
         this.model.addGroup(group);
     }
@@ -42,7 +46,7 @@ export class C4Workspace {
     }
 
     addRelationship(s_id: string, t_id: string, desc: string, technology?: string, tags?: string) {
-        this.debug && console.log('Workspace asked to create a relationship between %s and %s', s_id, t_id);
+        this.#debug && console.log('Workspace asked to create a relationship between %s and %s', s_id, t_id);
         this.model.addRelationship(s_id, t_id, desc, technology, tags);
     }
 

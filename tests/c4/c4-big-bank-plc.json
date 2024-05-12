@@ -1,1 +1,435 @@
-{"debug":false,"model":{"people":[{"relationships":[{"sourceId":"customer","destinationId":"internetBankingSystem","description":"Views account balances, and makes payments using","technology":"","tags":""},{"sourceId":"customer","destinationId":"supportStaff","description":"Asks questions to","technology":"Telephone","tags":""},{"sourceId":"customer","destinationId":"atm","description":"Withdraws cash using","technology":"","tags":""},{"sourceId":"customer","destinationId":"webApplication","description":"Visits bigbank.com/ib using","technology":"HTTPS","tags":""},{"sourceId":"customer","destinationId":"singlePageApplication","description":"Views account balances, and makes payments using","technology":"","tags":""},{"sourceId":"customer","destinationId":"mobileApp","description":"Views account balances, and makes payments using","technology":"","tags":""}],"id":"customer","name":"Personal Banking Customer","description":"A customer of the bank, with personal bank accounts.","tags":"Customer","location":"Unspecified"}],"softwaresystems":[],"groups":[{"people":[{"relationships":[{"sourceId":"supportStaff","destinationId":"mainframe","description":"Uses","technology":"","tags":""}],"id":"supportStaff","name":"Customer Service Staff","description":"Customer service staff within the bank.","tags":"Bank Staff","location":"Unspecified"},{"relationships":[{"sourceId":"backoffice","destinationId":"mainframe","description":"Uses","technology":"","tags":""}],"id":"backoffice","name":"Back Office Staff","description":"Administration and support staff within the bank.","tags":"Bank Staff","location":"Unspecified"}],"softwaresystems":[{"relationships":[],"id":"mainframe","name":"Mainframe Banking System","description":"Stores all of the core banking information about customers, accounts, transactions, etc.","tags":"Existing System","containers":[]},{"relationships":[{"sourceId":"email","destinationId":"customer","description":"Sends e-mails to","technology":"","tags":""}],"id":"email","name":"E-mail System","description":"The internal Microsoft Exchange e-mail system.","tags":"Existing System","containers":[]},{"relationships":[{"sourceId":"atm","destinationId":"mainframe","description":"Uses","technology":"","tags":""}],"id":"atm","name":"ATM","description":"Allows customers to withdraw cash.","tags":"Existing System","containers":[]},{"relationships":[{"sourceId":"internetBankingSystem","destinationId":"mainframe","description":"Gets account information from, and makes payments using","technology":"","tags":""},{"sourceId":"internetBankingSystem","destinationId":"email","description":"Sends e-mail using","technology":"","tags":""}],"id":"internetBankingSystem","name":"Internet Banking System","description":"Allows customers to view information about their bank accounts, and make payments.","tags":"","containers":[{"relationships":[{"sourceId":"singlePageApplication","destinationId":"signinController","description":"Makes API calls to","technology":"JSON/HTTPS","tags":""},{"sourceId":"singlePageApplication","destinationId":"accountsSummaryController","description":"Makes API calls to","technology":"JSON/HTTPS","tags":""},{"sourceId":"singlePageApplication","destinationId":"resetPasswordController","description":"Makes API calls to","technology":"JSON/HTTPS","tags":""}],"id":"singlePageApplication","name":"Single-Page Application","description":"Provides all of the Internet banking functionality to customers via their web browser.","tags":"JavaScript and Angular","components":[]},{"relationships":[{"sourceId":"mobileApp","destinationId":"signinController","description":"Makes API calls to","technology":"JSON/HTTPS","tags":""},{"sourceId":"mobileApp","destinationId":"accountsSummaryController","description":"Makes API calls to","technology":"JSON/HTTPS","tags":""},{"sourceId":"mobileApp","destinationId":"resetPasswordController","description":"Makes API calls to","technology":"JSON/HTTPS","tags":""}],"id":"mobileApp","name":"Mobile App","description":"Provides a limited subset of the Internet banking functionality to customers via their mobile device.","tags":"Xamarin","components":[]},{"relationships":[{"sourceId":"webApplication","destinationId":"singlePageApplication","description":"Delivers to the customer's web browser","technology":"","tags":""}],"id":"webApplication","name":"Web Application","description":"Delivers the static content and the Internet banking single page application.","tags":"Java and Spring MVC","components":[]},{"relationships":[],"id":"apiApplication","name":"API Application","description":"Provides Internet banking functionality via a JSON/HTTPS API.","tags":"Java and Spring MVC","components":[{"relationships":[{"sourceId":"signinController","destinationId":"securityComponent","description":"Uses","technology":"","tags":""}],"id":"signinController","name":"Sign In Controller","description":"Allows users to sign in to the Internet Banking System.","tags":"Spring MVC Rest Controller"},{"relationships":[{"sourceId":"accountsSummaryController","destinationId":"mainframeBankingSystemFacade","description":"Uses","technology":"","tags":""}],"id":"accountsSummaryController","name":"Accounts Summary Controller","description":"Provides customers with a summary of their bank accounts.","tags":"Spring MVC Rest Controller"},{"relationships":[{"sourceId":"resetPasswordController","destinationId":"securityComponent","description":"Uses","technology":"","tags":""},{"sourceId":"resetPasswordController","destinationId":"emailComponent","description":"Uses","technology":"","tags":""}],"id":"resetPasswordController","name":"Reset Password Controller","description":"Allows users to reset their passwords with a single use URL.","tags":"Spring MVC Rest Controller"},{"relationships":[{"sourceId":"securityComponent","destinationId":"database","description":"Reads from and writes to","technology":"SQL/TCP","tags":""}],"id":"securityComponent","name":"Security Component","description":"Provides functionality related to signing in, changing passwords, etc.","tags":"Spring Bean"},{"relationships":[{"sourceId":"mainframeBankingSystemFacade","destinationId":"mainframe","description":"Makes API calls to","technology":"XML/HTTPS","tags":""}],"id":"mainframeBankingSystemFacade","name":"Mainframe Banking System Facade","description":"A facade onto the mainframe banking system.","tags":"Spring Bean"},{"relationships":[{"sourceId":"emailComponent","destinationId":"email","description":"Sends e-mail using","technology":"","tags":""}],"id":"emailComponent","name":"E-mail Component","description":"Sends e-mails to users.","tags":"Spring Bean"}]},{"relationships":[],"id":"database","name":"Database","description":"Stores user registration information, hashed authentication credentials, access logs, etc.","tags":"Oracle Database Schema","components":[]}]}],"id":"quefD-_L03eD-Ol8zp4yy","name":"Big Bank plc"}]},"views":[{"include":[],"type":"SystemLandscape"},{"include":[],"type":"SystemContext","key":"SystemContext","description":"","systemID":"internetBankingSystem"},{"include":[],"type":"Container","key":"Containers","description":"","containerID":"internetBankingSystem"},{"include":[],"type":"Component","key":"Components","description":"","componentID":"apiApplication"}],"styles":{"elementStyles":[{"tag":"Person","shape":"Person","color":"#ffffff"},{"tag":"Customer","background":"#08427b"},{"tag":"Bank Staff","background":"#999999"},{"tag":"Software System","background":"#1168bd","color":"#ffffff"},{"tag":"Existing System","background":"#999999","color":"#ffffff"},{"tag":"Container","background":"#438dd5","color":"#ffffff"},{"tag":"Web Browser","shape":"WebBrowser"},{"tag":"Mobile App","shape":"MobileDeviceLandscape"},{"tag":"Database","shape":"Cylinder"},{"tag":"Component","background":"#85bbf0","color":"#000000"},{"tag":"Failover"}],"relationshipStyles":[]},"id":"main"}
+{
+    "model": {
+        "people": [
+            {
+                "relationships": [
+                    {
+                        "sourceId": "customer",
+                        "destinationId": "internetBankingSystem",
+                        "description": "Views account balances, and makes payments using",
+                        "technology": "",
+                        "tags": ""
+                    },
+                    {
+                        "sourceId": "customer",
+                        "destinationId": "supportStaff",
+                        "description": "Asks questions to",
+                        "technology": "Telephone",
+                        "tags": ""
+                    },
+                    {
+                        "sourceId": "customer",
+                        "destinationId": "atm",
+                        "description": "Withdraws cash using",
+                        "technology": "",
+                        "tags": ""
+                    },
+                    {
+                        "sourceId": "customer",
+                        "destinationId": "webApplication",
+                        "description": "Visits bigbank.com/ib using",
+                        "technology": "HTTPS",
+                        "tags": ""
+                    },
+                    {
+                        "sourceId": "customer",
+                        "destinationId": "singlePageApplication",
+                        "description": "Views account balances, and makes payments using",
+                        "technology": "",
+                        "tags": ""
+                    },
+                    {
+                        "sourceId": "customer",
+                        "destinationId": "mobileApp",
+                        "description": "Views account balances, and makes payments using",
+                        "technology": "",
+                        "tags": ""
+                    }
+                ],
+                "id": "customer",
+                "name": "Personal Banking Customer",
+                "description": "A customer of the bank, with personal bank accounts.",
+                "tags": "Customer",
+                "location": "Unspecified"
+            }
+        ],
+        "softwaresystems": [],
+        "groups": [
+            {
+                "people": [
+                    {
+                        "relationships": [
+                            {
+                                "sourceId": "supportStaff",
+                                "destinationId": "mainframe",
+                                "description": "Uses",
+                                "technology": "",
+                                "tags": ""
+                            }
+                        ],
+                        "id": "supportStaff",
+                        "name": "Customer Service Staff",
+                        "description": "Customer service staff within the bank.",
+                        "tags": "Bank Staff",
+                        "location": "Unspecified"
+                    },
+                    {
+                        "relationships": [
+                            {
+                                "sourceId": "backoffice",
+                                "destinationId": "mainframe",
+                                "description": "Uses",
+                                "technology": "",
+                                "tags": ""
+                            }
+                        ],
+                        "id": "backoffice",
+                        "name": "Back Office Staff",
+                        "description": "Administration and support staff within the bank.",
+                        "tags": "Bank Staff",
+                        "location": "Unspecified"
+                    }
+                ],
+                "softwaresystems": [
+                    {
+                        "relationships": [],
+                        "id": "mainframe",
+                        "name": "Mainframe Banking System",
+                        "description": "Stores all of the core banking information about customers, accounts, transactions, etc.",
+                        "tags": "Existing System",
+                        "containers": []
+                    },
+                    {
+                        "relationships": [
+                            {
+                                "sourceId": "email",
+                                "destinationId": "customer",
+                                "description": "Sends e-mails to",
+                                "technology": "",
+                                "tags": ""
+                            }
+                        ],
+                        "id": "email",
+                        "name": "E-mail System",
+                        "description": "The internal Microsoft Exchange e-mail system.",
+                        "tags": "Existing System",
+                        "containers": []
+                    },
+                    {
+                        "relationships": [
+                            {
+                                "sourceId": "atm",
+                                "destinationId": "mainframe",
+                                "description": "Uses",
+                                "technology": "",
+                                "tags": ""
+                            }
+                        ],
+                        "id": "atm",
+                        "name": "ATM",
+                        "description": "Allows customers to withdraw cash.",
+                        "tags": "Existing System",
+                        "containers": []
+                    },
+                    {
+                        "relationships": [
+                            {
+                                "sourceId": "internetBankingSystem",
+                                "destinationId": "mainframe",
+                                "description": "Gets account information from, and makes payments using",
+                                "technology": "",
+                                "tags": ""
+                            },
+                            {
+                                "sourceId": "internetBankingSystem",
+                                "destinationId": "email",
+                                "description": "Sends e-mail using",
+                                "technology": "",
+                                "tags": ""
+                            }
+                        ],
+                        "id": "internetBankingSystem",
+                        "name": "Internet Banking System",
+                        "description": "Allows customers to view information about their bank accounts, and make payments.",
+                        "tags": "",
+                        "containers": [
+                            {
+                                "relationships": [
+                                    {
+                                        "sourceId": "singlePageApplication",
+                                        "destinationId": "signinController",
+                                        "description": "Makes API calls to",
+                                        "technology": "JSON/HTTPS",
+                                        "tags": ""
+                                    },
+                                    {
+                                        "sourceId": "singlePageApplication",
+                                        "destinationId": "accountsSummaryController",
+                                        "description": "Makes API calls to",
+                                        "technology": "JSON/HTTPS",
+                                        "tags": ""
+                                    },
+                                    {
+                                        "sourceId": "singlePageApplication",
+                                        "destinationId": "resetPasswordController",
+                                        "description": "Makes API calls to",
+                                        "technology": "JSON/HTTPS",
+                                        "tags": ""
+                                    }
+                                ],
+                                "id": "singlePageApplication",
+                                "name": "Single-Page Application",
+                                "description": "Provides all of the Internet banking functionality to customers via their web browser.",
+                                "tags": "JavaScript and Angular",
+                                "components": []
+                            },
+                            {
+                                "relationships": [
+                                    {
+                                        "sourceId": "mobileApp",
+                                        "destinationId": "signinController",
+                                        "description": "Makes API calls to",
+                                        "technology": "JSON/HTTPS",
+                                        "tags": ""
+                                    },
+                                    {
+                                        "sourceId": "mobileApp",
+                                        "destinationId": "accountsSummaryController",
+                                        "description": "Makes API calls to",
+                                        "technology": "JSON/HTTPS",
+                                        "tags": ""
+                                    },
+                                    {
+                                        "sourceId": "mobileApp",
+                                        "destinationId": "resetPasswordController",
+                                        "description": "Makes API calls to",
+                                        "technology": "JSON/HTTPS",
+                                        "tags": ""
+                                    }
+                                ],
+                                "id": "mobileApp",
+                                "name": "Mobile App",
+                                "description": "Provides a limited subset of the Internet banking functionality to customers via their mobile device.",
+                                "tags": "Xamarin",
+                                "components": []
+                            },
+                            {
+                                "relationships": [
+                                    {
+                                        "sourceId": "webApplication",
+                                        "destinationId": "singlePageApplication",
+                                        "description": "Delivers to the customer's web browser",
+                                        "technology": "",
+                                        "tags": ""
+                                    }
+                                ],
+                                "id": "webApplication",
+                                "name": "Web Application",
+                                "description": "Delivers the static content and the Internet banking single page application.",
+                                "tags": "Java and Spring MVC",
+                                "components": []
+                            },
+                            {
+                                "relationships": [],
+                                "id": "apiApplication",
+                                "name": "API Application",
+                                "description": "Provides Internet banking functionality via a JSON/HTTPS API.",
+                                "tags": "Java and Spring MVC",
+                                "components": [
+                                    {
+                                        "relationships": [
+                                            {
+                                                "sourceId": "signinController",
+                                                "destinationId": "securityComponent",
+                                                "description": "Uses",
+                                                "technology": "",
+                                                "tags": ""
+                                            }
+                                        ],
+                                        "id": "signinController",
+                                        "name": "Sign In Controller",
+                                        "description": "Allows users to sign in to the Internet Banking System.",
+                                        "tags": "Spring MVC Rest Controller"
+                                    },
+                                    {
+                                        "relationships": [
+                                            {
+                                                "sourceId": "accountsSummaryController",
+                                                "destinationId": "mainframeBankingSystemFacade",
+                                                "description": "Uses",
+                                                "technology": "",
+                                                "tags": ""
+                                            }
+                                        ],
+                                        "id": "accountsSummaryController",
+                                        "name": "Accounts Summary Controller",
+                                        "description": "Provides customers with a summary of their bank accounts.",
+                                        "tags": "Spring MVC Rest Controller"
+                                    },
+                                    {
+                                        "relationships": [
+                                            {
+                                                "sourceId": "resetPasswordController",
+                                                "destinationId": "securityComponent",
+                                                "description": "Uses",
+                                                "technology": "",
+                                                "tags": ""
+                                            },
+                                            {
+                                                "sourceId": "resetPasswordController",
+                                                "destinationId": "emailComponent",
+                                                "description": "Uses",
+                                                "technology": "",
+                                                "tags": ""
+                                            }
+                                        ],
+                                        "id": "resetPasswordController",
+                                        "name": "Reset Password Controller",
+                                        "description": "Allows users to reset their passwords with a single use URL.",
+                                        "tags": "Spring MVC Rest Controller"
+                                    },
+                                    {
+                                        "relationships": [
+                                            {
+                                                "sourceId": "securityComponent",
+                                                "destinationId": "database",
+                                                "description": "Reads from and writes to",
+                                                "technology": "SQL/TCP",
+                                                "tags": ""
+                                            }
+                                        ],
+                                        "id": "securityComponent",
+                                        "name": "Security Component",
+                                        "description": "Provides functionality related to signing in, changing passwords, etc.",
+                                        "tags": "Spring Bean"
+                                    },
+                                    {
+                                        "relationships": [
+                                            {
+                                                "sourceId": "mainframeBankingSystemFacade",
+                                                "destinationId": "mainframe",
+                                                "description": "Makes API calls to",
+                                                "technology": "XML/HTTPS",
+                                                "tags": ""
+                                            }
+                                        ],
+                                        "id": "mainframeBankingSystemFacade",
+                                        "name": "Mainframe Banking System Facade",
+                                        "description": "A facade onto the mainframe banking system.",
+                                        "tags": "Spring Bean"
+                                    },
+                                    {
+                                        "relationships": [
+                                            {
+                                                "sourceId": "emailComponent",
+                                                "destinationId": "email",
+                                                "description": "Sends e-mail using",
+                                                "technology": "",
+                                                "tags": ""
+                                            }
+                                        ],
+                                        "id": "emailComponent",
+                                        "name": "E-mail Component",
+                                        "description": "Sends e-mails to users.",
+                                        "tags": "Spring Bean"
+                                    }
+                                ]
+                            },
+                            {
+                                "relationships": [],
+                                "id": "database",
+                                "name": "Database",
+                                "description": "Stores user registration information, hashed authentication credentials, access logs, etc.",
+                                "tags": "Oracle Database Schema",
+                                "components": []
+                            }
+                        ]
+                    }
+                ],
+                "id": "ksajw6izh-UrXlUK9cNqz",
+                "name": "Big Bank plc"
+            }
+        ]
+    },
+    "views": [
+        {
+            "include": [],
+            "type": "SystemLandscape"
+        },
+        {
+            "include": [],
+            "type": "SystemContext",
+            "key": "SystemContext",
+            "description": "",
+            "systemID": "internetBankingSystem"
+        },
+        {
+            "include": [],
+            "type": "Container",
+            "key": "Containers",
+            "description": "",
+            "containerID": "internetBankingSystem"
+        },
+        {
+            "include": [],
+            "type": "Component",
+            "key": "Components",
+            "description": "",
+            "componentID": "apiApplication"
+        }
+    ],
+    "styles": {
+        "elementStyles": [
+            {
+                "tag": "Person",
+                "shape": "Person",
+                "color": "#ffffff"
+            },
+            {
+                "tag": "Customer",
+                "background": "#08427b"
+            },
+            {
+                "tag": "Bank Staff",
+                "background": "#999999"
+            },
+            {
+                "tag": "Software System",
+                "background": "#1168bd",
+                "color": "#ffffff"
+            },
+            {
+                "tag": "Existing System",
+                "background": "#999999",
+                "color": "#ffffff"
+            },
+            {
+                "tag": "Container",
+                "background": "#438dd5",
+                "color": "#ffffff"
+            },
+            {
+                "tag": "Web Browser",
+                "shape": "WebBrowser"
+            },
+            {
+                "tag": "Mobile App",
+                "shape": "MobileDeviceLandscape"
+            },
+            {
+                "tag": "Database",
+                "shape": "Cylinder"
+            },
+            {
+                "tag": "Component",
+                "background": "#85bbf0",
+                "color": "#000000"
+            },
+            {
+                "tag": "Failover"
+            }
+        ],
+        "relationshipStyles": []
+    },
+    "id": "main"
+}

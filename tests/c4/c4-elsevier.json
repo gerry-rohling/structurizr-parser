@@ -1,1 +1,47 @@
-{"debug":false,"model":{"people":[{"relationships":[{"sourceId":"user","destinationId":"system","description":"Uses","technology":"","tags":""}],"id":"user","name":"User","description":"","tags":"","location":"Unspecified"}],"softwaresystems":[{"relationships":[],"id":"system","name":"Software System","description":"","tags":"","containers":[]}],"groups":[]},"views":[{"include":[],"type":"SystemContext","key":"","description":"","systemID":"system"}],"styles":{"elementStyles":[],"relationshipStyles":[]},"id":"main"}
+{
+    "model": {
+        "people": [
+            {
+                "relationships": [
+                    {
+                        "sourceId": "user",
+                        "destinationId": "system",
+                        "description": "Uses",
+                        "technology": "",
+                        "tags": ""
+                    }
+                ],
+                "id": "user",
+                "name": "User",
+                "description": "",
+                "tags": "",
+                "location": "Unspecified"
+            }
+        ],
+        "softwaresystems": [
+            {
+                "relationships": [],
+                "id": "system",
+                "name": "Software System",
+                "description": "",
+                "tags": "",
+                "containers": []
+            }
+        ],
+        "groups": []
+    },
+    "views": [
+        {
+            "include": [],
+            "type": "SystemContext",
+            "key": "",
+            "description": "",
+            "systemID": "system"
+        }
+    ],
+    "styles": {
+        "elementStyles": [],
+        "relationshipStyles": []
+    },
+    "id": "main"
+}
