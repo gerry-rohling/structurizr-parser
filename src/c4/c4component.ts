@@ -3,8 +3,8 @@ import { C4Element } from "./c4element";
 
 export class C4Component extends C4Element {
 
-    constructor(id: string, name: string, description?: string) {
-        super(id, name, description);
+    constructor(id: string, name: string, description?: string, tags?: string) {
+        super(id, name, description, tags);
     }
     
     findElement(e_id: string) : C4Element[] {

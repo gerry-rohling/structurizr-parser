@@ -108,6 +108,7 @@ class structurizrParser extends CstParser {
     this.MANY(() => {
       this.OR([
         {ALT: () => {this.SUBRULE(this.containerSection)}},
+        {ALT: () => {this.SUBRULE(this.explicitRelationship)}},
         {ALT: () => {this.SUBRULE(this.implicitRelationship)}}
       ]);
         ;
@@ -133,6 +134,7 @@ class structurizrParser extends CstParser {
     this.MANY(() => {
       this.OR([
         {ALT: () => {this.SUBRULE(this.componentSection)}},
+        {ALT: () => {this.SUBRULE(this.explicitRelationship)}},
         {ALT: () => {this.SUBRULE(this.implicitRelationship)}}
       ]);
     });

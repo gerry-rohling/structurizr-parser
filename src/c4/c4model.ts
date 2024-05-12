@@ -23,15 +23,15 @@ export class C4Model {
         this.softwaresystems.push(ssys);
     }
 
-    addRelationship(s_id: string, t_id: string, desc: string){
+    addRelationship(s_id: string, t_id: string, desc: string, technology?: string, tags?: string){
         let source_tree = this.findElement(s_id);
         let target_tree = this.findElement(t_id);
-        if (source_tree.length > 0 && target_tree.length > 0){
+        if (source_tree.length > 0){
             // Source and target found
             // Add documented relationship
             let src_ele = source_tree.pop();
             let tgt_ele = target_tree.pop();
-            src_ele?.addRelationship(t_id, desc);
+            src_ele?.addRelationship(s_id, t_id, desc, technology, tags);
         }
     }
 

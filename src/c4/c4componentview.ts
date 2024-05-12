@@ -7,8 +7,8 @@ export class C4ComponentView extends C4View {
     /**
      *
      */
-    constructor(componentId:string, key?: string, description?: string) {
-        super("Component", key, description);
+    constructor(componentId:string, key?: string, description?: string, tags?: string) {
+        super("Component", key, description, tags);
         this.componentID = componentId;
     }
 

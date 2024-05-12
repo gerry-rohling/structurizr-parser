@@ -1,17 +1,26 @@
 export class C4Relationship {
-    private targetId: string;
+    private sourceId: string;
+    private destinationId: string;
     private description?: string;
     private technology?: string;
+    private tags?: string;
 
-    constructor(targetId: string, description?: string, technology?: string) {
-        this.targetId = targetId;
+    constructor(sourceId: string, destinationId: string, description?: string, technology?: string, tags?: string) {
+        this.sourceId = sourceId;
+        this.destinationId = destinationId;
         this.description = description ?? '';
         this.technology = technology ?? '';
+        this.tags = tags ?? '';
     }
 
-    get TargetId() {
-        return this.targetId;
+    get SourceId() {
+        return this.sourceId;
     }
+
+    get DestinationId() {
+        return this.destinationId;
+    }
+
 
     get Description() {
         return this.description;
@@ -19,5 +28,9 @@ export class C4Relationship {
 
     get Technology() {
         return this.technology;
+    }
+
+    get Tags() {
+        return this.tags;
     }
 }

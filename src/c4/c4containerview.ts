@@ -6,8 +6,8 @@ export class C4ContainerView extends C4View {
     /**
      *
      */
-    constructor(containerId:string, key?: string, description?: string) {
-        super("Container", key, description);
+    constructor(containerId:string, key?: string, description?: string, tags?: string) {
+        super("Container", key, description ,tags);
         this.containerID = containerId;
     }
 

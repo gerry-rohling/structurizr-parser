@@ -4,7 +4,7 @@ export class C4SystemLandscapeView extends C4View {
     /**
      *
      */
-    constructor(key?: string, description?: string) {
-        super("SystemLandscape", key, description);
+    constructor(key?: string, description?: string, tags?: string) {
+        super("SystemLandscape", key, description, tags);
     }
 }

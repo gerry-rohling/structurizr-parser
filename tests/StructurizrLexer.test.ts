@@ -46,6 +46,6 @@ describe('Testing StructurizrLexer', () => {
         }
         expect(lexingResult).toBeDefined();
         expect(lexingResult.errors.length).toBe(1);
-        expect(lexingResult.errors[0].offset).toBe(215);
+        expect(lexingResult.errors[0].message).toContain("unexpected character: ->-<-");
     });
 });

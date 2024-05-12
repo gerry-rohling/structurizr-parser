@@ -11,18 +11,22 @@ import { C4View } from "./c4view";
 
 export class C4Workspace {
 
+    debug: boolean = false;
+
     private id: string;
     private name: string;
     private description?: string;
+    private tags?: string;
 
     private model: C4Model = new C4Model();
     private views: C4View[] = [];
     private styles: C4Styles = new C4Styles();
 
-    constructor(id:string, name:string, description?:string) {
+    constructor(id:string, name:string, description?:string, tags?:string) {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.tags = tags;
     }
 
     addGroup(group: C4Group) {
@@ -37,9 +41,9 @@ export class C4Workspace {
         this.model.addSoftwareSystem(ssys);
     }
 
-    addRelationship(s_id: string, t_id: string, desc: string) {
-        console.log('Workspace asked to create a relationship between %s and %s', s_id, t_id);
-        this.model.addRelationship(s_id, t_id, desc);
+    addRelationship(s_id: string, t_id: string, desc: string, technology?: string, tags?: string) {
+        this.debug && console.log('Workspace asked to create a relationship between %s and %s', s_id, t_id);
+        this.model.addRelationship(s_id, t_id, desc, technology, tags);
     }
 
     addView(view: C4SystemLandscapeView) {

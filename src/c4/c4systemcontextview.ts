@@ -6,8 +6,8 @@ export class C4SystemContextView extends C4View {
     /**
      *
      */
-    constructor(systemId: string, key?:string,  description?: string) {
-        super("SystemContext", key, description);
+    constructor(systemId: string, key?:string,  description?: string, tags?: string) {
+        super("SystemContext", key, description, tags);
         this.systemID = systemId;
     }
 

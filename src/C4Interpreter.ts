@@ -15,7 +15,7 @@ import { C4SystemLandscapeView } from "./c4/c4systemlandscapeview";
 import { C4Workspace } from "./c4/c4workspace";
 
 class c4Interpreter extends BaseStructurizrVisitor {
-
+    debug: boolean = false;
     // This needs to be better
     private workspace:C4Workspace = new C4Workspace("","","");
 
@@ -28,10 +28,11 @@ class c4Interpreter extends BaseStructurizrVisitor {
     // based on the view instructions
     // At present it returns the workspace object but that will be changed once this works
     workspaceWrapper(node: any) {
-        console.log('Here we are at workspaceWrapper node:');
+        this.debug && console.log('Here we are at workspaceWrapper node:');
         // this.theWorkspace.name = node.name;
         // this.theWorkspace.description = node.description;
         this.workspace = new C4Workspace("main", node.name, node.description);
+        this.workspace.debug = this.debug;
         if (node.workspaceSection) {
             this.visit(node.workspaceSection);
         }
@@ -41,7 +42,7 @@ class c4Interpreter extends BaseStructurizrVisitor {
     }
 
     workspaceSection(node: any) {
-        console.log('Here we are at workspaceSection node:');
+        this.debug && console.log('Here we are at workspaceSection node:');
         if (node.modelSection) {
             this.visit(node.modelSection);
         }
@@ -51,14 +52,14 @@ class c4Interpreter extends BaseStructurizrVisitor {
     }
 
     modelSection(node: any) {
-        console.log('Here we are at modelSection node:');
+        this.debug && console.log('Here we are at modelSection node:');
         if (node.modelChildSection) {
             this.visit(node.modelChildSection);
         }
     }
 
     modelChildSection(node: any) {
-        console.log('Here we are at modelChildSection node:');
+        this.debug && console.log('Here we are at modelChildSection node:');
         if (node.groupSection) { for (const group of node.groupSection) { this.visit(group); }}
         if (node.personSection) { for (const person of node.personSection) { this.visit(person); }}
         if (node.softwareSystemSection) { for (const sSystem of node.softwareSystemSection) { this.visit(sSystem); }}
@@ -67,7 +68,7 @@ class c4Interpreter extends BaseStructurizrVisitor {
     }
 
     groupSection(node: any) {
-        console.log('Here we are at groupSection node:');
+        this.debug && console.log('Here we are at groupSection node:');
         let id = nanoid();
         if (node.identifier) { id = node.identifier[0].image; }
         const name = stripQuotes(node.StringLiteral[0]?.image ?? "");
@@ -79,17 +80,18 @@ class c4Interpreter extends BaseStructurizrVisitor {
     }
 
     groupChildSection(node: any, group: C4Group) {
-        console.log('Here we are at groupChildSection with node:');
+        this.debug && console.log('Here we are at groupChildSection with node:');
         if (node.personSection) { for (const person of node.personSection) { this.visit(person, group); }}
         if (node.softwareSystemSection) { for (const sSystem of node.softwareSystemSection) { this.visit(sSystem, group); }}
     }
 
     personSection(node: any, group?: C4Group) {
-        console.log('Here we are at personSection node:');
+        this.debug && console.log('Here we are at personSection node:');
         const id = node.identifier[0].image;
         const name = stripQuotes(node.StringLiteral[0]?.image ?? "");
         const description = stripQuotes(node.StringLiteral[1]?.image ?? "");
-        const person = new C4Person(id, name, description);
+        const tags = stripQuotes(node.StringLiteral[2]?.image ?? "");
+        const person = new C4Person(id, name, description, tags);
         if (group){
             group.addPerson(person);
         } else {
@@ -98,78 +100,93 @@ class c4Interpreter extends BaseStructurizrVisitor {
     }
 
     softwareSystemSection(node: any, group?: C4Group) {
-        console.log('Here we are at softwareSystemSection node:');
+        this.debug && console.log('Here we are at softwareSystemSection node:');
         const id = node.identifier[0].image;
         const name = stripQuotes(node.StringLiteral[0]?.image ?? "");
         const description = stripQuotes(node.StringLiteral[1]?.image ?? "");
-        const ssys = new C4SoftwareSystem(id, name, description);
-        if (node.softwareSystemChildSection){ this.visit(node.softwareSystemChildSection, ssys); }
+        const tags = stripQuotes(node.StringLiteral[2]?.image ?? "");
+        const ssys = new C4SoftwareSystem(id, name, description, tags);
         if (group){
             group.addSoftwareSystem(ssys);
         } else {
             this.workspace.addSoftwareSystem(ssys);
         }
+        if (node.softwareSystemChildSection){ this.visit(node.softwareSystemChildSection, ssys); }
     }
 
     softwareSystemChildSection(node: any, ssys: C4SoftwareSystem) {
-        console.log('Here we are at softwareSystemChildSection node:');
+        this.debug && console.log('Here we are at softwareSystemChildSection node:');
         if (node.containerSection) { for (const ctr of node.containerSection) { this.visit(ctr, ssys); }}
+        if (node.explicitRelationship) { for (const relationship of node.explicitRelationship) { this.visit(relationship, ssys); }}
+        if (node.implicitRelationship) { for (const relationship of node.implicitRelationship) { this.visit(relationship, ssys); }}
     }
 
     containerSection(node: any, ssys:C4SoftwareSystem) {
-        console.log('Here we are at ContainerSection node:');
+        this.debug && console.log('Here we are at ContainerSection node:');
         const id = node.identifier[0].image;
         const name = stripQuotes(node.StringLiteral[0]?.image ?? "");
         const description = stripQuotes(node.StringLiteral[1]?.image ?? "");
-        const container = new C4Container(id, name, description);
-        if (node.containerChildSection) { this.visit(node.containerChildSection, container)}
+        const tags = stripQuotes(node.StringLiteral[2]?.image ?? "");
+        const container = new C4Container(id, name, description, tags);
         ssys.addContainer(container);
+        if (node.containerChildSection) { this.visit(node.containerChildSection, container)}
     }
 
     containerChildSection(node: any, ctr: C4Container) {
-        console.log('Here we are at ContainerChildSection node:');
+        this.debug && console.log('Here we are at ContainerChildSection node:');
         if (node.componentSection) { for (const comp of node.componentSection) { this.visit(comp, ctr); }}
+        if (node.explicitRelationship) { for (const relationship of node.explicitRelationship) { this.visit(relationship, ctr); }}
+        if (node.implicitRelationship) { for (const relationship of node.implicitRelationship) { this.visit(relationship, ctr); }}
     }
 
     componentSection(node: any, ctr: C4Container) {
-        console.log('Here we are at ComponentSection node:');
+        this.debug && console.log('Here we are at ComponentSection node:');
         const id = node.identifier[0].image;
         const name = stripQuotes(node.StringLiteral[0]?.image ?? "");
         const description = stripQuotes(node.StringLiteral[1]?.image ?? "");
-        const component = new C4Component(id, name, description);
+        const tags = stripQuotes(node.StringLiteral[2]?.image ?? "");
+        const component = new C4Component(id, name, description, tags);
         ctr.addComponent(component);
     }
 
-    explicitRelationship(node: any) {
-        console.log('Here we are at explicitRelationship node:');
-        const s_id = node.identifier[0].image;
-        const t_id = node.identifier[1].image;
+    explicitRelationship(node: any, ctr: C4Container) {
+        this.debug && console.log('Here we are at explicitRelationship node:');
+        const s_id = node.identifier[0].image === 'this' ? ctr.Id : node.identifier[0].image;
+        const t_id = node.identifier[1].image === 'this' ? ctr.Id : node.identifier[1].image;
         const desc = stripQuotes(node.StringLiteral[0]?.image ?? "");
-        this.workspace.addRelationship(s_id, t_id, desc);
+        const tech = stripQuotes(node.StringLiteral[1]?.image ?? "");
+        const tags = stripQuotes(node.StringLiteral[2]?.image ?? "");
+        this.workspace.addRelationship(s_id, t_id, desc, tech, tags);
     }
 
-    implicitRelationship(node: any) {
-        console.log(`Here we are at implicitRelationship with node: ${node.name}`);
+    implicitRelationship(node: any, ctr: C4Container) {
+        this.debug && console.log(`Here we are at implicitRelationship with node: ${node.name}`);
+        const s_id = ctr.Id;
+        const t_id = node.identifier[0].image === 'this' ? ctr.Id : node.identifier[0].image;
+        const desc = stripQuotes(node.StringLiteral[0]?.image ?? "");
+        const tech = stripQuotes(node.StringLiteral[1]?.image ?? "");
+        const tags = stripQuotes(node.StringLiteral[2]?.image ?? "");
+        this.workspace.addRelationship(s_id, t_id, desc, tech, tags);
     }
 
     deploymentEnvironmentSection(node: any) {
-        console.log(`Here we are at deploymentEnvironmentSection with node: ${node.name}`);
+        this.debug && console.log(`Here we are at deploymentEnvironmentSection with node: ${node.name}`);
     }
 
     deploymentEnvironmentChildSection(node: any) {
-        console.log(`Here we are at deploymentEnvironmentChildSection with node: ${node.name}`);
+        this.debug && console.log(`Here we are at deploymentEnvironmentChildSection with node: ${node.name}`);
     }
 
     deploymentNodeSection(node: any) {
-        console.log(`Here we are at deploymentNodeSection with node: ${node.name}`);
+        this.debug && console.log(`Here we are at deploymentNodeSection with node: ${node.name}`);
     }
 
     deploymentNodeChildSection(node: any) {
-        console.log(`Here we are at deploymentNodeChildSection with node: ${node.name}`);
+        this.debug && console.log(`Here we are at deploymentNodeChildSection with node: ${node.name}`);
     }
 
     containerInstanceSection(node: any) {
-        console.log(`Here we are at containerInstanceSection with node: ${node.name}`);
+        this.debug && console.log(`Here we are at containerInstanceSection with node: ${node.name}`);
     }
 
     softwareSystemInstanceSection(node: any) {
@@ -177,14 +194,14 @@ class c4Interpreter extends BaseStructurizrVisitor {
     }
 
     viewsSection(node: any) {
-        console.log('Here we are at viewsSection node:');
+        this.debug && console.log('Here we are at viewsSection node:');
         if (node.viewsChildSection) {
             this.visit(node.viewsChildSection);
         }
     }
 
     viewsChildSection(node: any) {
-        console.log('Here we are at viewsChildSection node:');
+        this.debug && console.log('Here we are at viewsChildSection node:');
         if (node.systemLandscapeView) { for (const view of node.systemLandscapeView) { this.visit(view);} }
         if (node.systemContextView) { for (const view of node.systemContextView) { this.visit(view);} }
         if (node.containerView) { for (const view of node.containerView) { this.visit(view);} }
@@ -196,13 +213,13 @@ class c4Interpreter extends BaseStructurizrVisitor {
     }
 
     systemLandscapeView(node: any) {
-        console.log('Here we are at systemLandscapeView node:');
+        this.debug && console.log('Here we are at systemLandscapeView node:');
         const view = new C4SystemLandscapeView();
         this.workspace.addView(view);
     }
 
     viewOptions(node: any, view: any) {
-        console.log('Here we are at viewOptions node:');
+        this.debug && console.log('Here we are at viewOptions node:');
         if (node.includeOptions) { for (const inc of node.includeOptions) { this.visit(inc, view); } }
         if (node.autoLayoutOptions) { this.visit(node.autoLayoutOptions, view); }
         if (node.animationOptions) {}
@@ -211,7 +228,7 @@ class c4Interpreter extends BaseStructurizrVisitor {
     }
 
     includeOptions(node: any, view: any) {
-        console.log('Here we are at includeOptions node:');
+        this.debug && console.log('Here we are at includeOptions node:');
         if (node.wildcard) {  } // Default is include everything
         if (node.identifier) {
              view.includeEntity(node.indentifer[0].image);
@@ -219,26 +236,26 @@ class c4Interpreter extends BaseStructurizrVisitor {
     }
 
     autoLayoutOptions(node: any, view: any) {
-        console.log('Here we are at autoLayoutOptions node:');
+        this.debug && console.log('Here we are at autoLayoutOptions node:');
         const rankDir = node.identifier?.[0].image ?? "TopBottom";
         const rankSep = node.int?.[0].image;
         const nodeSep = node.int?.[1].image;
     }
 
     animationOptions(node: any) {
-        console.log(`Here we are at animationOptions with node: ${node.name}`);
+        this.debug && console.log(`Here we are at animationOptions with node: ${node.name}`);
     }
 
     descriptionOptions(node: any) {
-        console.log(`Here we are at descriptionOptions with node: ${node.name}`);
+        this.debug && console.log(`Here we are at descriptionOptions with node: ${node.name}`);
     }
 
     propertiesOptions(node: any) {
-        console.log(`Here we are at propertiesOptions with node: ${node.name}`);
+        this.debug && console.log(`Here we are at propertiesOptions with node: ${node.name}`);
     }
 
     systemContextView(node: any) {
-        console.log('Here we are at systemContextView node:');
+        this.debug && console.log('Here we are at systemContextView node:');
         const sws_id = node.identifier[0].image ?? "";
         const key = stripQuotes(node.StringLiteral?.[0]?.image ?? "");
         const desc = stripQuotes(node.StringLiteral?.[1]?.image ?? "");
@@ -248,7 +265,7 @@ class c4Interpreter extends BaseStructurizrVisitor {
     }
 
     containerView(node: any) {
-        console.log('Here we are at containerView node:');
+        this.debug && console.log('Here we are at containerView node:');
         const ctr_id = node.identifier[0].image ?? "";
         const key = stripQuotes(node.StringLiteral?.[0]?.image ?? "");
         const desc = stripQuotes(node.StringLiteral?.[1]?.image ?? "");
@@ -258,7 +275,7 @@ class c4Interpreter extends BaseStructurizrVisitor {
     }
 
     componentView(node: any) { 
-        console.log('Here we are at componentView node:');
+        this.debug && console.log('Here we are at componentView node:');
         const com_id = node.identifier[0].image ?? "";
         const key = stripQuotes(node.StringLiteral?.[0]?.image ?? "");
         const desc = stripQuotes(node.StringLiteral?.[1]?.image ?? "");
@@ -268,25 +285,25 @@ class c4Interpreter extends BaseStructurizrVisitor {
     }
 
     imageSection(node: any) {
-        console.log(`Here we are at imageSection with node: ${node.name}`);
+        this.debug && console.log(`Here we are at imageSection with node: ${node.name}`);
     }
 
     dynamicSection(node: any) {
-        console.log(`Here we are at dynamicSection with node: ${node.name}`);
+        this.debug && console.log(`Here we are at dynamicSection with node: ${node.name}`);
     }
 
     deploymentSection(node: any) {
-        console.log(`Here we are at deploymentSection with node: ${node.name}`);
+        this.debug && console.log(`Here we are at deploymentSection with node: ${node.name}`);
     }
 
     stylesSection(node: any) {
-        console.log('Here we are at stylesSection node:');
+        this.debug && console.log('Here we are at stylesSection node:');
         if (node.elementStyleSection) { for (const style of node.elementStyleSection) { this.visit(style);} }
         if (node.relationshipStyleSection) { for (const rel of node.relationshipStyleSection) { this.visit(rel);} }
     }
 
     elementStyleSection(node: any) {
-        console.log('Here we are at elementStyleSection node:');
+        this.debug && console.log('Here we are at elementStyleSection node:');
         const style = new C4ElementStyle();
         style.tag = stripQuotes(node.StringLiteral[0]?.image ?? "");
         if (node.shapeStyle) { this.visit(node.shapeStyle, style); }
@@ -297,13 +314,13 @@ class c4Interpreter extends BaseStructurizrVisitor {
     }
 
     relationshipStyleSection(node: any) {
-        console.log(`Here we are at relationshipStyleSection with node: ${node.name}`);
+        this.debug && console.log(`Here we are at relationshipStyleSection with node: ${node.name}`);
         const style = new C4RelationshipStyle();
         this.workspace.addRelationshipStyle(style);
     }
 
     shapeStyle(node: any, style: any) {
-        console.log(`Here we are at shapeStyle with node: ${node.name}`);
+        this.debug && console.log(`Here we are at shapeStyle with node: ${node.name}`);
         if (node.person) {
             style.shape = "Person";
         } else {
@@ -312,26 +329,26 @@ class c4Interpreter extends BaseStructurizrVisitor {
     }
 
     backgroundStyle(node: any, style: any) {
-        console.log(`Here we are at backgroundStyle with node: ${node.name}`);
+        this.debug && console.log(`Here we are at backgroundStyle with node: ${node.name}`);
         style.background = node.hexColor[0].image;
     }
 
     colorStyle(node: any, style: any) {
-        console.log(`Here we are at colorStyle with node: ${node.name}`);
+        this.debug && console.log(`Here we are at colorStyle with node: ${node.name}`);
         style.color = node.hexColor[0].image;
     }
 
     colourStyle(node: any, style: any) {
-        console.log(`Here we are at colourStyle with node: ${node.name}`);
+        this.debug && console.log(`Here we are at colourStyle with node: ${node.name}`);
         style.color = node.hexColor[0].image;
     }
 
     fontStyle(node: any) {
-        console.log(`Here we are at fontStyle with node: ${node.name}`);
+        this.debug && console.log(`Here we are at fontStyle with node: ${node.name}`);
     }
 
     opacityStyle(node: any) {
-        console.log(`Here we are at opacityStyle with node: ${node.name}`);
+        this.debug && console.log(`Here we are at opacityStyle with node: ${node.name}`);
     }
 }
 

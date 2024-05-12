@@ -1,10 +1,16 @@
 workspace {
 
     model {
-        user = person "User" "A user of my software system."
-        swSystem = softwareSystem "Software System" "My software system."
+        user = person "User" "A user of my software system." "All User"
+        swSystem = softwareSystem "Software System" "My software system." {
+            webapp = container "Web Application" {
+                user -> this "Uses" "HTTPS" "Mobile and web clients"
+                -> db "Reads from and writes to"
+            }
+            db = container "Database"
+        }
 
-        user -> swSystem "Uses"
+        user -> swSystem "Uses" "HTTPS"
     }
 
     views {

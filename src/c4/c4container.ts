@@ -6,8 +6,8 @@ export class C4Container extends C4Element {
 
     private components:C4Component[] = [];
 
-    constructor(id: string, name: string, description?: string) {
-        super(id, name, description);
+    constructor(id: string, name: string, description?: string, tags?: string) {
+        super(id, name, description, tags);
     }
 
     addComponent(component: C4Component) {
