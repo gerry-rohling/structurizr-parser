@@ -5,12 +5,16 @@ export class C4Element {
     private id: string;
     private name: string;
     private description: string;
+    private tags: string[] = [];
     private relationships: C4Relationship[] = [];
 
-    constructor(id: string, name: string, description?: string) {
+    constructor(id: string, name: string, description?: string, tags?: string[]) {
         this.id = id;
         this.name = name;
         this.description = description ?? '';
+        if (tags){
+            this.tags.push(...tags);
+        }
     }
 
     get Id() {
@@ -23,6 +27,10 @@ export class C4Element {
 
     get Description() {
         return this.description;
+    }
+
+    get Tags() {
+        return this.tags;
     }
 
     get Relationships() {
