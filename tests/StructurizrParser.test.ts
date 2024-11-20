@@ -4,11 +4,11 @@ import { createSyntaxDiagramsCode } from 'chevrotain';
 import { StructurizrLexer } from '../src/Lexer';
 
 describe('Testing StructurizrParser', () => {
-    test('Can generate diagrams', async() => {
+    test('Can generate syntax diagrams', async() => {
         const targetDir = './tests/diagrams/';
         const serializedGrammar = StructurizrParser.getSerializedGastProductions();
         const htmlText = createSyntaxDiagramsCode(serializedGrammar);
-        await fsPromise.writeFile(targetDir + "generated_diagrams.html", htmlText);
+        await fsPromise.writeFile(targetDir + "generated_syntax_diagrams.html", htmlText);
         expect(htmlText.length).toBeGreaterThan(0);
     });
 

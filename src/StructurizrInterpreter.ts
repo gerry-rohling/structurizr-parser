@@ -30,6 +30,8 @@ class structurizrInterpreter extends BaseStructurizrVisitor {
 
     workspaceSection(node: any) {
         this._debug && console.log('`Here we are at workspaceSection node:');
+        if (node.name) { this.workspace.name =node.StringLiteral[0]?.image };
+        if (node.description) { this.workspace.description = node.StringLiteral[1]?.image };
         if (node.modelSection) {
             this.visit(node.modelSection);
         }
@@ -47,22 +49,22 @@ class structurizrInterpreter extends BaseStructurizrVisitor {
 
     modelChildSection(node: any) {
         this._debug && console.log('Here we are at modelChildSection node:');
-        if (node.groupSection) { for (const group of node.groupSection) { this.visit(group); }}
+        if (node.systemGroupSection) { for (const group of node.systemGroupSection) { this.visit(group); }}
         if (node.personSection) { for (const person of node.personSection) { this.visit(person); }}
         if (node.softwareSystemSection) { for (const sSystem of node.softwareSystemSection) { this.visit(sSystem); }}
         if (node.explicitRelationship) { for (const relationship of node. explicitRelationship) { this.visit(relationship); }}
         if (node.deploymentEnvironmentSection) { for (const depEnv of node.deploymentEnvironmentSection) { this.visit(depEnv); }}
     }
 
-    groupSection(node: any) {
-        this._debug && console.log(`Here we are at groupSection with node: ${node.name}`);
+    systemGroupSection(node: any) {
+        this._debug && console.log(`Here we are at systemGroupSection with node: ${node.name}`);
         // We do not seem to have group elements supported?!
         // const g = this.workspace.model.
         // Just iterate over child elements for now
     }
 
-    groupChildSection(node: any) {
-        this._debug && console.log(`Here we are at groupChildSection with node: ${node.name}`);
+    systemGroupChildSection(node: any) {
+        this._debug && console.log(`Here we are at systemGroupChildSection with node: ${node.name}`);
     }
 
     personSection(node: any) {

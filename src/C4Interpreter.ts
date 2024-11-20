@@ -66,27 +66,27 @@ class c4Interpreter extends BaseStructurizrVisitor {
 
     modelChildSection(node: any) {
         this._debug && console.log('Here we are at modelChildSection node:');
-        if (node.groupSection) { for (const group of node.groupSection) { this.visit(group); }}
+        if (node.systemGroupSection) { for (const group of node.systemGroupSection) { this.visit(group); }}
         if (node.personSection) { for (const person of node.personSection) { this.visit(person); }}
         if (node.softwareSystemSection) { for (const sSystem of node.softwareSystemSection) { this.visit(sSystem); }}
         if (node.explicitRelationship) { for (const relationship of node. explicitRelationship) { this.visit(relationship); }}
         if (node.deploymentEnvironmentSection) { for (const depEnv of node.deploymentEnvironmentSection) { this.visit(depEnv); }}
     }
 
-    groupSection(node: any) {
-        this._debug && console.log('Here we are at groupSection node:');
+    systemGroupSection(node: any) {
+        this._debug && console.log('Here we are at systemGroupSection node:');
         let id = nanoid();
         if (node.identifier) { id = node.identifier[0].image; }
         const name = stripQuotes(node.StringLiteral[0]?.image ?? "");
         const group = new C4Group(id, name);
-        if (node.groupChildSection) {
-            this.visit(node.groupChildSection, group);
+        if (node.systemGroupChildSection) {
+            this.visit(node.systemGroupChildSection, group);
         }
         this.workspace.addGroup(group);
     }
 
-    groupChildSection(node: any, group: C4Group) {
-        this._debug && console.log('Here we are at groupChildSection with node:');
+    systemGroupChildSection(node: any, group: C4Group) {
+        this._debug && console.log('Here we are at systemGroupChildSection with node:');
         if (node.personSection) { for (const person of node.personSection) { this.visit(person, group); }}
         if (node.softwareSystemSection) { for (const sSystem of node.softwareSystemSection) { this.visit(sSystem, group); }}
     }
