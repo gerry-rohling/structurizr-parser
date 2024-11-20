@@ -14,6 +14,17 @@ describe('Testing StructurizrLexer', () => {
         expect(lexingResult).toBeDefined();
         expect(lexingResult.errors.length).toBe(0);
     });
+    test('Can scan extension DSL of getting started file', async() => {
+        var dsl = await fsPromise.readFile('./tests/data/getting-started-extended.dsl', 'utf-8');
+        let lexingResult = StructurizrLexer.tokenize(dsl);
+        if (lexingResult){
+            let viz = new LexerVisualizer("getting-started-extended.dsl");
+            let htmlText = viz.createVisual(lexingResult);
+            await fsPromise.writeFile("./tests/diagrams/getting-started-extended.html", htmlText);
+        }
+        expect(lexingResult).toBeDefined();
+        expect(lexingResult.errors.length).toBe(0);
+    });
     test('Can scan random Elsevier file', async() => {
         var dsl = await fsPromise.readFile('./tests/data/elsevier.dsl', 'utf-8');
         let lexingResult = StructurizrLexer.tokenize(dsl);

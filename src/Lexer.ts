@@ -17,6 +17,9 @@ export const HashComment = createToken({name: "hashComment", pattern: /\#(.*?)\r
 /// URL
 export const Url = createToken({name: "url", pattern: /(https?:\/\/[^ ]*)/i});
 
+// Relative file path
+export const FilePath = createToken({name: "filePath", pattern: /\.\.?\/[^\n"?:*<>|]+\.[A-z0-9]+/i });
+
 /// Literals
 export const StringLiteral = createToken({name: "StringLiteral", pattern: /"(?:[^\\"]|\\(?:[bfnrtv"\\/]|u[0-9a-fA-F]{4}))*"/ });
 
@@ -31,7 +34,9 @@ export const BangAdrs = createToken({name: "bangAdrs", pattern: /!adrs/i });
 export const BangIndentifiers = createToken({name: "bangIdentifiers", pattern: /!identifiers/i });
 export const BangImpliedRelationships = createToken({name: "bangImpliedRelationships", pattern: /!impliedrelationships/i });
 export const Workspace = createToken({ name: "workspace", pattern: /workspace/i, longer_alt: Identifier });
+export const Extends = createToken({ name: "extends", pattern: /extends/i, longer_alt: Identifier });
 export const Model = createToken({ name: "model", pattern: /model/i, longer_alt: Identifier });
+export const Name = createToken({ name: "name", pattern: /name/i, longer_alt: Identifier });
 export const Enterprise = createToken({ name: "enterprise", pattern: /enterprise/i, longer_alt: Identifier });
 export const Group = createToken({ name: "group", pattern: /group/i, longer_alt: Identifier });
 export const Person = createToken({ name: "person", pattern: /person/i, longer_alt: Identifier });
@@ -105,6 +110,7 @@ export const allTokens = [
     BlockComment,
     LineComment,
     Url,
+    FilePath,
     HexColor,  
     HashComment,
 
@@ -117,6 +123,8 @@ export const allTokens = [
     BangIndentifiers,
     BangImpliedRelationships,
     Workspace,
+    Extends,
+    Name,
     Model,
     Enterprise,
     Group,

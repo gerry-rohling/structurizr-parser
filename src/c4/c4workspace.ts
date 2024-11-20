@@ -25,6 +25,14 @@ export class C4Workspace {
         this.description = description;
     }
 
+    setName(name: string) {
+        this.name = name;
+    }
+
+    setDescription(description: string) {
+        this.description = description;
+    }
+
     addGroup(group: C4Group) {
         this.model.addGroup(group);
     }

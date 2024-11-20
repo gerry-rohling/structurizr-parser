@@ -1,5 +1,5 @@
 import { CstParser } from "chevrotain";
-import { Animation, AutoLayout, Background, Color, Colour, Component, Container, ContainerInstance, Deployment, DeploymentEnvironment, DeploymentNode, Description, Dynamic, Element, Equals, FontSize, Group, HexColor, Identifier, Image, Include, Int, LBrace, Model, Opacity, Person, Properties, RBrace, RelatedTo, Relationship, Shape, ShapeEnum, SoftwareSystem, SoftwareSystemInstance, StringLiteral, Styles, SystemContext, SystemLandscape, Title, Url, Value, Views, Wildcard, Word, Workspace, allTokens } from "./Lexer";
+import { Animation, AutoLayout, Background, Color, Colour, Component, Container, ContainerInstance, Deployment, DeploymentEnvironment, DeploymentNode, Description, Dynamic, Element, Equals, Extends, FilePath, FontSize, Group, HexColor, Identifier, Image, Include, Int, LBrace, Model, Name, Opacity, Person, Properties, RBrace, RelatedTo, Relationship, Shape, ShapeEnum, SoftwareSystem, SoftwareSystemInstance, StringLiteral, Styles, SystemContext, SystemLandscape, Title, Url, Value, Views, Wildcard, Word, Workspace, allTokens } from "./Lexer";
 
 // This class takes all the tokens identified and parses the DSL according to the rulesets defined by the Structurizr schema
 
@@ -15,17 +15,17 @@ class structurizrParser extends CstParser {
   // Rules go here
   public workspaceWrapper = this.RULE("workspaceWrapper", () => {
     this.CONSUME(Workspace);
-    this.OPTION1(() => {
-      this.CONSUME1(StringLiteral);
-    });
-    this.OPTION2(() => {
-      this.CONSUME2(StringLiteral);
-    });
+    this.OR([
+      {ALT: () => { this.CONSUME(Extends); this.CONSUME(FilePath)}},
+      {ALT: () => { this.OPTION1(() => {this.CONSUME1(StringLiteral);}); this.OPTION2(() => {this.CONSUME2(StringLiteral);})}}
+    ]);
     this.SUBRULE(this.workspaceSection);
   });
 
   private workspaceSection = this.RULE("workspaceSection", () => {
     this.CONSUME(LBrace);
+    this.OPTION1(() => { this.CONSUME(Name); this.CONSUME1(StringLiteral); });
+    this.OPTION2(() => { this.CONSUME(Description); this.CONSUME2(StringLiteral); });
     this.SUBRULE(this.modelSection);
     this.OPTION(() => {
       this.SUBRULE(this.viewsSection);

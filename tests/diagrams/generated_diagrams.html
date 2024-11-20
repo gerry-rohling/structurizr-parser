@@ -33,28 +33,58 @@
         "pattern": "workspace"
       },
       {
-        "type": "Option",
-        "idx": 1,
+        "type": "Alternation",
+        "idx": 0,
         "definition": [
           {
-            "type": "Terminal",
-            "name": "StringLiteral",
-            "label": "StringLiteral",
-            "idx": 1,
-            "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
-          }
-        ]
-      },
-      {
-        "type": "Option",
-        "idx": 2,
-        "definition": [
+            "type": "Alternative",
+            "definition": [
+              {
+                "type": "Terminal",
+                "name": "extends",
+                "label": "extends",
+                "idx": 0,
+                "pattern": "extends"
+              },
+              {
+                "type": "Terminal",
+                "name": "filePath",
+                "label": "filePath",
+                "idx": 0,
+                "pattern": "\\.\\.?\\/[^\\n\"?:*<>|]+\\.[A-z0-9]+"
+              }
+            ]
+          },
           {
-            "type": "Terminal",
-            "name": "StringLiteral",
-            "label": "StringLiteral",
-            "idx": 2,
-            "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
+            "type": "Alternative",
+            "definition": [
+              {
+                "type": "Option",
+                "idx": 1,
+                "definition": [
+                  {
+                    "type": "Terminal",
+                    "name": "StringLiteral",
+                    "label": "StringLiteral",
+                    "idx": 1,
+                    "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
+                  }
+                ]
+              },
+              {
+                "type": "Option",
+                "idx": 2,
+                "definition": [
+                  {
+                    "type": "Terminal",
+                    "name": "StringLiteral",
+                    "label": "StringLiteral",
+                    "idx": 2,
+                    "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
@@ -76,6 +106,46 @@
         "label": "{",
         "idx": 0,
         "pattern": "\\{"
+      },
+      {
+        "type": "Option",
+        "idx": 1,
+        "definition": [
+          {
+            "type": "Terminal",
+            "name": "name",
+            "label": "name",
+            "idx": 0,
+            "pattern": "name"
+          },
+          {
+            "type": "Terminal",
+            "name": "StringLiteral",
+            "label": "StringLiteral",
+            "idx": 1,
+            "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
+          }
+        ]
+      },
+      {
+        "type": "Option",
+        "idx": 2,
+        "definition": [
+          {
+            "type": "Terminal",
+            "name": "description",
+            "label": "description",
+            "idx": 0,
+            "pattern": "description"
+          },
+          {
+            "type": "Terminal",
+            "name": "StringLiteral",
+            "label": "StringLiteral",
+            "idx": 2,
+            "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
+          }
+        ]
       },
       {
         "type": "NonTerminal",

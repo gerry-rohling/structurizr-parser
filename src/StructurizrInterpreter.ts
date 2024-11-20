@@ -1,4 +1,3 @@
-import { CstNode } from "chevrotain";
 import { BaseStructurizrVisitor, StructurizrParser } from "./Parser";
 import { RankDirection, SoftwareSystem, Workspace } from "structurizr-typescript";
 

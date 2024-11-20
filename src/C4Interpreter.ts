@@ -47,6 +47,8 @@ class c4Interpreter extends BaseStructurizrVisitor {
 
     workspaceSection(node: any) {
         this._debug && console.log('Here we are at workspaceSection node:');
+        if (node.name) { this.workspace.setName(node.StringLiteral[0]?.image)};
+        if (node.description) { this.workspace.setDescription(node.StringLiteral[1]?.image)};
         if (node.modelSection) {
             this.visit(node.modelSection);
         }
