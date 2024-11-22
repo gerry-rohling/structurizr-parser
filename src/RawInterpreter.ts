@@ -5,6 +5,9 @@ class rawInterpreter extends BaseStructurizrVisitor {
     private _debug:boolean = false;
     private workspace: components["schemas"]["Workspace"] = {};
 
+    private _system: components["schemas"]["SoftwareSystem"] = {};
+    private _container: components["schemas"]["Container"] = {};
+
     private _systemGroup:string = "";
     private _containerGroup:string = "";
     private _componentGroup:string = "";
@@ -102,11 +105,13 @@ class rawInterpreter extends BaseStructurizrVisitor {
         s.perspectives = [];
         s.relationships = [];
         this.workspace.model?.softwareSystems?.push(s);
+        this._system = s;
         if (node.softwareSystemChildSection){ this.visit(node.softwareSystemChildSection); }
     }
 
     softwareSystemChildSection(node: any) {
         this._debug && console.log(`Here we are at softwareSystemChildSection with node: ${node.name}`);
+        if (node.containerSection) { for (const ctr of node.containerSection) { this.visit(ctr); }}
     }
 
     containerGroupSection(node: any) {
@@ -122,10 +127,26 @@ class rawInterpreter extends BaseStructurizrVisitor {
 
     containerSection(node: any) {
         this._debug && console.log(`Here we are at ContainerSection with node: ${node.name}`);
+        const id = node.identifier[0].image;
+        const name = stripQuotes(node.StringLiteral[0]?.image ?? "");
+        const description = stripQuotes(node.StringLiteral[1]?.image ?? "");
+        const tech = stripQuotes(node.StringLiteral[2]?.image ?? "");
+        const c = {} as components["schemas"]["Container"];
+        c.id = id;
+        c.name = name;
+        c.description = description;
+        c.technology = tech;
+        c.components = [];
+        c.perspectives = [];
+        c.relationships = [];
+        this._system.containers?.push(c);
+        this._container = c;
+        if (node.containerChildSection){ this.visit(node.containerChildSection);}
     }
 
     containerChildSection(node: any) {
         this._debug && console.log(`Here we are at ContainerChildSection with node: ${node.name}`);
+        if (node.componentSection) { for (const com of node.componentSection) { this.visit(com); }}
     }
 
     componentGroupSection(node: any) {
@@ -141,6 +162,18 @@ class rawInterpreter extends BaseStructurizrVisitor {
 
     componentSection(node: any) {
         this._debug && console.log(`Here we are at ComponentSection with node: ${node.name}`);
+        const id = node.identifier[0].image;
+        const name = stripQuotes(node.StringLiteral[0]?.image ?? "");
+        const description = stripQuotes(node.StringLiteral[1]?.image ?? "");
+        const tech = stripQuotes(node.StringLiteral[2]?.image ?? "");
+        const c = {} as components["schemas"]["Component"];
+        c.id = id;
+        c.name = name;
+        c.description = description;
+        c.technology = tech;
+        c.perspectives = [];
+        c.relationships = [];
+        this._container.components?.push(c);
     }
 
     explicitRelationship(node: any) {
@@ -333,15 +366,21 @@ class rawInterpreter extends BaseStructurizrVisitor {
         let p = this.workspace.model?.people?.find(pr => pr.id === s_id);
         if (p) return p;
         // Search Software Systems recursively
-        this.workspace.model?.softwareSystems?.forEach((element) => {
-            if (element.id === s_id) return element;
-            element.containers?.forEach((element2) => {
-                if (element2.id === s_id) return element2;
-                element2.components?.forEach((element3) => {
-                    if (element3.id === s_id) return element3;
-                });
-            });
-        });
+        if (this.workspace.model?.softwareSystems) {
+            for (const element of this.workspace.model?.softwareSystems) {
+                if (element.id === s_id) return element;
+                if (element.containers) {
+                    for (const element2 of element.containers) {
+                        if (element2.id === s_id) return element2;
+                        if (element2.components) {
+                            for (const element3 of element2.components) {
+                                if (element3.id === s_id) return element3;
+                            }
+                        }
+                    }
+                }
+            }
+        }
         throw new Error("Failed to find a match for the source ID presented: " + s_id);
     }
 }
