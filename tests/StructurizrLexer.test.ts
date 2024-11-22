@@ -59,4 +59,16 @@ describe('Testing StructurizrLexer', () => {
         expect(lexingResult.errors.length).toBe(1);
         expect(lexingResult.errors[0].offset).toBe(215);
     });
+
+    test('Can understand nested groups', async() => {
+        var dsl = await fsPromise.readFile('./tests/data/groups.dsl', 'utf-8');
+        let lexingResult = StructurizrLexer.tokenize(dsl);
+        if (lexingResult){
+            let viz = new LexerVisualizer("groups.dsl");
+            let htmlText = viz.createVisual(lexingResult);
+            await fsPromise.writeFile("./tests/diagrams/groups.html", htmlText);
+        }
+        expect(lexingResult).toBeDefined();
+        expect(lexingResult.errors.length).toBe(0);        
+    });
 });

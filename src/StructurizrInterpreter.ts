@@ -61,6 +61,9 @@ class structurizrInterpreter extends BaseStructurizrVisitor {
         // We do not seem to have group elements supported?!
         // const g = this.workspace.model.
         // Just iterate over child elements for now
+        if (node.systemGroupChildSection) {
+            this.visit(node.systemGroupChildSection);
+        }
     }
 
     systemGroupChildSection(node: any) {

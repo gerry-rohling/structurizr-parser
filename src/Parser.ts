@@ -66,6 +66,7 @@ class structurizrParser extends CstParser {
     this.CONSUME(LBrace);
     this.MANY(() => {
         this.OR([
+            {ALT: () => {this.SUBRULE(this.systemGroupSection)}},
             {ALT: () => {this.SUBRULE(this.personSection)}},
             {ALT: () => {this.SUBRULE(this.softwareSystemSection)}}
         ]);
