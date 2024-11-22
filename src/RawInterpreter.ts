@@ -1,0 +1,357 @@
+import { BaseStructurizrVisitor } from "./Parser";
+import { paths, components } from "./structurizr.schema";
+
+class rawInterpreter extends BaseStructurizrVisitor {
+    private _debug:boolean = false;
+    private workspace: components["schemas"]["Workspace"] = {};
+
+    private _systemGroup:string = "";
+    private _containerGroup:string = "";
+    private _componentGroup:string = "";
+
+    constructor() {
+        super();
+
+        this.validateVisitor();
+    }
+
+    public set Debug(flag: boolean) {
+        this._debug = flag;
+    }
+
+    workspaceWrapper(node: any) {
+        this._debug && console.log('Here we are at workspaceWrapper node:');
+        this.workspace.name = "Name";
+        this.workspace.description = "Description";
+        if (node.workspaceSection) {
+            this.visit(node.workspaceSection);
+        }
+        return this.workspace;
+    }
+
+    workspaceSection(node: any) {
+        this._debug && console.log('Here we are at workspaceSection node:');
+        if (node.name) { this.workspace.name = node.StringLiteral[0]?.image };
+        if (node.description) { this.workspace.description = node.StringLiteral[1]?.image };
+        if (node.modelSection) {
+            this.visit(node.modelSection);
+        }
+        if (node.viewsSection) {
+            this.visit(node.viewsSection);
+        }
+    }
+
+    modelSection(node: any) {
+        this._debug && console.log('Here we are at modelSection node:');
+        this.workspace.model = {} as components["schemas"]["Model"];
+        this.workspace.model.people = [];
+        this.workspace.model.softwareSystems = [];
+        this.workspace.model.deploymentNodes = [];
+        if (node.modelChildSection) {
+            this.visit(node.modelChildSection);
+        }
+    }
+
+    modelChildSection(node: any) {
+        this._debug && console.log('Here we are at modelChildSection node:');
+        if (node.systemGroupSection) { for (const group of node.systemGroupSection) { this.visit(group); }}
+        if (node.personSection) { for (const person of node.personSection) { this.visit(person); }}
+        if (node.softwareSystemSection) { for (const sSystem of node.softwareSystemSection) { this.visit(sSystem); }}
+        if (node.explicitRelationship) { for (const relationship of node. explicitRelationship) { this.visit(relationship); }}
+        if (node.deploymentEnvironmentSection) { for (const depEnv of node.deploymentEnvironmentSection) { this.visit(depEnv); }}
+    }
+
+    systemGroupSection(node: any) {
+        this._debug && console.log('Here we are at systemGroupSection node:');
+        if (node.systemGroupChildSection) {
+            this.visit(node.systemGroupChildSection);
+        }
+        this._systemGroup = "";
+    }
+
+    systemGroupChildSection(node: any) {
+        this._debug && console.log('Here we are at systemGroupChildSection with node:');
+        if (node.personSection) { for (const person of node.personSection) { this.visit(person); }}
+        if (node.softwareSystemSection) { for (const sSystem of node.softwareSystemSection) { this.visit(sSystem); }}
+    }
+
+    personSection(node: any) {
+        this._debug && console.log('Here we are at personSection node:');
+        const id = node.identifier[0].image;
+        const name = stripQuotes(node.StringLiteral[0]?.image ?? "");
+        const description = stripQuotes(node.StringLiteral[1]?.image ?? "");
+        const p = {} as components["schemas"]["Person"];
+        p.id = id;
+        p.name = name;
+        p.description = description;
+        p.perspectives = [];
+        p.relationships = [];
+        this.workspace.model?.people?.push(p);
+    }
+
+    softwareSystemSection(node: any) {
+        this._debug && console.log('Here we are at softwareSystemSection node:');
+        const id = node.identifier[0].image;
+        const name = stripQuotes(node.StringLiteral[0]?.image ?? "");
+        const description = stripQuotes(node.StringLiteral[1]?.image ?? "");
+        const s = {} as components["schemas"]["SoftwareSystem"];
+        s.id = id;
+        s.name = name;
+        s.description = description;
+        s.containers = [];
+        s.perspectives = [];
+        s.relationships = [];
+        this.workspace.model?.softwareSystems?.push(s);
+        if (node.softwareSystemChildSection){ this.visit(node.softwareSystemChildSection); }
+    }
+
+    softwareSystemChildSection(node: any) {
+        this._debug && console.log(`Here we are at softwareSystemChildSection with node: ${node.name}`);
+    }
+
+    containerGroupSection(node: any) {
+        this._debug && console.log(`Here we are at containerGroupSection with node: ${node.name}`);
+        if (node.containerGroupChildSection) {
+            this.visit(node.containerGroupChildSection);
+        }
+    }
+
+    containerGroupChildSection(node: any) {
+        this._debug && console.log(`Here we are at containerGroupChildSection with node: ${node.name}`);
+    }
+
+    containerSection(node: any) {
+        this._debug && console.log(`Here we are at ContainerSection with node: ${node.name}`);
+    }
+
+    containerChildSection(node: any) {
+        this._debug && console.log(`Here we are at ContainerChildSection with node: ${node.name}`);
+    }
+
+    componentGroupSection(node: any) {
+        this._debug && console.log(`Here we are at componentGroupSection with node: ${node.name}`);
+        if (node.componentGroupChildSection) {
+            this.visit(node.componentGroupChildSection);
+        }
+    }
+
+    componentGroupChildSection(node: any) {
+        this._debug && console.log(`Here we are at componentGroupChildSection with node: ${node.name}`);
+    }
+
+    componentSection(node: any) {
+        this._debug && console.log(`Here we are at ComponentSection with node: ${node.name}`);
+    }
+
+    explicitRelationship(node: any) {
+        this._debug && console.log('Here we are at explicitRelationship node:');
+        const s_id = node.identifier[0].image;
+        const t_id = node.identifier[1].image;
+        const desc = node.StringLiteral[0]?.image ?? "";
+        const src = this.findSourceEntity(s_id);
+        if (src) {
+            const rel = {} as components["schemas"]["Relationship"];
+            rel.id = "";
+            rel.sourceId = s_id;
+            rel.destinationId = t_id;
+            rel.description = stripQuotes(desc);
+            src.relationships?.push(rel);
+        }
+    }
+
+    implicitRelationship(node: any) {
+        this._debug && console.log(`Here we are at implicitRelationship with node: ${node.name}`);
+    }
+
+    deploymentEnvironmentSection(node: any) {
+        this._debug && console.log(`Here we are at deploymentEnvironmentSection with node: ${node.name}`);
+    }
+
+    deploymentEnvironmentChildSection(node: any) {
+        this._debug && console.log(`Here we are at deploymentEnvironmentChildSection with node: ${node.name}`);
+    }
+
+    deploymentNodeSection(node: any) {
+        this._debug && console.log(`Here we are at deploymentNodeSection with node: ${node.name}`);
+    }
+
+    deploymentNodeChildSection(node: any) {
+        this._debug && console.log(`Here we are at deploymentNodeChildSection with node: ${node.name}`);
+    }
+
+    containerInstanceSection(node: any) {
+        this._debug && console.log(`Here we are at containerInstanceSection with node: ${node.name}`);
+    }
+
+    softwareSystemInstanceSection(node: any) {
+        this._debug && console.log(`Here we are at softwareSystemInstanceSection with node: ${node.name}`);
+    }
+
+    viewsSection(node: any) {
+        this._debug && console.log('Here we are at viewsSection node:');
+        if (node.viewsChildSection) {
+            this.visit(node.viewsChildSection);
+        }
+    }
+
+    viewsChildSection(node: any) {
+        this._debug && console.log('Here we are at viewsChildSection node:');
+        if (node.systemLandscapeView) { for (const view of node.systemLandscapeView) { this.visit(view);} }
+        if (node.systemContextView) { for (const view of node.systemContextView) { this.visit(view);} }
+        if (node.containerView) { for (const view of node.containerView) { this.visit(view);} }
+        if (node.componentView) { for (const view of node.componentView) { this.visit(view);} }
+        if (node.imageSection) { for (const image of node.imageSection) { this.visit(image);} }
+        if (node.stylesSection) { for (const style of node.stylesSection) { this.visit(style);} }
+        if (node.dynamicSection) { for (const dyn of node.dynamicSection) { this.visit(dyn);} }
+        if (node.deploymentSection) { for (const deployment of node.deploymentSection) { this.visit(deployment);} }
+    }
+
+    systemLandscapeView(node: any) {
+        this._debug && console.log(`Here we are at systemLandscapeView with node: ${node.name}`);
+    }
+
+    viewOptions(node: any) {
+        this._debug && console.log('Here we are at viewOptions node:');
+        if (node.includeOptions) { for (const inc of node.includeOptions) { this.visit(inc); } }
+        if (node.autoLayoutOptions) { this.visit(node.autoLayoutOptions); }
+        if (node.animationOptions) {}
+        if (node.descriptionOptions) {}
+        if (node.propertiesOptions) {}
+    }
+
+    includeOptions(node: any) {
+        this._debug && console.log('Here we are at includeOptions node:');
+        // if (node.wildcard) { view.addAllElements(); }
+        // if (node.identifier) {
+        //     const e_id = this.elementsByIdentifier.get(node.identifier[0].image) ?? "";
+        //     const ele = this.workspace.model.getElement(e_id);
+        //     if (ele) {
+        //         view.addElement(ele, true);
+        //     }
+        // }
+    }
+
+    autoLayoutOptions(node: any) {
+        this._debug && console.log('Here we are at autoLayoutOptions node:');
+        const rankDir = node.identifier?.[0].image;
+        const rankSep = node.int?.[0].image;
+        const nodeSep = node.int?.[1].image;
+        // let rankDirEnum: RankDirection = RankDirection.TopBottom;
+        // if (rankDir) {
+        //     switch (rankDir) {
+        //         case 'tb': rankDirEnum = RankDirection.TopBottom; break;
+        //         case 'bt': rankDirEnum = RankDirection.BottomTop; break;
+        //         case 'lr': rankDirEnum = RankDirection.LeftRight; break;
+        //         case 'rl': rankDirEnum = RankDirection.RightLeft; break;
+        //     }
+        //     view.setAutomaticLayout(rankDirEnum, rankSep, nodeSep);
+        // } else {
+        //     view.setAutomaticLayout(true);
+        // }
+    }
+
+    animationOptions(node: any) {
+        this._debug && console.log(`Here we are at animationOptions with node: ${node.name}`);
+    }
+
+    descriptionOptions(node: any) {
+        this._debug && console.log(`Here we are at descriptionOptions with node: ${node.name}`);
+    }
+
+    propertiesOptions(node: any) {
+        this._debug && console.log(`Here we are at propertiesOptions with node: ${node.name}`);
+    }
+
+    systemContextView(node: any) {
+        this._debug && console.log('Here we are at systemContextView node:');
+        // const sws_id = this.elementsByIdentifier.get(node.identifier[0].image) ?? "";
+        // const sws = this.workspace.model.getElement(sws_id);
+        // const key = node.StringLiteral[0]?.image ?? "";
+        // const desc = node.StringLiteral[1]?.image ?? "";
+        // const view = this.workspace.views.createSystemContextView(sws as SoftwareSystem, stripQuotes(key), stripQuotes(desc));
+        if (node.viewOptions) { this.visit(node.viewOptions); }
+    }
+
+    containerView(node: any) {
+        this._debug && console.log(`Here we are at containerView with node: ${node.name}`);
+    }
+
+    componentView(node: any) { 
+        this._debug && console.log(`Here we are at componentView with node: ${node.name}`);
+    }
+
+    imageSection(node: any) {
+        this._debug && console.log(`Here we are at imageSection with node: ${node.name}`);
+    }
+
+    dynamicSection(node: any) {
+        this._debug && console.log(`Here we are at dynamicSection with node: ${node.name}`);
+    }
+
+    deploymentSection(node: any) {
+        this._debug && console.log(`Here we are at deploymentSection with node: ${node.name}`);
+    }
+
+    stylesSection(node: any) {
+        this._debug && console.log(`Here we are at stylesSection with node: ${node.name}`);
+    }
+
+    elementStyleSection(node: any) {
+        this._debug && console.log(`Here we are at elementStyleSection with node: ${node.name}`);
+    }
+
+    relationshipStyleSection(node: any) {
+        this._debug && console.log(`Here we are at relationshipStyleSection with node: ${node.name}`);
+    }
+
+    shapeStyle(node: any) {
+        this._debug && console.log(`Here we are at shapeStyle with node: ${node.name}`);
+    }
+
+    backgroundStyle(node: any) {
+        this._debug && console.log(`Here we are at backgroundStyle with node: ${node.name}`);
+    }
+
+    colorStyle(node: any) {
+        this._debug && console.log(`Here we are at colorStyle with node: ${node.name}`);
+    }
+
+    colourStyle(node: any) {
+        this._debug && console.log(`Here we are at colourStyle with node: ${node.name}`);
+    }
+
+    fontStyle(node: any) {
+        this._debug && console.log(`Here we are at fontStyle with node: ${node.name}`);
+    }
+
+    opacityStyle(node: any) {
+        this._debug && console.log(`Here we are at opacityStyle with node: ${node.name}`);
+    }
+
+    findSourceEntity(s_id: string) {
+        // Search Person
+        let p = this.workspace.model?.people?.find(pr => pr.id === s_id);
+        if (p) return p;
+        // Search Software Systems recursively
+        this.workspace.model?.softwareSystems?.forEach((element) => {
+            if (element.id === s_id) return element;
+            element.containers?.forEach((element2) => {
+                if (element2.id === s_id) return element2;
+                element2.components?.forEach((element3) => {
+                    if (element3.id === s_id) return element3;
+                });
+            });
+        });
+        throw new Error("Failed to find a match for the source ID presented: " + s_id);
+    }
+}
+
+function stripQuotes(str: string) : string {
+    // Fail if an invalid argument is provided
+    if (typeof str !== 'string') {
+      throw new TypeError('Expected a string');
+    }
+    return str.replace(/^"(.+)"$/, '$1');
+  }
+
+export const RawInterpreter = new rawInterpreter();
