@@ -108,12 +108,34 @@ class structurizrParser extends CstParser {
     this.CONSUME1(LBrace);
     this.MANY(() => {
       this.OR([
+        {ALT: () => {this.SUBRULE(this.containerGroupSection)}},
         {ALT: () => {this.SUBRULE(this.containerSection)}},
         {ALT: () => {this.SUBRULE(this.implicitRelationship)}}
       ]);
         ;
     });
     this.CONSUME1(RBrace);
+  });
+
+  private containerGroupSection = this.RULE("containerGroupSection", () => {
+    this.OPTION(() => {
+        this.CONSUME(Identifier);
+        this.CONSUME(Equals);
+    });
+    this.CONSUME(Group);
+    this.CONSUME(StringLiteral);
+    this.SUBRULE(this.containerGroupChildSection);
+  });
+
+  private containerGroupChildSection = this.RULE("containerGroupChildSection", () => {
+    this.CONSUME(LBrace);
+    this.MANY(() => {
+        this.OR([
+            {ALT: () => {this.SUBRULE(this.containerGroupSection)}},
+            {ALT: () => {this.SUBRULE(this.containerSection)}}
+        ]);
+    });
+    this.CONSUME(RBrace);
   });
 
   private containerSection = this.RULE("containerSection", () => {
@@ -133,11 +155,33 @@ class structurizrParser extends CstParser {
     this.CONSUME1(LBrace);
     this.MANY(() => {
       this.OR([
+        {ALT: () => {this.SUBRULE(this.componentGroupSection)}},
         {ALT: () => {this.SUBRULE(this.componentSection)}},
         {ALT: () => {this.SUBRULE(this.implicitRelationship)}}
       ]);
     });
     this.CONSUME1(RBrace);
+  });
+  
+  private componentGroupSection = this.RULE("componentGroupSection", () => {
+    this.OPTION(() => {
+        this.CONSUME(Identifier);
+        this.CONSUME(Equals);
+    });
+    this.CONSUME(Group);
+    this.CONSUME(StringLiteral);
+    this.SUBRULE(this.componentGroupChildSection);
+  });
+
+  private componentGroupChildSection = this.RULE("componentGroupChildSection", () => {
+    this.CONSUME(LBrace);
+    this.MANY(() => {
+        this.OR([
+            {ALT: () => {this.SUBRULE(this.componentGroupSection)}},
+            {ALT: () => {this.SUBRULE(this.componentSection)}}
+        ]);
+    });
+    this.CONSUME(RBrace);
   });
 
   private componentSection = this.RULE("componentSection", () => {

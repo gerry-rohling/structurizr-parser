@@ -94,12 +94,40 @@ class structurizrInterpreter extends BaseStructurizrVisitor {
         this._debug && console.log(`Here we are at softwareSystemChildSection with node: ${node.name}`);
     }
 
+    containerGroupSection(node: any) {
+        this._debug && console.log(`Here we are at containerGroupSection with node: ${node.name}`);
+        // We do not seem to have group elements supported?!
+        // const g = this.workspace.model.
+        // Just iterate over child elements for now
+        if (node.containerGroupChildSection) {
+            this.visit(node.containerGroupChildSection);
+        }
+    }
+
+    containerGroupChildSection(node: any) {
+        this._debug && console.log(`Here we are at containerGroupChildSection with node: ${node.name}`);
+    }
+
     containerSection(node: any) {
         this._debug && console.log(`Here we are at ContainerSection with node: ${node.name}`);
     }
 
     containerChildSection(node: any) {
         this._debug && console.log(`Here we are at ContainerChildSection with node: ${node.name}`);
+    }
+
+    componentGroupSection(node: any) {
+        this._debug && console.log(`Here we are at componentGroupSection with node: ${node.name}`);
+        // We do not seem to have group elements supported?!
+        // const g = this.workspace.model.
+        // Just iterate over child elements for now
+        if (node.componentGroupChildSection) {
+            this.visit(node.componentGroupChildSection);
+        }
+    }
+
+    componentGroupChildSection(node: any) {
+        this._debug && console.log(`Here we are at componentGroupChildSection with node: ${node.name}`);
     }
 
     componentSection(node: any) {

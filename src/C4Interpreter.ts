@@ -123,6 +123,20 @@ class c4Interpreter extends BaseStructurizrVisitor {
         if (node.containerSection) { for (const ctr of node.containerSection) { this.visit(ctr, ssys); }}
     }
 
+    containerGroupSection(node: any) {
+        this._debug && console.log(`Here we are at containerGroupSection with node: ${node.name}`);
+        // We do not seem to have group elements supported?!
+        // const g = this.workspace.model.
+        // Just iterate over child elements for now
+        if (node.containerGroupChildSection) {
+            this.visit(node.containerGroupChildSection);
+        }
+    }
+
+    containerGroupChildSection(node: any) {
+        this._debug && console.log(`Here we are at containerGroupChildSection with node: ${node.name}`);
+    }
+
     containerSection(node: any, ssys:C4SoftwareSystem) {
         this._debug && console.log('Here we are at ContainerSection node:');
         const id = node.identifier[0].image;
@@ -136,6 +150,20 @@ class c4Interpreter extends BaseStructurizrVisitor {
     containerChildSection(node: any, ctr: C4Container) {
         this._debug && console.log('Here we are at ContainerChildSection node:');
         if (node.componentSection) { for (const comp of node.componentSection) { this.visit(comp, ctr); }}
+    }
+
+    componentGroupSection(node: any) {
+        this._debug && console.log(`Here we are at componentGroupSection with node: ${node.name}`);
+        // We do not seem to have group elements supported?!
+        // const g = this.workspace.model.
+        // Just iterate over child elements for now
+        if (node.componentGroupChildSection) {
+            this.visit(node.componentGroupChildSection);
+        }
+    }
+
+    componentGroupChildSection(node: any) {
+        this._debug && console.log(`Here we are at componentGroupChildSection with node: ${node.name}`);
     }
 
     componentSection(node: any, ctr: C4Container) {
