@@ -42,6 +42,7 @@ class structurizrParser extends CstParser {
     this.CONSUME1(LBrace);
     this.MANY(() => {
         this.OR([
+            {ALT: () => {this.SUBRULE(this.propertiesSection)}},
             {ALT: () => {this.SUBRULE(this.systemGroupSection)}},
             {ALT: () => {this.SUBRULE(this.personSection)}},
             {ALT: () => {this.SUBRULE(this.softwareSystemSection)}},
@@ -50,6 +51,16 @@ class structurizrParser extends CstParser {
         ]);
     });
     this.CONSUME1(RBrace);
+  });
+
+  private propertiesSection = this.RULE("propertiesSection", () => {
+    this.CONSUME(Properties);
+    this.CONSUME(LBrace);
+    this.MANY(() => {
+      this.CONSUME1(StringLiteral);
+      this.CONSUME2(StringLiteral);
+    });
+    this.CONSUME(RBrace);
   });
 
   private systemGroupSection = this.RULE("systemGroupSection", () => {

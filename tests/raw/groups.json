@@ -1,0 +1,1 @@
+{"name":"Name","description":"Description","model":{"people":[],"softwareSystems":[{"id":"a","name":"A","description":"","containers":[],"perspectives":[],"relationships":[{"id":"","sourceId":"a","destinationId":"b","description":""}]},{"id":"b","name":"B","description":"","containers":[],"perspectives":[],"relationships":[]}],"deploymentNodes":[]}}

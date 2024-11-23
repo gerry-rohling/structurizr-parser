@@ -57,11 +57,16 @@ class rawInterpreter extends BaseStructurizrVisitor {
 
     modelChildSection(node: any) {
         this._debug && console.log('Here we are at modelChildSection node:');
+        if (node.propertiesSection) { this.visit(node.propertiesSection); }
         if (node.systemGroupSection) { for (const group of node.systemGroupSection) { this.visit(group); }}
         if (node.personSection) { for (const person of node.personSection) { this.visit(person); }}
         if (node.softwareSystemSection) { for (const sSystem of node.softwareSystemSection) { this.visit(sSystem); }}
         if (node.explicitRelationship) { for (const relationship of node. explicitRelationship) { this.visit(relationship); }}
         if (node.deploymentEnvironmentSection) { for (const depEnv of node.deploymentEnvironmentSection) { this.visit(depEnv); }}
+    }
+
+    propertiesSection(node: any) {
+        this._debug && console.log('Here we are at propertiesSection node:');
     }
 
     systemGroupSection(node: any) {
@@ -74,6 +79,7 @@ class rawInterpreter extends BaseStructurizrVisitor {
 
     systemGroupChildSection(node: any) {
         this._debug && console.log('Here we are at systemGroupChildSection with node:');
+        if (node.systemGroupSection) { for (const group of node.systemGroupSection) { this.visit(group); }}
         if (node.personSection) { for (const person of node.personSection) { this.visit(person); }}
         if (node.softwareSystemSection) { for (const sSystem of node.softwareSystemSection) { this.visit(sSystem); }}
     }
@@ -180,7 +186,7 @@ class rawInterpreter extends BaseStructurizrVisitor {
         this._debug && console.log('Here we are at explicitRelationship node:');
         const s_id = node.identifier[0].image;
         const t_id = node.identifier[1].image;
-        const desc = node.StringLiteral[0]?.image ?? "";
+        const desc = node.StringLiteral?.[0]?.image ?? "";
         const src = this.findSourceEntity(s_id);
         if (src) {
             const rel = {} as components["schemas"]["Relationship"];

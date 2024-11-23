@@ -216,6 +216,16 @@
                 "definition": [
                   {
                     "type": "NonTerminal",
+                    "name": "propertiesSection",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
                     "name": "systemGroupSection",
                     "idx": 0
                   }
@@ -270,6 +280,54 @@
         "name": "rBrace",
         "label": "}",
         "idx": 1,
+        "pattern": "\\}"
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "propertiesSection",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "properties",
+        "label": "properties",
+        "idx": 0,
+        "pattern": "properties"
+      },
+      {
+        "type": "Terminal",
+        "name": "lBrace",
+        "label": "{",
+        "idx": 0,
+        "pattern": "\\{"
+      },
+      {
+        "type": "Repetition",
+        "idx": 0,
+        "definition": [
+          {
+            "type": "Terminal",
+            "name": "StringLiteral",
+            "label": "StringLiteral",
+            "idx": 1,
+            "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
+          },
+          {
+            "type": "Terminal",
+            "name": "StringLiteral",
+            "label": "StringLiteral",
+            "idx": 2,
+            "pattern": "\"(?:[^\\\\\"]|\\\\(?:[bfnrtv\"\\\\/]|u[0-9a-fA-F]{4}))*\""
+          }
+        ]
+      },
+      {
+        "type": "Terminal",
+        "name": "rBrace",
+        "label": "}",
+        "idx": 0,
         "pattern": "\\}"
       }
     ]
