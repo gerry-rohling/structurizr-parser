@@ -3,6 +3,7 @@ workspace {
     model {
         properties {
             "structurizr.groupSeparator" "/"
+            "structurizr.locale" "en-GB"
         }
 
         group "Company 1" {

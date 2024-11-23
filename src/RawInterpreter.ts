@@ -1,4 +1,5 @@
 import { BaseStructurizrVisitor } from "./Parser";
+import { Stack } from "./stack";
 import { paths, components } from "./structurizr.schema";
 
 class rawInterpreter extends BaseStructurizrVisitor {
@@ -8,13 +9,17 @@ class rawInterpreter extends BaseStructurizrVisitor {
     private _system: components["schemas"]["SoftwareSystem"] = {};
     private _container: components["schemas"]["Container"] = {};
 
-    private _systemGroup:string = "";
-    private _containerGroup:string = "";
-    private _componentGroup:string = "";
+    private _systemGroup:Stack<string> = new Stack<string>();
+    private _containerGroup:Stack<string> = new Stack<string>();
+    private _componentGroup:Stack<string> = new Stack<string>();
+
+    private _groupSeparator:string = '/';
 
     constructor() {
         super();
-
+        this._systemGroup.clear();
+        this._containerGroup.clear();
+        this._componentGroup.clear();
         this.validateVisitor();
     }
 
@@ -65,16 +70,32 @@ class rawInterpreter extends BaseStructurizrVisitor {
         if (node.deploymentEnvironmentSection) { for (const depEnv of node.deploymentEnvironmentSection) { this.visit(depEnv); }}
     }
 
+    // This should ideally be from the list at https://docs.structurizr.com/ui/properties
     propertiesSection(node: any) {
         this._debug && console.log('Here we are at propertiesSection node:');
+        let offset = 0;
+        while (node.StringLiteral.length > offset) {
+            const parameter = stripQuotes(node.StringLiteral[offset].image);
+            const value = stripQuotes(node.StringLiteral[offset+1].image);
+            if (!this.workspace.model?.properties){
+                this.workspace.model!.properties = {};
+            }
+            this.workspace.model!.properties![parameter] = value;
+            if (parameter.toLowerCase() === "structurizr.groupseparator") {
+                this._groupSeparator = value;
+            }
+            offset += 2;
+        }
     }
 
     systemGroupSection(node: any) {
         this._debug && console.log('Here we are at systemGroupSection node:');
+        const groupName = stripQuotes(node.StringLiteral?.[0]?.image ?? "");
+        this._systemGroup.push(groupName);
         if (node.systemGroupChildSection) {
             this.visit(node.systemGroupChildSection);
         }
-        this._systemGroup = "";
+        this._systemGroup.pop();
     }
 
     systemGroupChildSection(node: any) {
@@ -107,6 +128,7 @@ class rawInterpreter extends BaseStructurizrVisitor {
         s.id = id;
         s.name = name;
         s.description = description;
+        if (!this._systemGroup.isEmpty()) { s.group = this._systemGroup.dump(this._groupSeparator); }
         s.containers = [];
         s.perspectives = [];
         s.relationships = [];
@@ -122,9 +144,12 @@ class rawInterpreter extends BaseStructurizrVisitor {
 
     containerGroupSection(node: any) {
         this._debug && console.log(`Here we are at containerGroupSection with node: ${node.name}`);
+        const groupName = stripQuotes(node.StringLiteral?.[0]?.image ?? "");
+        this._containerGroup.push(groupName);
         if (node.containerGroupChildSection) {
             this.visit(node.containerGroupChildSection);
         }
+        this._containerGroup.pop();
     }
 
     containerGroupChildSection(node: any) {
@@ -142,6 +167,7 @@ class rawInterpreter extends BaseStructurizrVisitor {
         c.name = name;
         c.description = description;
         c.technology = tech;
+        if (!this._containerGroup.isEmpty()) { c.group = this._containerGroup.dump(this._groupSeparator); }
         c.components = [];
         c.perspectives = [];
         c.relationships = [];
@@ -157,9 +183,12 @@ class rawInterpreter extends BaseStructurizrVisitor {
 
     componentGroupSection(node: any) {
         this._debug && console.log(`Here we are at componentGroupSection with node: ${node.name}`);
+        const groupName = stripQuotes(node.StringLiteral?.[0]?.image ?? "");
+        this._componentGroup.push(groupName);
         if (node.componentGroupChildSection) {
             this.visit(node.componentGroupChildSection);
         }
+        this._componentGroup.pop();
     }
 
     componentGroupChildSection(node: any) {
@@ -177,6 +206,7 @@ class rawInterpreter extends BaseStructurizrVisitor {
         c.name = name;
         c.description = description;
         c.technology = tech;
+        if (!this._componentGroup.isEmpty()) { c.group = this._componentGroup.dump(this._groupSeparator); }
         c.perspectives = [];
         c.relationships = [];
         this._container.components?.push(c);
