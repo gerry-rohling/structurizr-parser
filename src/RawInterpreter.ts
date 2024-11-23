@@ -1,4 +1,5 @@
 import { BaseStructurizrVisitor } from "./Parser";
+import { RankDirection } from "./rankDirection";
 import { Stack } from "./stack";
 import { paths, components } from "./structurizr.schema";
 
@@ -320,21 +321,20 @@ class rawInterpreter extends BaseStructurizrVisitor {
 
     autoLayoutOptions(node: any, view: any) {
         this._debug && console.log('Here we are at autoLayoutOptions node:');
+        if (!view.automaticLayout) { view.automaticLayout = {}; }
         const rankDir = node.identifier?.[0].image;
         const rankSep = node.int?.[0].image;
         const nodeSep = node.int?.[1].image;
-        // let rankDirEnum: RankDirection = RankDirection.TopBottom;
-        // if (rankDir) {
-        //     switch (rankDir) {
-        //         case 'tb': rankDirEnum = RankDirection.TopBottom; break;
-        //         case 'bt': rankDirEnum = RankDirection.BottomTop; break;
-        //         case 'lr': rankDirEnum = RankDirection.LeftRight; break;
-        //         case 'rl': rankDirEnum = RankDirection.RightLeft; break;
-        //     }
-        //     view.setAutomaticLayout(rankDirEnum, rankSep, nodeSep);
-        // } else {
-        //     view.setAutomaticLayout(true);
-        // }
+        let rankDirEnum: RankDirection = RankDirection.TopBottom;
+        if (rankDir) {
+            switch (rankDir) {
+                case 'tb': rankDirEnum = RankDirection.TopBottom; break;
+                case 'bt': rankDirEnum = RankDirection.BottomTop; break;
+                case 'lr': rankDirEnum = RankDirection.LeftRight; break;
+                case 'rl': rankDirEnum = RankDirection.RightLeft; break;
+            }
+        }
+        view.automaticLayout["rankDirection"] = rankDirEnum;
     }
 
     animationOptions(node: any) {

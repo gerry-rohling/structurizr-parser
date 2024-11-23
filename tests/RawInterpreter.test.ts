@@ -15,6 +15,9 @@ describe('Testing RawInterpreter', () => {
         expect(cst.name).toBe("workspaceWrapper");
         const c4wspace = RawInterpreter.visit(cst) as components["schemas"]["Workspace"];
         expect(c4wspace).toBeDefined();
+        expect(c4wspace.model?.people).toHaveLength(1);
+        expect(c4wspace.model?.softwareSystems).toHaveLength(1);
+        expect(c4wspace.views?.systemContextViews).toHaveLength(1);
         await fsPromise.writeFile("./tests/raw/getting-started.json", JSON.stringify(c4wspace));
     });
 
