@@ -46,6 +46,10 @@
                 }
             }
         ],
-        "configuration": {}
+        "configuration": {
+            "styles": {
+                "elements": []
+            }
+        }
     }
 }

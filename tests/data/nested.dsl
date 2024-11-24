@@ -19,7 +19,7 @@ workspace {
     }
 
     views {
-        systemLandscape "How is this" {
+        systemLandscape "How-is-this" {
             include *
             autolayout
         }

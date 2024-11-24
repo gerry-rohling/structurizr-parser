@@ -392,6 +392,13 @@ class rawInterpreter extends BaseStructurizrVisitor {
     stylesSection(node: any) {
         this._debug && console.log(`Here we are at stylesSection with node: ${node.name}`);
         if (!this.workspace.views?.configuration) { this.workspace.views!.configuration = {}; }
+        if (!this.workspace.views?.configuration.styles) { this.workspace.views!.configuration.styles = {}; }
+        if (node.elementStyleSection) { 
+            if (!this.workspace.views?.configuration.styles.elements) {
+                this.workspace.views!.configuration.styles.elements = [];
+            }
+            for (const es of node.elementStyleSection) { this.visit(es)}; 
+        }
     }
 
     elementStyleSection(node: any) {
