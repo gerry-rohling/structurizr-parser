@@ -36,6 +36,11 @@
                 "softwareSystemId": "swSystem",
                 "key": "SystemContext",
                 "description": "",
+                "elements": [
+                    {
+                        "id": "swSystem"
+                    }
+                ],
                 "automaticLayout": {
                     "rankDirection": "TopBottom"
                 }

@@ -2,25 +2,21 @@ import { BaseStructurizrVisitor } from "./Parser";
 import { RankDirection } from "./rankDirection";
 import { Stack } from "./stack";
 import { paths, components } from "./structurizr.schema";
+import { ViewType } from "./viewType";
 
 class rawInterpreter extends BaseStructurizrVisitor {
     private _debug:boolean = false;
     private workspace: components["schemas"]["Workspace"] = {};
 
-    // WRONG! A change to the reference changes the underlying object so we cannot replace one system with another
-    // private _system: components["schemas"]["SoftwareSystem"] = {};
-    // private _container: components["schemas"]["Container"] = {};
-
-    // This is OK as it is transitory and is used to build what is recorded in the workspace object
+    // This is used to build group values that are recorded in the workspace object
     private _systemGroup:Stack<string> = new Stack<string>();
     private _containerGroup:Stack<string> = new Stack<string>();
     private _componentGroup:Stack<string> = new Stack<string>();
-
     private _groupSeparator:string = '/';
-    
-    // WRONG! We cannot store a reference to a view here, changing the reference changes the object :( 
-    // private _currentView: any = {};
 
+    // View helpers
+    private _currentView:ViewType = ViewType.Unknown;
+    
     constructor() {
         super();
         this._systemGroup.clear();
@@ -287,6 +283,7 @@ class rawInterpreter extends BaseStructurizrVisitor {
 
     systemLandscapeView(node: any) {
         this._debug && console.log(`Here we are at systemLandscapeView with node: ${node.name}`);
+        this._currentView = ViewType.SystemLandscape;
         if (!this.workspace.views?.systemLandscapeViews) { this.workspace.views!.systemLandscapeViews = []; }
         const key = stripQuotes(node.StringLiteral?.[0]?.image ?? "");
         const desc = stripQuotes(node.StringLiteral?.[1]?.image ?? "");
@@ -294,7 +291,6 @@ class rawInterpreter extends BaseStructurizrVisitor {
         sl.key = key;
         sl.description = desc;
         this.workspace.views?.systemLandscapeViews.push(sl);
-        // this._currentView = sl;
         if (node.viewOptions) { this.visit(node.viewOptions, sl); }
     }
 
@@ -309,14 +305,13 @@ class rawInterpreter extends BaseStructurizrVisitor {
 
     includeOptions(node: any, view: any) {
         this._debug && console.log('Here we are at includeOptions node:');
-        // if (node.wildcard) { view.addAllElements(); }
-        // if (node.identifier) {
-        //     const e_id = this.elementsByIdentifier.get(node.identifier[0].image) ?? "";
-        //     const ele = this.workspace.model.getElement(e_id);
-        //     if (ele) {
-        //         view.addElement(ele, true);
-        //     }
-        // }
+        if (!view.elements){ view.elements = []; }
+        if (node.wildcard) { this.addAllElements(view); }
+        if (node.identifier) {
+            const e = {} as components["schemas"]["ElementView"];
+            e.id = node.identifier[0].image ?? "";
+            view.elements.push(e);
+        }
     }
 
     autoLayoutOptions(node: any, view: any) {
@@ -351,6 +346,7 @@ class rawInterpreter extends BaseStructurizrVisitor {
 
     systemContextView(node: any) {
         this._debug && console.log('Here we are at systemContextView node:');
+        this._currentView = ViewType.SystemContext;
         if (!this.workspace.views?.systemContextViews) { this.workspace.views!.systemContextViews = []; }
         const id = node.identifier[0].image ?? "";
         const key = stripQuotes(node.StringLiteral[0]?.image ?? "");
@@ -360,32 +356,36 @@ class rawInterpreter extends BaseStructurizrVisitor {
         cv.key = key;
         cv.description = desc;
         this.workspace.views?.systemContextViews.push(cv);
-        // this._currentView = cv;
         if (node.viewOptions) { this.visit(node.viewOptions, cv); }
     }
 
     containerView(node: any) {
         this._debug && console.log(`Here we are at containerView with node: ${node.name}`);
+        this._currentView = ViewType.Container;
         if (!this.workspace.views?.containerViews) { this.workspace.views!.containerViews = []; }
     }
 
     componentView(node: any) { 
         this._debug && console.log(`Here we are at componentView with node: ${node.name}`);
+        this._currentView = ViewType.Component;
         if (!this.workspace.views?.componentViews) { this.workspace.views!.componentViews = []; }
     }
 
     imageSection(node: any) {
         this._debug && console.log(`Here we are at imageSection with node: ${node.name}`);
+        this._currentView = ViewType.Image;
         if (!this.workspace.views?.imageViews) { this.workspace.views!.imageViews = []; }
     }
 
     dynamicSection(node: any) {
         this._debug && console.log(`Here we are at dynamicSection with node: ${node.name}`);
+        this._currentView = ViewType.Dynamic;
         if (!this.workspace.views?.dynamicViews) { this.workspace.views!.dynamicViews = []; }
     }
 
     deploymentSection(node: any) {
         this._debug && console.log(`Here we are at deploymentSection with node: ${node.name}`);
+        this._currentView = ViewType.Deployment;
         if (!this.workspace.views?.deploymentViews) { this.workspace.views!.deploymentViews = []; }
     }
 
@@ -447,6 +447,52 @@ class rawInterpreter extends BaseStructurizrVisitor {
             }
         }
         throw new Error("Failed to find a match for the source ID presented: " + s_id);
+    }
+
+    addAllElements(view: any) {
+        switch(this._currentView){
+            // System Landscape view: Include all people and software systems.
+            case ViewType.SystemLandscape:{
+                if (this.workspace.model?.softwareSystems) {
+                    for (const sl of this.workspace.model?.softwareSystems){
+                        const e = {} as components["schemas"]["ElementView"];
+                        e.id = sl.id;
+                        view.elements.push(e);
+                    }
+                };
+                if (this.workspace.model?.people) {
+                    for (const pl of this.workspace.model.people){
+                        const p = {} as components["schemas"]["ElementView"];
+                        p.id = pl.id;
+                        view.elements.push(p);
+                    }
+                }
+                break;
+            }
+            // System Context view: Include the software system in scope; 
+            // plus all people and software systems that are directly connected to 
+            // the software system in scope.
+            case ViewType.SystemContext:{
+                const ss = {} as components["schemas"]["ElementView"];
+                ss.id = view.softwareSystemId;
+                view.elements.push(ss);
+                break;
+            }
+            // Container view: Include all containers within the software system in scope; 
+            // plus all people and software systems that are directly connected to those containers.
+            case ViewType.Container:{
+                const ss = {} as components["schemas"]["ElementView"];
+                ss.id = view.softwareSystemId;
+                view.elements.push(ss);
+                break;
+            }
+            // Component view: Include all components within the container in scope; 
+            // plus all people, software systems and containers (belonging to the software system in scope) 
+            // directly connected to them.
+            case ViewType.Component:{
+                break;
+            }
+        }
     }
 }
 
