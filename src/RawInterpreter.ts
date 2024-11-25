@@ -403,34 +403,50 @@ class rawInterpreter extends BaseStructurizrVisitor {
 
     elementStyleSection(node: any) {
         this._debug && console.log(`Here we are at elementStyleSection with node: ${node.name}`);
+        const es = {} as components["schemas"]["ElementStyle"];
+        es.tag = stripQuotes(node.StringLiteral[0].image ?? "");
+        // TODO: We MUST pass es to the style handlers here and that avoids the whole stupid children issue
+        if (node.shapeStyle){ this.visit(node.shapeStyle, es);        }
+        if (node.backgroundStyle){ this.visit(node.backgroundStyle, es); }
+        if (node.colorStyle){ this.visit(node.colorStyle, es); }
+        if (node.colourStyle){ this.visit(node.colourStyle, es); }
+        if (node.fontStyle){ this.visit(node.fontStyle, es); }
+        if (node.opacityStyle){ this.visit(node.opacityStyle, es); }
+        this.workspace.views?.configuration?.styles?.elements?.push(es);
     }
 
     relationshipStyleSection(node: any) {
         this._debug && console.log(`Here we are at relationshipStyleSection with node: ${node.name}`);
     }
 
-    shapeStyle(node: any) {
+    shapeStyle(node: any, es: components["schemas"]["ElementStyle"]) {
         this._debug && console.log(`Here we are at shapeStyle with node: ${node.name}`);
+        // es.shape = stripQuotes(node.shapeStyle[0].image ?? "");
     }
 
-    backgroundStyle(node: any) {
+    backgroundStyle(node: any, es: components["schemas"]["ElementStyle"]) {
         this._debug && console.log(`Here we are at backgroundStyle with node: ${node.name}`);
+        es.background = stripQuotes(node.hexColor[0].image ?? "");
     }
 
-    colorStyle(node: any) {
+    colorStyle(node: any, es: components["schemas"]["ElementStyle"]) {
         this._debug && console.log(`Here we are at colorStyle with node: ${node.name}`);
+        es.color = stripQuotes(node.hexColor[0].image ?? "");
     }
 
-    colourStyle(node: any) {
+    colourStyle(node: any, es: components["schemas"]["ElementStyle"]) {
         this._debug && console.log(`Here we are at colourStyle with node: ${node.name}`);
+        es.color = stripQuotes(node.hexColor[0].image ?? "");
     }
 
-    fontStyle(node: any) {
+    fontStyle(node: any, es: components["schemas"]["ElementStyle"]) {
         this._debug && console.log(`Here we are at fontStyle with node: ${node.name}`);
+        es.fontSize = node.int[0].image;
     }
 
-    opacityStyle(node: any) {
+    opacityStyle(node: any, es: components["schemas"]["ElementStyle"]) {
         this._debug && console.log(`Here we are at opacityStyle with node: ${node.name}`);
+        es.opacity = node.int[0].image;
     }
 
     findSourceEntity(s_id: string) {

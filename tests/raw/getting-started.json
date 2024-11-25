@@ -48,7 +48,18 @@
         ],
         "configuration": {
             "styles": {
-                "elements": []
+                "elements": [
+                    {
+                        "tag": "Software System",
+                        "background": "#1168bd",
+                        "color": "#ffffff"
+                    },
+                    {
+                        "tag": "Person",
+                        "background": "#08427b",
+                        "color": "#ffffff"
+                    }
+                ]
             }
         }
     }
