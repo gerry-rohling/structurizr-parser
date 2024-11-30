@@ -20,11 +20,11 @@ export const Url = createToken({name: "url", pattern: /(https?:\/\/[^ ]*)/i});
 // Relative file path
 export const FilePath = createToken({name: "filePath", pattern: /\.\.?\/[^\n"?:*<>|]+\.[A-z0-9]+/i });
 
-/// Literals
-export const StringLiteral = createToken({name: "StringLiteral", pattern: /"(?:[^\\"]|\\(?:[bfnrtv"\\/]|u[0-9a-fA-F]{4}))*"/ });
+/// Literals - was /"(?:[^\\"]|\\(?:[bfnrtv"\\/]|u[0-9a-fA-F]{4}))*"/ but not sure what that is on?!
+export const StringLiteral = createToken({name: "stringLiteral", pattern: /"(?:[^"\\]|\\.)*"/ });
 
-/// Identifiers was /[a-zA-Z_0-9]\w*/
-export const Identifier = createToken({ name: 'identifier', pattern: /[a-zA-z][a-zA-z.]*\_?[0-9]*/ });
+/// Identifiers was /[a-zA-Z_0-9]\w*/ and /[a-zA-z][a-zA-z.]*\_?[0-9]*/
+export const Identifier = createToken({ name: 'identifier', pattern: /[a-zA-Z_0-9]+/ });
 
 /// Keywords
 export const BangInclude = createToken({name: "bangInclude", pattern: /!include/i });
@@ -79,6 +79,7 @@ export const Colour = createToken({name: "colour", pattern: /colour/i, longer_al
 export const ShapeEnum = createToken({name: "shapeEnum", pattern: /Box|RoundedBox|Circle|Ellipse|Hexagon|Cylinder|Pipe|Person|Robot|Folder|WebBrowser|MobileDevicePortrait|MobileDeviceLandscape|Component/i, longer_alt:Identifier});
 export const FontSize = createToken({name: "fontSize", pattern: /fontsize/i, longer_alt: Identifier});
 export const Opacity = createToken({name:"opacity", pattern: /opacity/i, longer_alt: Identifier});
+export const PropertiesEnum = createToken({name: "propertiesEnum", pattern: /"?structurizr\.locale"?|"?structurizr\.timezone"?|"?structurizr\.sort"?|"?structurizr\.tooltips"?|"?structurizr\.title"?|"?structurizr\.description"?|"?structurizr\.metadata"?|"?structurizr\.enterpriseBoundary"?|"?structurizr\.groupSeparator"?|"?structurizr\.groups"?|"?structurizr\.softwareSystemBoundaries"?/i, longer_alt: Identifier});
 
 /// Relationships
 export const Equals = createToken({ name: "equals", pattern: /=/ });
@@ -104,7 +105,8 @@ export const RBrace = createToken({ name: "rBrace", pattern: /\}/, label: "}" })
 /// Noise - was /\s+/ but now also absorbing line ends
 export const WhiteSpace = createToken({ name: 'whiteSpace', pattern: /[\s\t\n\r]+/, group: Lexer.SKIPPED });
 
-// Build in order of frequency and priority. First encountered is a match. Keywords before identifiers, whitespace at beginning
+// Build in order of frequency and priority. First encountered is a match. 
+// Keywords before identifiers, whitespace at beginning
 export const allTokens = [
     WhiteSpace,
     BlockComment,
@@ -113,6 +115,8 @@ export const allTokens = [
     FilePath,
     HexColor,  
     HashComment,
+
+    PropertiesEnum,
 
     StringLiteral,
 
@@ -174,12 +178,14 @@ export const allTokens = [
 
     Bool, 
 
+    Int,
+
     Identifier,
     
     Value,  
     Word,
     Float,
-    Int,
+
 
     Wildcard,
 

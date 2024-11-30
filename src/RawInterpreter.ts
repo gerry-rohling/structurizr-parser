@@ -42,8 +42,8 @@ class rawInterpreter extends BaseStructurizrVisitor {
 
     workspaceSection(node: any) {
         this._debug && console.log('Here we are at workspaceSection node:');
-        if (node.name) { this.workspace.name = node.StringLiteral[0]?.image };
-        if (node.description) { this.workspace.description = node.StringLiteral[1]?.image };
+        if (node.name) { this.workspace.name = node.stringLiteral[0]?.image };
+        if (node.description) { this.workspace.description = node.stringLiteral[1]?.image };
         if (node.modelSection) {
             this.visit(node.modelSection);
         }
@@ -79,9 +79,9 @@ class rawInterpreter extends BaseStructurizrVisitor {
     propertiesSection(node: any) {
         this._debug && console.log('Here we are at propertiesSection node:');
         let offset = 0;
-        while (node.StringLiteral.length > offset) {
-            const parameter = stripQuotes(node.StringLiteral[offset].image);
-            const value = stripQuotes(node.StringLiteral[offset+1].image);
+        while (node.stringLiteral.length > offset) {
+            const parameter = stripQuotes(node.stringLiteral[offset].image);
+            const value = stripQuotes(node.stringLiteral[offset+1].image);
             if (!this.workspace.model?.properties){
                 this.workspace.model!.properties = {};
             }
@@ -95,7 +95,7 @@ class rawInterpreter extends BaseStructurizrVisitor {
 
     systemGroupSection(node: any) {
         this._debug && console.log('Here we are at systemGroupSection node:');
-        const groupName = stripQuotes(node.StringLiteral?.[0]?.image ?? "");
+        const groupName = stripQuotes(node.stringLiteral?.[0]?.image ?? "");
         this._systemGroup.push(groupName);
         if (node.systemGroupChildSection) {
             this.visit(node.systemGroupChildSection);
@@ -113,8 +113,8 @@ class rawInterpreter extends BaseStructurizrVisitor {
     personSection(node: any) {
         this._debug && console.log('Here we are at personSection node:');
         const id = node.identifier[0].image;
-        const name = stripQuotes(node.StringLiteral[0]?.image ?? "");
-        const description = stripQuotes(node.StringLiteral[1]?.image ?? "");
+        const name = stripQuotes(node.stringLiteral[0]?.image ?? "");
+        const description = stripQuotes(node.stringLiteral[1]?.image ?? "");
         const p = {} as components["schemas"]["Person"];
         p.id = id;
         p.name = name;
@@ -127,8 +127,8 @@ class rawInterpreter extends BaseStructurizrVisitor {
     softwareSystemSection(node: any) {
         this._debug && console.log('Here we are at softwareSystemSection node:');
         const id = node.identifier[0].image;
-        const name = stripQuotes(node.StringLiteral[0]?.image ?? "");
-        const description = stripQuotes(node.StringLiteral[1]?.image ?? "");
+        const name = stripQuotes(node.stringLiteral[0]?.image ?? "");
+        const description = stripQuotes(node.stringLiteral[1]?.image ?? "");
         const s = {} as components["schemas"]["SoftwareSystem"];
         s.id = id;
         s.name = name;
@@ -149,7 +149,7 @@ class rawInterpreter extends BaseStructurizrVisitor {
 
     containerGroupSection(node: any) {
         this._debug && console.log(`Here we are at containerGroupSection with node: ${node.name}`);
-        const groupName = stripQuotes(node.StringLiteral?.[0]?.image ?? "");
+        const groupName = stripQuotes(node.stringLiteral?.[0]?.image ?? "");
         this._containerGroup.push(groupName);
         if (node.containerGroupChildSection) {
             this.visit(node.containerGroupChildSection);
@@ -164,9 +164,9 @@ class rawInterpreter extends BaseStructurizrVisitor {
     containerSection(node: any, system: components["schemas"]["SoftwareSystem"]) {
         this._debug && console.log(`Here we are at ContainerSection with node: ${node.name}`);
         const id = node.identifier[0].image;
-        const name = stripQuotes(node.StringLiteral[0]?.image ?? "");
-        const description = stripQuotes(node.StringLiteral[1]?.image ?? "");
-        const tech = stripQuotes(node.StringLiteral[2]?.image ?? "");
+        const name = stripQuotes(node.stringLiteral[0]?.image ?? "");
+        const description = stripQuotes(node.stringLiteral[1]?.image ?? "");
+        const tech = stripQuotes(node.stringLiteral[2]?.image ?? "");
         const c = {} as components["schemas"]["Container"];
         c.id = id;
         c.name = name;
@@ -188,7 +188,7 @@ class rawInterpreter extends BaseStructurizrVisitor {
 
     componentGroupSection(node: any) {
         this._debug && console.log(`Here we are at componentGroupSection with node: ${node.name}`);
-        const groupName = stripQuotes(node.StringLiteral?.[0]?.image ?? "");
+        const groupName = stripQuotes(node.stringLiteral?.[0]?.image ?? "");
         this._componentGroup.push(groupName);
         if (node.componentGroupChildSection) {
             this.visit(node.componentGroupChildSection);
@@ -203,9 +203,9 @@ class rawInterpreter extends BaseStructurizrVisitor {
     componentSection(node: any, container: components["schemas"]["Container"]) {
         this._debug && console.log(`Here we are at ComponentSection with node: ${node.name}`);
         const id = node.identifier[0].image;
-        const name = stripQuotes(node.StringLiteral[0]?.image ?? "");
-        const description = stripQuotes(node.StringLiteral[1]?.image ?? "");
-        const tech = stripQuotes(node.StringLiteral[2]?.image ?? "");
+        const name = stripQuotes(node.stringLiteral[0]?.image ?? "");
+        const description = stripQuotes(node.stringLiteral[1]?.image ?? "");
+        const tech = stripQuotes(node.stringLiteral[2]?.image ?? "");
         const c = {} as components["schemas"]["Component"];
         c.id = id;
         c.name = name;
@@ -221,7 +221,7 @@ class rawInterpreter extends BaseStructurizrVisitor {
         this._debug && console.log('Here we are at explicitRelationship node:');
         const s_id = node.identifier[0].image;
         const t_id = node.identifier[1].image;
-        const desc = node.StringLiteral?.[0]?.image ?? "";
+        const desc = node.stringLiteral?.[0]?.image ?? "";
         const src = this.findSourceEntity(s_id);
         if (src) {
             const rel = {} as components["schemas"]["Relationship"];
@@ -285,8 +285,8 @@ class rawInterpreter extends BaseStructurizrVisitor {
         this._debug && console.log(`Here we are at systemLandscapeView with node: ${node.name}`);
         this._currentView = ViewType.SystemLandscape;
         if (!this.workspace.views?.systemLandscapeViews) { this.workspace.views!.systemLandscapeViews = []; }
-        const key = stripQuotes(node.StringLiteral?.[0]?.image ?? "");
-        const desc = stripQuotes(node.StringLiteral?.[1]?.image ?? "");
+        const key = stripQuotes(node.stringLiteral?.[0]?.image ?? "");
+        const desc = stripQuotes(node.stringLiteral?.[1]?.image ?? "");
         const sl = {} as components["schemas"]["SystemLandscapeView"];
         sl.key = key;
         sl.description = desc;
@@ -349,8 +349,8 @@ class rawInterpreter extends BaseStructurizrVisitor {
         this._currentView = ViewType.SystemContext;
         if (!this.workspace.views?.systemContextViews) { this.workspace.views!.systemContextViews = []; }
         const id = node.identifier[0].image ?? "";
-        const key = stripQuotes(node.StringLiteral[0]?.image ?? "");
-        const desc = stripQuotes(node.StringLiteral[1]?.image ?? "");
+        const key = stripQuotes(node.stringLiteral[0]?.image ?? "");
+        const desc = stripQuotes(node.stringLiteral[1]?.image ?? "");
         const cv = {} as components["schemas"]["SystemContextView"];
         cv.softwareSystemId = id;
         cv.key = key;
@@ -404,7 +404,7 @@ class rawInterpreter extends BaseStructurizrVisitor {
     elementStyleSection(node: any) {
         this._debug && console.log(`Here we are at elementStyleSection with node: ${node.name}`);
         const es = {} as components["schemas"]["ElementStyle"];
-        es.tag = stripQuotes(node.StringLiteral[0].image ?? "");
+        es.tag = stripQuotes(node.stringLiteral[0].image ?? "");
         // TODO: We MUST pass es to the style handlers here and that avoids the whole stupid children issue
         if (node.shapeStyle){ this.visit(node.shapeStyle, es);        }
         if (node.backgroundStyle){ this.visit(node.backgroundStyle, es); }

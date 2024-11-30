@@ -45,6 +45,9 @@ describe('Testing StructurizrLexer', () => {
             await fsPromise.writeFile("./tests/diagrams/big-bank-plc.html", htmlText);
         }
         expect(lexingResult).toBeDefined();
+        if (lexingResult.errors.length > 0) {
+            console.log(lexingResult.errors);
+        }
         expect(lexingResult.errors.length).toBe(0);
     });
     test('Can identify bad tokens', async() => {

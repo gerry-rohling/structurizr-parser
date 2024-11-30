@@ -1,5 +1,5 @@
 import { CstParser } from "chevrotain";
-import { Animation, AutoLayout, Background, Color, Colour, Component, Container, ContainerInstance, Deployment, DeploymentEnvironment, DeploymentNode, Description, Dynamic, Element, Equals, Extends, FilePath, FontSize, Group, HexColor, Identifier, Image, Include, Int, LBrace, Model, Name, Opacity, Person, Properties, RBrace, RelatedTo, Relationship, Shape, ShapeEnum, SoftwareSystem, SoftwareSystemInstance, StringLiteral, Styles, SystemContext, SystemLandscape, Title, Url, Value, Views, Wildcard, Word, Workspace, allTokens } from "./Lexer";
+import { Animation, AutoLayout, Background, Color, Colour, Component, Container, ContainerInstance, Deployment, DeploymentEnvironment, DeploymentNode, Description, Dynamic, Element, Equals, Extends, FilePath, FontSize, Group, HexColor, Identifier, Image, Include, Int, LBrace, Model, Name, Opacity, Person, Properties, PropertiesEnum, RBrace, RelatedTo, Relationship, Shape, ShapeEnum, SoftwareSystem, SoftwareSystemInstance, StringLiteral, Styles, SystemContext, SystemLandscape, Title, Url, Value, Views, Wildcard, Word, Workspace, allTokens } from "./Lexer";
 
 // This class takes all the tokens identified and parses the DSL according to the rulesets defined by the Structurizr schema
 
@@ -57,7 +57,7 @@ class structurizrParser extends CstParser {
     this.CONSUME(Properties);
     this.CONSUME(LBrace);
     this.MANY(() => {
-      this.CONSUME1(StringLiteral);
+      this.CONSUME1(PropertiesEnum);
       this.CONSUME2(StringLiteral);
     });
     this.CONSUME(RBrace);
@@ -365,7 +365,7 @@ class structurizrParser extends CstParser {
     this.CONSUME(Properties);
     this.CONSUME(LBrace);
     this.MANY(() => {
-      this.CONSUME(Identifier);
+      this.CONSUME(PropertiesEnum);
       this.CONSUME(Value);
     });
     this.CONSUME(RBrace);
