@@ -308,18 +308,120 @@
         "idx": 0,
         "definition": [
           {
-            "type": "Terminal",
-            "name": "propertiesEnum",
-            "label": "propertiesEnum",
-            "idx": 1,
-            "pattern": "\"?structurizr\\.locale\"?|\"?structurizr\\.timezone\"?|\"?structurizr\\.sort\"?|\"?structurizr\\.tooltips\"?|\"?structurizr\\.title\"?|\"?structurizr\\.description\"?|\"?structurizr\\.metadata\"?|\"?structurizr\\.enterpriseBoundary\"?|\"?structurizr\\.groupSeparator\"?|\"?structurizr\\.groups\"?|\"?structurizr\\.softwareSystemBoundaries\"?"
-          },
-          {
-            "type": "Terminal",
-            "name": "stringLiteral",
-            "label": "stringLiteral",
-            "idx": 2,
-            "pattern": "\"(?:[^\"\\\\]|\\\\.)*\""
+            "type": "Alternation",
+            "idx": 0,
+            "definition": [
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "timezoneProperty",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "localeProperty",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "sortProperty",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "tooltipsProperty",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "titleProperty",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "descriptionProperty",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "metadataProperty",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "enterpriseBoundaryProperty",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "groupSeparatorProperty",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "groupsProperty",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "softwareSystemBoundariesProperty",
+                    "idx": 0
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
@@ -329,6 +431,237 @@
         "label": "}",
         "idx": 0,
         "pattern": "\\}"
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "timezoneProperty",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "structurizrTimezone",
+        "label": "structurizrTimezone",
+        "idx": 0,
+        "pattern": "\"structurizr\\.timezone\"|structurizr\\.timezone"
+      },
+      {
+        "type": "Terminal",
+        "name": "stringLiteral",
+        "label": "stringLiteral",
+        "idx": 0,
+        "pattern": "\"(?:[^\"\\\\]|\\\\.)*\""
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "localeProperty",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "structurizrLocale",
+        "label": "structurizrLocale",
+        "idx": 0,
+        "pattern": "\"structurizr\\.locale\"|structurizr\\.locale"
+      },
+      {
+        "type": "Terminal",
+        "name": "stringLiteral",
+        "label": "stringLiteral",
+        "idx": 0,
+        "pattern": "\"(?:[^\"\\\\]|\\\\.)*\""
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "sortProperty",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "structurizrSort",
+        "label": "structurizrSort",
+        "idx": 0,
+        "pattern": "\"structurizr\\.sort\"|structurizr\\.sort"
+      },
+      {
+        "type": "Terminal",
+        "name": "stringLiteral",
+        "label": "stringLiteral",
+        "idx": 0,
+        "pattern": "\"(?:[^\"\\\\]|\\\\.)*\""
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "tooltipsProperty",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "structurizrTooltips",
+        "label": "structurizrTooltips",
+        "idx": 0,
+        "pattern": "\"structurizr\\.tooltips\"|structurizr\\.tooltips"
+      },
+      {
+        "type": "Terminal",
+        "name": "bool",
+        "label": "bool",
+        "idx": 0,
+        "pattern": "(true|false)"
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "titleProperty",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "structurizrTitle",
+        "label": "structurizrTitle",
+        "idx": 0,
+        "pattern": "\"structurizr\\.title\"|structurizr\\.title"
+      },
+      {
+        "type": "Terminal",
+        "name": "bool",
+        "label": "bool",
+        "idx": 0,
+        "pattern": "(true|false)"
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "descriptionProperty",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "structurizrDescription",
+        "label": "structurizrDescription",
+        "idx": 0,
+        "pattern": "\"structurizr\\.description\"|structurizr\\.description"
+      },
+      {
+        "type": "Terminal",
+        "name": "bool",
+        "label": "bool",
+        "idx": 0,
+        "pattern": "(true|false)"
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "metadataProperty",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "structurizrMetadata",
+        "label": "structurizrMetadata",
+        "idx": 0,
+        "pattern": "\"structurizr\\.metadata\"|structurizr\\.metadata"
+      },
+      {
+        "type": "Terminal",
+        "name": "bool",
+        "label": "bool",
+        "idx": 0,
+        "pattern": "(true|false)"
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "enterpriseBoundaryProperty",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "structurizrEnterpriseBoundary",
+        "label": "structurizrEnterpriseBoundary",
+        "idx": 0,
+        "pattern": "\"structurizr\\.enterpriseBoundary\"|structurizr\\.enterpriseBoundary"
+      },
+      {
+        "type": "Terminal",
+        "name": "bool",
+        "label": "bool",
+        "idx": 0,
+        "pattern": "(true|false)"
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "groupSeparatorProperty",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "structurizrGroupSeparator",
+        "label": "structurizrGroupSeparator",
+        "idx": 0,
+        "pattern": "\"structurizr\\.groupSeparator\"|structurizr\\.groupSeparator"
+      },
+      {
+        "type": "Terminal",
+        "name": "stringLiteral",
+        "label": "stringLiteral",
+        "idx": 0,
+        "pattern": "\"(?:[^\"\\\\]|\\\\.)*\""
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "groupsProperty",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "structurizrGroups",
+        "label": "structurizrGroups",
+        "idx": 0,
+        "pattern": "\"structurizr\\.groups\"|structurizr\\.groups"
+      },
+      {
+        "type": "Terminal",
+        "name": "bool",
+        "label": "bool",
+        "idx": 0,
+        "pattern": "(true|false)"
+      }
+    ]
+  },
+  {
+    "type": "Rule",
+    "name": "softwareSystemBoundariesProperty",
+    "orgText": "",
+    "definition": [
+      {
+        "type": "Terminal",
+        "name": "structurizrSoftwareSystemBoundaries",
+        "label": "structurizrSoftwareSystemBoundaries",
+        "idx": 0,
+        "pattern": "\"structurizr\\.softwareSystemBoundaries\"|structurizr\\.softwareSystemBoundaries"
+      },
+      {
+        "type": "Terminal",
+        "name": "bool",
+        "label": "bool",
+        "idx": 0,
+        "pattern": "(true|false)"
       }
     ]
   },
@@ -1898,18 +2231,120 @@
         "idx": 0,
         "definition": [
           {
-            "type": "Terminal",
-            "name": "propertiesEnum",
-            "label": "propertiesEnum",
+            "type": "Alternation",
             "idx": 0,
-            "pattern": "\"?structurizr\\.locale\"?|\"?structurizr\\.timezone\"?|\"?structurizr\\.sort\"?|\"?structurizr\\.tooltips\"?|\"?structurizr\\.title\"?|\"?structurizr\\.description\"?|\"?structurizr\\.metadata\"?|\"?structurizr\\.enterpriseBoundary\"?|\"?structurizr\\.groupSeparator\"?|\"?structurizr\\.groups\"?|\"?structurizr\\.softwareSystemBoundaries\"?"
-          },
-          {
-            "type": "Terminal",
-            "name": "value",
-            "label": "value",
-            "idx": 0,
-            "pattern": "NOT_APPLICABLE"
+            "definition": [
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "timezoneProperty",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "localeProperty",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "sortProperty",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "tooltipsProperty",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "titleProperty",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "descriptionProperty",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "metadataProperty",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "enterpriseBoundaryProperty",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "groupSeparatorProperty",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "groupsProperty",
+                    "idx": 0
+                  }
+                ]
+              },
+              {
+                "type": "Alternative",
+                "definition": [
+                  {
+                    "type": "NonTerminal",
+                    "name": "softwareSystemBoundariesProperty",
+                    "idx": 0
+                  }
+                ]
+              }
+            ]
           }
         ]
       },

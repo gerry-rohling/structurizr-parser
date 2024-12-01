@@ -20,7 +20,7 @@ export const Url = createToken({name: "url", pattern: /(https?:\/\/[^ ]*)/i});
 // Relative file path
 export const FilePath = createToken({name: "filePath", pattern: /\.\.?\/[^\n"?:*<>|]+\.[A-z0-9]+/i });
 
-/// Literals - was /"(?:[^\\"]|\\(?:[bfnrtv"\\/]|u[0-9a-fA-F]{4}))*"/ but not sure what that is on?!
+/// Literals - was /"(?:[^\\"]|\\(?:[bfnrtv"\\/]|u[0-9a-fA-F]{4}))*"/ but I think this also included escaped char and unicode, maybe not required
 export const StringLiteral = createToken({name: "stringLiteral", pattern: /"(?:[^"\\]|\\.)*"/ });
 
 /// Identifiers was /[a-zA-Z_0-9]\w*/ and /[a-zA-z][a-zA-z.]*\_?[0-9]*/
@@ -79,7 +79,17 @@ export const Colour = createToken({name: "colour", pattern: /colour/i, longer_al
 export const ShapeEnum = createToken({name: "shapeEnum", pattern: /Box|RoundedBox|Circle|Ellipse|Hexagon|Cylinder|Pipe|Person|Robot|Folder|WebBrowser|MobileDevicePortrait|MobileDeviceLandscape|Component/i, longer_alt:Identifier});
 export const FontSize = createToken({name: "fontSize", pattern: /fontsize/i, longer_alt: Identifier});
 export const Opacity = createToken({name:"opacity", pattern: /opacity/i, longer_alt: Identifier});
-export const PropertiesEnum = createToken({name: "propertiesEnum", pattern: /"?structurizr\.locale"?|"?structurizr\.timezone"?|"?structurizr\.sort"?|"?structurizr\.tooltips"?|"?structurizr\.title"?|"?structurizr\.description"?|"?structurizr\.metadata"?|"?structurizr\.enterpriseBoundary"?|"?structurizr\.groupSeparator"?|"?structurizr\.groups"?|"?structurizr\.softwareSystemBoundaries"?/i, longer_alt: Identifier});
+export const StructurizrLocale = createToken({name: "structurizrLocale", pattern: /"structurizr\.locale"|structurizr\.locale/i, longer_alt: Identifier });
+export const StructurizrTimezone = createToken({name: "structurizrTimezone", pattern: /"structurizr\.timezone"|structurizr\.timezone/i, longer_alt: Identifier });
+export const StructurizrSort = createToken({name: "structurizrSort", pattern: /"structurizr\.sort"|structurizr\.sort/i, longer_alt: Identifier });
+export const StructurizrTooltips = createToken({name: "structurizrTooltips", pattern: /"structurizr\.tooltips"|structurizr\.tooltips/i, longer_alt: Identifier });
+export const StructurizrTitle = createToken({name: "structurizrTitle", pattern: /"structurizr\.title"|structurizr\.title/i, longer_alt: Identifier });
+export const StructurizrDescription = createToken({name: "structurizrDescription", pattern: /"structurizr\.description"|structurizr\.description/i, longer_alt: Identifier });
+export const StructurizrMetadata = createToken({name: "structurizrMetadata", pattern: /"structurizr\.metadata"|structurizr\.metadata/i, longer_alt: Identifier });
+export const StructurizrEnterpriseBoundary = createToken({name: "structurizrEnterpriseBoundary", pattern: /"structurizr\.enterpriseBoundary"|structurizr\.enterpriseBoundary/i, longer_alt: Identifier });
+export const StructurizrGroupSeparator = createToken({name: "structurizrGroupSeparator", pattern: /"structurizr\.groupSeparator"|structurizr\.groupSeparator/i, longer_alt: Identifier });
+export const StructurizrGroups = createToken({name: "structurizrGroups", pattern: /"structurizr\.groups"|structurizr\.groups/i, longer_alt: Identifier });
+export const StructurizrSoftwareSystemBoundaries = createToken({name: "structurizrSoftwareSystemBoundaries", pattern: /"structurizr\.softwareSystemBoundaries"|structurizr\.softwareSystemBoundaries/i, longer_alt: Identifier });
 
 /// Relationships
 export const Equals = createToken({ name: "equals", pattern: /=/ });
@@ -116,7 +126,17 @@ export const allTokens = [
     HexColor,  
     HashComment,
 
-    PropertiesEnum,
+    StructurizrLocale,
+    StructurizrTimezone,
+    StructurizrSort,
+    StructurizrTooltips,
+    StructurizrTitle,
+    StructurizrDescription,
+    StructurizrMetadata,
+    StructurizrEnterpriseBoundary,
+    StructurizrGroupSeparator,
+    StructurizrGroups,
+    StructurizrSoftwareSystemBoundaries,
 
     StringLiteral,
 

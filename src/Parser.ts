@@ -1,5 +1,5 @@
 import { CstParser } from "chevrotain";
-import { Animation, AutoLayout, Background, Color, Colour, Component, Container, ContainerInstance, Deployment, DeploymentEnvironment, DeploymentNode, Description, Dynamic, Element, Equals, Extends, FilePath, FontSize, Group, HexColor, Identifier, Image, Include, Int, LBrace, Model, Name, Opacity, Person, Properties, PropertiesEnum, RBrace, RelatedTo, Relationship, Shape, ShapeEnum, SoftwareSystem, SoftwareSystemInstance, StringLiteral, Styles, SystemContext, SystemLandscape, Title, Url, Value, Views, Wildcard, Word, Workspace, allTokens } from "./Lexer";
+import { Animation, AutoLayout, Background, Bool, Color, Colour, Component, Container, ContainerInstance, Deployment, DeploymentEnvironment, DeploymentNode, Description, Dynamic, Element, Equals, Extends, FilePath, FontSize, Group, HexColor, Identifier, Image, Include, Int, LBrace, Model, Name, Opacity, Person, Properties, RBrace, RelatedTo, Relationship, Shape, ShapeEnum, SoftwareSystem, SoftwareSystemInstance, StringLiteral, StructurizrDescription, StructurizrEnterpriseBoundary, StructurizrGroupSeparator, StructurizrGroups, StructurizrLocale, StructurizrMetadata, StructurizrSoftwareSystemBoundaries, StructurizrSort, StructurizrTimezone, StructurizrTitle, StructurizrTooltips, Styles, SystemContext, SystemLandscape, Title, Url, Value, Views, Wildcard, Word, Workspace, allTokens } from "./Lexer";
 
 // This class takes all the tokens identified and parses the DSL according to the rulesets defined by the Structurizr schema
 
@@ -57,10 +57,76 @@ class structurizrParser extends CstParser {
     this.CONSUME(Properties);
     this.CONSUME(LBrace);
     this.MANY(() => {
-      this.CONSUME1(PropertiesEnum);
-      this.CONSUME2(StringLiteral);
+      this.OR([
+        {ALT: () => {this.SUBRULE(this.timezoneProperty)}},
+        {ALT: () => {this.SUBRULE(this.localeProperty)}},
+        {ALT: () => {this.SUBRULE(this.sortProperty)}},
+        {ALT: () => {this.SUBRULE(this.tooltipsProperty)}},
+        {ALT: () => {this.SUBRULE(this.titleProperty)}},
+        {ALT: () => {this.SUBRULE(this.descriptionProperty)}},
+        {ALT: () => {this.SUBRULE(this.metadataProperty)}},
+        {ALT: () => {this.SUBRULE(this.enterpriseBoundaryProperty)}},
+        {ALT: () => {this.SUBRULE(this.groupSeparatorProperty)}},
+        {ALT: () => {this.SUBRULE(this.groupsProperty)}},
+        {ALT: () => {this.SUBRULE(this.softwareSystemBoundariesProperty)}}
+      ]);
     });
     this.CONSUME(RBrace);
+  });
+
+  private timezoneProperty = this.RULE("timezoneProperty", () => {
+    this.CONSUME(StructurizrTimezone); 
+    this.CONSUME(StringLiteral);
+  });
+
+  private localeProperty = this.RULE("localeProperty", () => {
+    this.CONSUME(StructurizrLocale); 
+    this.CONSUME(StringLiteral);
+  });
+
+  private sortProperty = this.RULE("sortProperty", () => {
+    this.CONSUME(StructurizrSort); 
+    this.CONSUME(StringLiteral);
+  });
+
+  private tooltipsProperty = this.RULE("tooltipsProperty", () => {
+    this.CONSUME(StructurizrTooltips); 
+    this.CONSUME(Bool);
+  });
+
+  private titleProperty = this.RULE("titleProperty", () => {
+    this.CONSUME(StructurizrTitle); 
+    this.CONSUME(Bool);
+  });
+
+  private descriptionProperty = this.RULE("descriptionProperty", () => {
+    this.CONSUME(StructurizrDescription); 
+    this.CONSUME(Bool);
+  });
+
+  private metadataProperty = this.RULE("metadataProperty", () => {
+    this.CONSUME(StructurizrMetadata); 
+    this.CONSUME(Bool);
+  });
+
+  private enterpriseBoundaryProperty = this.RULE("enterpriseBoundaryProperty", () => {
+    this.CONSUME(StructurizrEnterpriseBoundary); 
+    this.CONSUME(Bool);
+  });
+
+  private groupSeparatorProperty = this.RULE("groupSeparatorProperty", () => {
+    this.CONSUME(StructurizrGroupSeparator); 
+    this.CONSUME(StringLiteral);
+  });
+
+  private groupsProperty = this.RULE("groupsProperty", () => {
+    this.CONSUME(StructurizrGroups); 
+    this.CONSUME(Bool);
+  });
+
+  private softwareSystemBoundariesProperty = this.RULE("softwareSystemBoundariesProperty", () => {
+    this.CONSUME(StructurizrSoftwareSystemBoundaries); 
+    this.CONSUME(Bool);
   });
 
   private systemGroupSection = this.RULE("systemGroupSection", () => {
@@ -365,8 +431,19 @@ class structurizrParser extends CstParser {
     this.CONSUME(Properties);
     this.CONSUME(LBrace);
     this.MANY(() => {
-      this.CONSUME(PropertiesEnum);
-      this.CONSUME(Value);
+      this.OR([
+        {ALT: () => {this.SUBRULE(this.timezoneProperty)}},
+        {ALT: () => {this.SUBRULE(this.localeProperty)}},
+        {ALT: () => {this.SUBRULE(this.sortProperty)}},
+        {ALT: () => {this.SUBRULE(this.tooltipsProperty)}},
+        {ALT: () => {this.SUBRULE(this.titleProperty)}},
+        {ALT: () => {this.SUBRULE(this.descriptionProperty)}},
+        {ALT: () => {this.SUBRULE(this.metadataProperty)}},
+        {ALT: () => {this.SUBRULE(this.enterpriseBoundaryProperty)}},
+        {ALT: () => {this.SUBRULE(this.groupSeparatorProperty)}},
+        {ALT: () => {this.SUBRULE(this.groupsProperty)}},
+        {ALT: () => {this.SUBRULE(this.softwareSystemBoundariesProperty)}}
+      ]);
     });
     this.CONSUME(RBrace);
   });

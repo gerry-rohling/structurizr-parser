@@ -78,19 +78,67 @@ class rawInterpreter extends BaseStructurizrVisitor {
     // TODO: This will mean a lot more handlers for each property and whether it is model or view related
     propertiesSection(node: any) {
         this._debug && console.log('Here we are at propertiesSection node:');
-        let offset = 0;
-        while (node.stringLiteral.length > offset) {
-            const parameter = stripQuotes(node.stringLiteral[offset].image);
-            const value = stripQuotes(node.stringLiteral[offset+1].image);
-            if (!this.workspace.model?.properties){
-                this.workspace.model!.properties = {};
-            }
-            this.workspace.model!.properties![parameter] = value;
-            if (parameter.toLowerCase() === "structurizr.groupseparator") {
-                this._groupSeparator = value;
-            }
-            offset += 2;
+        if (node.localeProperty) { this.visit(node.localeProperty); }
+        if (node.timezoneProperty) { this.visit(node.timezoneProperty); }
+        if (node.sortProperty) { this.visit(node.sortProperty); }
+        if (node.tooltipsProperty) { this.visit(node.tooltipsProperty); }
+        if (node.titleProperty) { this.visit(node.titleProperty); }
+        if (node.descriptionProperty) { this.visit(node.descriptionProperty); }
+        if (node.metadataProperty) { this.visit(node.metadataProperty); }
+        if (node.enterpriseBoundaryProperty) { this.visit(node.enterpriseBoundaryProperty); }
+        if (node.groupSeparatorProperty) { this.visit(node.groupSeparatorProperty); }
+        if (node.groupsProperty) { this.visit(node.groupsProperty); }
+        if (node.softwareSystemBoundariesProperty) { this.visit(node.softwareSystemBoundariesProperty); }
+    }
+
+    localeProperty(node: any) {
+        this._debug && console.log('Here we are at localeProperty node:');
+    }
+
+    timezoneProperty(node: any) {
+        this._debug && console.log('Here we are at timezoneProperty node:');
+    }
+
+    sortProperty(node: any) {
+        this._debug && console.log('Here we are at sortProperty node:');
+    }
+
+    tooltipsProperty(node: any) {
+        this._debug && console.log('Here we are at tooltipsProperty node:');
+    }
+
+    titleProperty(node: any) {
+        this._debug && console.log('Here we are at titleProperty node:');
+    }
+
+    descriptionProperty(node: any) {
+        this._debug && console.log('Here we are at descriptionProperty node:');
+    }
+
+    metadataProperty(node: any) {
+        this._debug && console.log('Here we are at metadataProperty node:');
+    }
+
+    enterpriseBoundaryProperty(node: any) {
+        this._debug && console.log('Here we are at enterpriseBoundaryProperty node:');
+    }
+
+    groupSeparatorProperty(node: any) {
+        this._debug && console.log('Here we are at groupSeparatorProperty node:');
+        const value = stripQuotes(node.stringLiteral?.[0]?.image);
+        if (!this.workspace.model?.properties){
+            this.workspace.model!.properties = {};
         }
+        this.workspace.model!.properties!["structurizr.groupseparator"] = value;
+        this._groupSeparator = value;
+    }
+
+    groupsProperty(node: any) {
+        this._debug && console.log('Here we are at groupsProperty node:');
+    }
+
+    softwareSystemBoundariesProperty(node: any) {
+        this._debug && console.log('Here we are at softwareSystemBoundariesProperty node:');
     }
 
     systemGroupSection(node: any) {
@@ -342,6 +390,17 @@ class rawInterpreter extends BaseStructurizrVisitor {
 
     propertiesOptions(node: any) {
         this._debug && console.log(`Here we are at propertiesOptions with node: ${node.name}`);
+        if (node.localeProperty) { this.visit(node.localeProperty); }
+        if (node.timezoneProperty) { this.visit(node.timezoneProperty); }
+        if (node.sortProperty) { this.visit(node.sortProperty); }
+        if (node.tooltipsProperty) { this.visit(node.tooltipsProperty); }
+        if (node.titleProperty) { this.visit(node.titleProperty); }
+        if (node.descriptionProperty) { this.visit(node.descriptionProperty); }
+        if (node.metadataProperty) { this.visit(node.metadataProperty); }
+        if (node.enterpriseBoundaryProperty) { this.visit(node.enterpriseBoundaryProperty); }
+        if (node.groupSeparatorProperty) { this.visit(node.groupSeparatorProperty); }
+        if (node.groupsProperty) { this.visit(node.groupsProperty); }
+        if (node.softwareSystemBoundariesProperty) { this.visit(node.softwareSystemBoundariesProperty); }
     }
 
     systemContextView(node: any) {
