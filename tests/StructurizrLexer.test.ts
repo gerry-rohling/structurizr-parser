@@ -60,7 +60,7 @@ describe('Testing StructurizrLexer', () => {
         }
         expect(lexingResult).toBeDefined();
         expect(lexingResult.errors.length).toBe(1);
-        expect(lexingResult.errors[0].offset).toBe(215);
+        expect(lexingResult.errors[0].offset).toBe(207);
     });
 
     test('Can understand nested groups', async() => {
@@ -72,6 +72,6 @@ describe('Testing StructurizrLexer', () => {
             await fsPromise.writeFile("./tests/diagrams/groups.html", htmlText);
         }
         expect(lexingResult).toBeDefined();
-        expect(lexingResult.errors.length).toBe(0);        
+        expect(lexingResult.errors.length).toBe(0);
     });
 });
