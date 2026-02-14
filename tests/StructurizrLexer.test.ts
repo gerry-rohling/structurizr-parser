@@ -60,7 +60,10 @@ describe('Testing StructurizrLexer', () => {
         }
         expect(lexingResult).toBeDefined();
         expect(lexingResult.errors.length).toBe(1);
-        expect(lexingResult.errors[0].offset).toBe(207);
+        console.log(lexingResult.errors[0]);
+        // Assert line/column (stable across EOL differences)
+        expect(lexingResult.errors[0].line).toBe(9);
+        expect(lexingResult.errors[0].column).toBe(14);
     });
 
     test('Can understand nested groups', async() => {

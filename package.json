@@ -1,6 +1,6 @@
 {
   "name": "structurizr-parser",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Parses Structurizr DSL files",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -10,7 +10,7 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest"
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest"
   },
   "repository": {
     "type": "git",
@@ -29,6 +29,7 @@
   "devDependencies": {
     "@types/jest": "^29.5.14",
     "@types/lodash": "^4.17.13",
+    "cross-env": "^10.1.0",
     "jest": "^30.2.0",
     "ts-jest": "^29.2.5",
     "typescript": "^5.6.3"
